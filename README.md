@@ -33,11 +33,11 @@ binary_sensor:
 ```
 #### Configuration Variables
 **name**<br>
-(string)(Optional)Additional name for the sensors.<br>
+(string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather
    
 **monitored_conditions**<br>
-(list)(optional)Sensors to display in the frontend.<br>
+(list)(optional) Sensors to display in the frontend.<br>
 Default: All Sensors are displayed
 * **raining** - A sensor indicating if it is currently raining
 * **freezing** - A sensor indicating if it is currently freezing outside.
@@ -70,11 +70,11 @@ sensor:
 ```
 #### Configuration Variables
 **name**<br>
-(string)(Optional)Additional name for the sensors.<br>
+(string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather
    
 **monitored_conditions**<br>
-(list)(optional)Sensors to display in the frontend.<br>
+(list)(optional) Sensors to display in the frontend.<br>
 Default: All Sensors are displayed
 * **temperature** - Current temperature
 * **feels_like_temperature** - How the temperature Feels Like. A combination of Heat Index and Wind Chill
@@ -105,9 +105,9 @@ weather:
 ```
 #### Configuration Variables
 **api_key**<br>
-(string)(Required)Your API key.<br>
+(string)(Required) Your API key.<br>
 **name**<br>
-(string)(Optional)Additional name for the sensors.<br>
+(string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather<br>
 **mode**<br>
 (string)(Optional) *hourly* for hour based forecast, and *daily* for day based forecast<br>
