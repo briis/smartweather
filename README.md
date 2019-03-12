@@ -11,6 +11,8 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
 
 ## Configuration
+Start by configuring the base component. No matter which of the entities you activate, this has to be configured.
+
 Edit your *configuration.yaml* file and add the *smartweather* component to the file:
 ```yaml
 # Example configuration.yaml entry
@@ -18,3 +20,23 @@ smartweather:
   station_id: <your station id>
 ```
 If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
+
+### Binary Sensor
+In order to use the Binary Sensors, add the following to your *configuration.yaml* file:
+```yaml
+# Example configuration.yaml entry
+binary_sensor:
+  platform: smartweather
+  monitored_conditions:
+    - raining
+```
+#### Configuration Variables
+   **name**<br>
+   (string)(Optional)Additional name for the sensors.<br>
+   Default value: SmartWeather
+   
+   **monitored_conditions**<br>
+   (list)(optional)Sensors to display in the frontend.<br>
+   Default: All Sensors are displayed
+   * **raining** - A sensor indicating if it is currently raining
+   * **freezing** - A sensor indicating if it is currently freezing outside.
