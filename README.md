@@ -48,7 +48,13 @@ In order to use the Sensors, add the following to your *configuration.yaml* file
 sensor:
   platform: smartweather
   monitored_conditions:
-    - raining
+    - temperature
+    - feels_like_temperature
+    - wind_speed
+    - precipitation
+    - precipitation_yesterday
+    - humidity
+    - pressure
 ```
 #### Configuration Variables
    **name**<br>
@@ -58,5 +64,6 @@ sensor:
    **monitored_conditions**<br>
    (list)(optional)Sensors to display in the frontend.<br>
    Default: All Sensors are displayed
-   * **raining** - A sensor indicating if it is currently raining
-   * **freezing** - A sensor indicating if it is currently freezing outside.
+   * **temperature** - Current temperature
+   * **feels_like_temperature** - How the temperature Feels Like. A combination of Heat Index and Wind Chill
+   * **heat_index** - A temperature measurement combining Humidity and temperature. How hot does it feel. Only used when temperature is above 26.67°C (80°F)
