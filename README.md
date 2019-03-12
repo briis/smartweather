@@ -29,6 +29,7 @@ binary_sensor:
   platform: smartweather
   monitored_conditions:
     - raining
+    - freezing
 ```
 #### Configuration Variables
    **name**<br>
@@ -50,11 +51,22 @@ sensor:
   monitored_conditions:
     - temperature
     - feels_like_temperature
+    - heat_index
+    - wind_chill
+    - dewpoint
     - wind_speed
+    - wind_gust
+    - wind_bearing
+    - wind_direction
     - precipitation
+    - precipitation_rate
+    - precipitation_last_1hr
+    - precipitation_last_24hr
     - precipitation_yesterday
     - humidity
     - pressure
+    - uv
+    - solar_radiation
 ```
 #### Configuration Variables
    **name**<br>
