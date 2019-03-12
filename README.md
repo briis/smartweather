@@ -105,10 +105,10 @@ weather:
 ```
 #### Configuration Variables
 **api_key**<br>
-(string)(Required)Your API key.
+(string)(Required)Your API key.<br>
 **name**<br>
 (string)(Optional)Additional name for the sensors.<br>
-Default value: SmartWeather
+Default value: SmartWeather<br>
 **mode**<br>
-(string)(Optional)*hourly* for hour based forecast, and *daily* for day based forecast<br>
+(string)(Optional) *hourly* for hour based forecast, and *daily* for day based forecast<br>
 Default value: hourly
