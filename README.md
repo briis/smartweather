@@ -8,7 +8,12 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 
 ## Installation
 1. If you don't already have a `custom_component` directory in your config directory, create it, and then create a directory called `smartweather`under that.
-2. Copy all the files from this repository in to the *smartweather* folder
+2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
 
 ## Configuration
-
+Edit your *configuration.yaml* file and add the *smartweather* component to the file:
+```yaml
+smartweather:
+  station_id: <your station id>
+```
+If you have your own Smart Weather Station, then you know your Station Id, if you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
