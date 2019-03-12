@@ -11,7 +11,7 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
 
 ## Configuration
-Start by configuring the core component. No matter which of the entities you activate, this has to be configured. The core component by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant. 
+Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant. 
 
 Edit your *configuration.yaml* file and add the *smartweather* component to the file:
 ```yaml
@@ -25,6 +25,10 @@ smartweather:
 
 **api_key**<br>
 (string)(Required) The WeatherFlow REST API requires a API Key, but for personal use, you can use a development key, which you can [find here](https://weatherflow.github.io/SmartWeather/api/#getting-started). Please note the restrictions applied.
+
+**name**<br>
+(string)(Optional) Additional name for the platform.<br>
+Default value: SmartWeather
 
 ### Binary Sensor
 In order to use the Binary Sensors, add the following to your *configuration.yaml* file:
