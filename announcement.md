@@ -10,4 +10,6 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 
 Please visit the Github Project for installation and Configuration options.
 
-The 
+Only the `weather` entity will require a Dark Sky API Key, the SmartWeather component uses a public developer key, that you can get from WeatherFlow (See instructions on Github). You don't need to own your own Smart Weather weatherstation to use this component, as you can access many Public available stations around the world.
+
+Personally I am totally new to `Python` programming, so I will welcome any constructive feedback on this component, and especially how, this could be done nicer than the code I have done - BUT it works, at least on my systems.
