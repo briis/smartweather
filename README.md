@@ -5,3 +5,10 @@ This a *custom component* for [Home Assistant](https://www.home-assistant.io/). 
 It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component. 
 
 The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.io/SmartWeather/api/swagger/) REST API to retrieve current data for a local WeatherStation, and it uses [Dark Sky](https://darksky.net/dev) to retrieve Forecast data if the `weather` component is activated.
+
+## Installation
+1. If you don't already have a `custom_component` directory in your config directory, create it, and then create a directory called `smartweather`under that.
+2. Copy all the files from this repository in to the *smartweather* folder
+
+## Configuration
+
