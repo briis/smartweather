@@ -40,3 +40,23 @@ binary_sensor:
    Default: All Sensors are displayed
    * **raining** - A sensor indicating if it is currently raining
    * **freezing** - A sensor indicating if it is currently freezing outside.
+
+### Sensor
+In order to use the Sensors, add the following to your *configuration.yaml* file:
+```yaml
+# Example configuration.yaml entry
+sensor:
+  platform: smartweather
+  monitored_conditions:
+    - raining
+```
+#### Configuration Variables
+   **name**<br>
+   (string)(Optional)Additional name for the sensors.<br>
+   Default value: SmartWeather
+   
+   **monitored_conditions**<br>
+   (list)(optional)Sensors to display in the frontend.<br>
+   Default: All Sensors are displayed
+   * **raining** - A sensor indicating if it is currently raining
+   * **freezing** - A sensor indicating if it is currently freezing outside.
