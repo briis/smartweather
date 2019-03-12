@@ -16,4 +16,4 @@ Edit your *configuration.yaml* file and add the *smartweather* component to the 
 smartweather:
   station_id: <your station id>
 ```
-If you have your own Smart Weather Station, then you know your Station Id, if you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
+If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
