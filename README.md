@@ -1,2 +1,2 @@
-# Smart Weather component for Home Assistant
+# Smart Weather for Home Assistant
 WeatherFlow Smart Weather Component for Home Assistant
