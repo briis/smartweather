@@ -96,7 +96,7 @@ Default: All Sensors are displayed
 * **wind_gust** - Current Wind Gust
 * **wind_bearing** - Wind bearing in degrees (Example: 287°)
 * **wind_direction** - Wind bearing as directional text (Example: NNW)
-* **precipitation** - Precipitation since mindnight
+* **precipitation** - Precipitation since midnight
 * **precipitation_rate** - The current precipitation rate - 0 if it is not raining
 * **precipitation_last_1hr** - Precipitation in the last hour
 * **precipitation_last_24hr** - Precipitation in the last 24 hours.
