@@ -110,6 +110,8 @@ Default: All Sensors are displayed
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
 The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
 
+On top of the standard attributes that a weather entity has available, the following additional attributes have been added to this Weather Entity: *Wind Gust, Dewpoint, Feels Like Temperature, Precipitation and Precipitation Rate*
+
 In order to use the Weather component, add the following to your *configuration.yaml* file:
 ```yaml
 # Example configuration.yaml entry
