@@ -11,15 +11,17 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
 
 ## Configuration
-Start by configuring the base component. No matter which of the entities you activate, this has to be configured.
+Start by configuring the core component. No matter which of the entities you activate, this has to be configured. The core component by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant. 
 
 Edit your *configuration.yaml* file and add the *smartweather* component to the file:
 ```yaml
 # Example configuration.yaml entry
 smartweather:
   station_id: <your station id>
+  api_key: <Your WeatherFlow API Key>
 ```
-If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
+If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID<br>
+The WeatherFlow REST API requires a API Key, but for personal use, you can use a development key, which you can [find here](https://weatherflow.github.io/SmartWeather/api/#getting-started). Please note the restrictions applied.
 
 ### Binary Sensor
 In order to use the Binary Sensors, add the following to your *configuration.yaml* file:
@@ -96,6 +98,8 @@ Default: All Sensors are displayed
 * **solar_radiation** - The current Solar Radiation measured in W/m2
    
 ### Weather
+The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
+
 In order to use the Weather component, add the following to your *configuration.yaml* file:
 ```yaml
 # Example configuration.yaml entry
