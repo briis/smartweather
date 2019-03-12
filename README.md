@@ -13,6 +13,7 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 ## Configuration
 Edit your *configuration.yaml* file and add the *smartweather* component to the file:
 ```yaml
+# Example configuration.yaml entry
 smartweather:
   station_id: <your station id>
 ```
