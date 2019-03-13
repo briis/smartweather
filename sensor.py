@@ -53,8 +53,8 @@ SENSOR_TYPES = {
 
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
-        vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
+    vol.Optional(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
+        vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)])
 })
 
 
@@ -65,7 +65,6 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     else:
         unit_system = 'imperial'
 
-
     data = hass.data[DATA_SMARTWEATHER]
     name = hass.data[CONF_NAME]
 
@@ -75,6 +74,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     sensors = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         sensors.append(SmartWeatherCurrentSensor(hass, data, variable, name, unit_system))
+        _LOGGER.debug("Sensor added: " + variable)
 
     add_entities(sensors, True)
 
