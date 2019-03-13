@@ -17,7 +17,7 @@ from . import DATA_SMARTWEATHER, CONF_NAME, ATTRIBUTION
 from homeassistant.components.sensor import ENTITY_ID_FORMAT, PLATFORM_SCHEMA
 from homeassistant.const import (
     ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, TEMP_CELSIUS, LENGTH_METERS,
-    UNIT_UV_INDEX, DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE)
+    UNIT_UV_INDEX, DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_ILLUMINANCE)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
 _LOGGER = logging.getLogger(__name__)
@@ -47,7 +47,8 @@ SENSOR_TYPES = {
     'humidity': ['Humidity', '%', 'mdi:water-percent', DEVICE_CLASS_HUMIDITY, None],
     'pressure': ['Pressure', 'hPa', 'mdi:gauge', DEVICE_CLASS_PRESSURE, 'inHg'],
     'uv': ['UV', UNIT_UV_INDEX,'mdi:weather-sunny', None, None],
-    'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None]
+    'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None],
+    'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None]
 }
 
 

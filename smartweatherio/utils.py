@@ -43,7 +43,7 @@ class Conversion:
             return round(value * 0.0393700787,2)
         else:
             # Return value mm
-            return round(value,2)
+            return round(value,1)
 
     def pressure(value, unit):
         if unit.lower() == 'imperial':

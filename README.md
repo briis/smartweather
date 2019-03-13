@@ -2,7 +2,7 @@
 ![WeatherFlow Logo](https://github.com/briis/hass-SmartWeather/blob/master/images/weatherflow.png)<br>
 This a *custom component* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Smart Weather weather station produced by *WeatherFlow* and Forecast data from *Dark Sky*.
 
-It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component. 
+It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component.
 
 The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.io/SmartWeather/api/swagger/) REST API to retrieve current data for a local WeatherStation, and it uses [Dark Sky](https://darksky.net/dev) to retrieve Forecast data if the `weather` component is activated.
 
@@ -11,7 +11,7 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
 
 ## Configuration
-Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant. 
+Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
 
 Edit your *configuration.yaml* file and add the *smartweather* component to the file:
 ```yaml
@@ -45,7 +45,7 @@ binary_sensor:
 **name**<br>
 (string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather
-   
+
 **monitored_conditions**<br>
 (list)(optional) Sensors to display in the frontend.<br>
 Default: All Sensors are displayed
@@ -78,12 +78,13 @@ sensor:
       - pressure
       - uv
       - solar_radiation
+      - illuminance
 ```
 #### Configuration Variables
 **name**<br>
 (string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather
-   
+
 **monitored_conditions**<br>
 (list)(optional) Sensors to display in the frontend.<br>
 Default: All Sensors are displayed
@@ -105,7 +106,8 @@ Default: All Sensors are displayed
 * **pressure** - Current barometric pressure, taking in to account the position of the station
 * **uv** - The UV index
 * **solar_radiation** - The current Solar Radiation measured in W/m2
-   
+* **illuminance** - Shows the brightness in Lux
+
 ### Weather
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
 The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
