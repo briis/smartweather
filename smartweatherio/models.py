@@ -33,6 +33,7 @@ class WeatherData(UnicodeMixin):
             Conversion.volume(float(self.json['obs'][0]['precip_accum_local_day']), self.units),
             int(self.json['obs'][0]['relative_humidity']),
             Conversion.volume(float(self.json['obs'][0]['precip']), self.units),
+            float(self.json['obs'][0]['precip']),
             Conversion.pressure(float(self.json['obs'][0]['barometric_pressure']), self.units),
             float(self.json['latitude']),
             float(self.json['longitude']),
@@ -42,7 +43,8 @@ class WeatherData(UnicodeMixin):
             Conversion.volume(float(self.json['obs'][0]['precip_accum_last_1hr']), self.units),
             Conversion.volume(float(self.json['obs'][0]['precip_accum_last_24hr']), self.units),
             Conversion.volume(float(self.json['obs'][0]['precip_accum_local_yesterday']), self.units),
-            int(self.json['obs'][0]['solar_radiation'])
+            int(self.json['obs'][0]['solar_radiation']),
+            int(self.json['obs'][0]['brightness'])
             )
 
     def unit(self):
@@ -80,8 +82,8 @@ class Alert(UnicodeMixin):
 
 class CurrentData:
     def __init__(self, station_location, timestamp, temperature, feels_like, wind_speed, wind_bearing, wind_direction, wind_gust,
-                 uv, precipitation,humidity, precipitation_rate, pressure, latitude, longitude, heat_index, wind_chill, dewpoint,
-                 precipitation_last_1hr, precipitation_last_24hr, precipitation_yesterday, solar_radiation
+                 uv, precipitation,humidity, precipitation_rate, rain_rate_raw, pressure, latitude, longitude, heat_index, wind_chill, dewpoint,
+                 precipitation_last_1hr, precipitation_last_24hr, precipitation_yesterday, solar_radiation, brightness
                  ):
         self.station_location = station_location
         self.timestamp = timestamp
@@ -105,8 +107,9 @@ class CurrentData:
         self.precipitation_last_24hr = precipitation_last_24hr
         self.precipitation_yesterday = precipitation_yesterday
         self.solar_radiation = solar_radiation
+        self.illuminance = brightness
 
-        if precipitation_rate > 0:
+        if rain_rate_raw > 0:
             self.raining = True
         else:
             self.raining = False
