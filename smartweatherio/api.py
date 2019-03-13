@@ -1,10 +1,9 @@
 import requests
-import threading
 
 from .models import WeatherData
 
 def _url(stationid, apikey):
-    return 'https://swd.weatherflow.com/swd/rest/observations/station/' + str(stationid) + '?api_key=' + apikey
+    return 'https://swd.weatherflow.com/swd/rest/observations/station/' + str(stationid) + '?api_key=' + str(apikey)
 
 def load_weatherdata(stationid, apikey, units='metric', callback=None):
     """
@@ -14,20 +13,7 @@ def load_weatherdata(stationid, apikey, units='metric', callback=None):
     available stations here: https://smartweather.weatherflow.com/map
     """
 
-    return manual(_url(stationid, apikey), units, callback=callback)
-
-def manual(requestURL, units, callback=None):
-    """
-    This function is used by load_weatherdata OR by users to manually
-    construct the URL for an API call.
-    """
-
-    if callback is None:
-        return get_weather(requestURL, units)
-    else:
-        thread = threading.Thread(target=load_async,
-                                  args=(requestURL, callback))
-        thread.start()
+    return get_weather(_url(stationid, apikey), units)
 
 def get_weather(requestURL, units):
     data_reponse = requests.get(requestURL)
@@ -37,7 +23,3 @@ def get_weather(requestURL, units):
     headers = data_reponse.headers
 
     return WeatherData(json, data_reponse, headers, units)
-
-
-def load_async(url, callback):
-    callback(get_forecast(url))

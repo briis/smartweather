@@ -47,23 +47,6 @@ class WeatherData(UnicodeMixin):
             int(self.json['obs'][0]['brightness'])
             )
 
-    def unit(self):
-        if self.units == 'imperial':
-            return {
-                'temperature': 'F',
-                'speed': 'mph',
-                'pressure': 'inHg',
-                'precipitation': 'in'
-            }
-        else:
-            return {
-                'temperature': 'C',
-                'speed': 'kph',
-                'pressure': 'mb',
-                'precipitation': 'mm'
-            }
-
-
 class Alert(UnicodeMixin):
     def __init__(self, json):
         self.json = json

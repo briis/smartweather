@@ -76,6 +76,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     mode = config.get(CONF_MODE)
     sw_currently = hass.data[DATA_SMARTWEATHER]
 
+    _LOGGER.debug("Weather API Key: " + config.get(CONF_API_KEY))
+
     units = config.get(CONF_UNITS)
     if not units:
         units = 'ca' if hass.config.units.is_metric else 'us'
@@ -152,7 +154,7 @@ class DarkSkyWeather(WeatherEntityExtended):
     @property
     def wind_bearing(self):
         """Return the wind bearing."""
-        return str(self._sw_currently.data.wind_bearing)
+        return self._sw_currently.data.wind_bearing
 
     @property
     def precipitation(self):

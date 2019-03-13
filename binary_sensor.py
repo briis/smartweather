@@ -28,7 +28,7 @@ _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
     'raining': ['Raining', 'moisture', 'mdi:water', 'mdi:water-off'],
-    'freezing': ['Freezing', 'cold', 'mdi:fridge', 'mdi:fridge-outline'],
+    'freezing': ['Freezing', 'cold', 'mdi:fridge', 'mdi:fridge-outline']
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
@@ -48,6 +48,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     sensors = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         sensors.append(SmartWeatherBinarySensor(hass, data, variable, name))
+        _LOGGER.debug("Binary ensor added: " + variable)
 
     add_entities(sensors, True)
 

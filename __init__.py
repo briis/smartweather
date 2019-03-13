@@ -14,6 +14,9 @@ import logging
 
 import voluptuous as vol
 
+from requests.exceptions import (
+    ConnectionError as ConnectError, HTTPError, Timeout)
+
 from homeassistant.const import (CONF_NAME, CONF_API_KEY)
 import homeassistant.helpers.config_validation as cv
 from homeassistant.util import Throttle
@@ -71,14 +74,19 @@ CONFIG_SCHEMA = vol.Schema({
 def setup(hass, config):
     """Set up the SmartWeather platform."""
 
+    conf = config[DOMAIN]
+
+    _LOGGER.debug("Platform Station ID: " + conf[CONF_STATION_ID] + " API Key: " + conf[CONF_API_KEY])
+
     if hass.config.units.is_metric:
         unit_system = 'metric'
     else:
         unit_system = 'imperial'
 
-    stationid = config[DOMAIN].get(CONF_STATION_ID)
-    api_key = config[DOMAIN].get(CONF_API_KEY)
-    name = config[DOMAIN].get(CONF_NAME)
+    stationid = conf[CONF_STATION_ID]
+    api_key = conf[CONF_API_KEY]
+    name = conf[CONF_NAME]
+
     data = SmartWeatherCurrentData(hass, stationid, unit_system, api_key)
     data.update()
 
@@ -108,8 +116,12 @@ class SmartWeatherCurrentData:
         try:
             weather = lw(self._station_id, self._api_key, self._unit_system)
             self.data = weather.currentdata()
-        except (ValueError) as err:
-            _LOGGER.error("Check SmartWeather error %s", err.args)
+
+            if self.data is None:
+                _LOGGER.debug("No data received from Weather Station")
+
+        except (ConnectError, HTTPError, Timeout, ValueError) as error:
+            _LOGGER.error("Unable to connect to WeatherFlow. %s", error)
             self.data = None
 
 class WeatherEntityExtended(Entity):
