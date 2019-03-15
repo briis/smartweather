@@ -17,14 +17,16 @@ import voluptuous as vol
 from requests.exceptions import (
     ConnectionError as ConnectError, HTTPError, Timeout)
 
+from homeassistant.helpers import (
+    config_validation as cv, discovery)
+
 from homeassistant.const import (CONF_NAME, CONF_API_KEY)
-import homeassistant.helpers.config_validation as cv
 from homeassistant.util import Throttle
 from homeassistant.helpers.entity import Entity
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, ATTR_FORECAST_WIND_BEARING,
-    ATTR_FORECAST_WIND_SPEED, PLATFORM_SCHEMA, WeatherEntity)
+    ATTR_FORECAST_WIND_SPEED)
 from homeassistant.helpers.temperature import display_temp as show_temp
 from homeassistant.const import (PRECISION_TENTHS, PRECISION_WHOLE, TEMP_CELSIUS)
 

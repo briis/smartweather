@@ -32,7 +32,7 @@ class WeatherData(UnicodeMixin):
             float(self.json['obs'][0]['uv']),
             Conversion.volume(float(self.json['obs'][0]['precip_accum_local_day']), self.units),
             int(self.json['obs'][0]['relative_humidity']),
-            Conversion.volume(float(self.json['obs'][0]['precip']), self.units),
+            Conversion.rate(float(self.json['obs'][0]['precip']), self.units),
             float(self.json['obs'][0]['precip']),
             Conversion.pressure(float(self.json['obs'][0]['barometric_pressure']), self.units),
             float(self.json['latitude']),
@@ -57,7 +57,7 @@ class Alert(UnicodeMixin):
         except KeyError:
             raise PropertyUnavailable(
                 "Property '{}' is not valid"
-                " or is not available for this forecast".format(name)
+                " or is not available".format(name)
             )
 
     def __unicode__(self):

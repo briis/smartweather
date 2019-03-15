@@ -1,7 +1,6 @@
 # List of Changes
 
-### Version 0.0.3
-* Updated README.md and corrected wrong directory in the installation section
-* Wind Bearing was wrongly converted to a string, and has to be an Integer
-* Cleaned up the *smartweatherio* module, and removed unused code
-* Added DEBUG entries
+### Version 0.0.4
+* Fixed Config Validation error
+* Removed the DEVICE_CLASS for the Binary Sensors, as the value they gave was not really covering what this sensor was showing.
+* Added 2 decimals to precipitation_rate, to get better accuracy

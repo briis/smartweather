@@ -45,6 +45,14 @@ class Conversion:
             # Return value mm
             return round(value,1)
 
+    def rate(value, unit):
+        if unit.lower() == 'imperial':
+            # Return value in
+            return round(value * 0.0393700787,2)
+        else:
+            # Return value mm
+            return round(value,2)
+
     def pressure(value, unit):
         if unit.lower() == 'imperial':
             # Return value inHg
