@@ -5,7 +5,7 @@
 * Added new Sensor *wind_lull*. This shows the lowest wind recorded within the last minute.
 * Updated README.md with more descriptions and added the new Sensors
 * More code clean-up
-
+    
 ### Version 0.0.4
 * Fixed Config Validation error
 * Removed the DEVICE_CLASS for the Binary Sensors, as the value they gave was not really covering what this sensor was showing.
