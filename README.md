@@ -11,6 +11,8 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 ## Installation
 1. If you don't already have a `custom_components` directory in your config directory, create it, and then create a directory called `smartweather`under that.
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
+3. or using Git, go to the `custom_components` directory and enter:<br>
+`git clone https://github.com/briis/smartweather.git`
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
@@ -53,6 +55,7 @@ Default value: SmartWeather
 Default: All Sensors are displayed
 * **raining** - A sensor indicating if it is currently raining
 * **freezing** - A sensor indicating if it is currently freezing outside.
+* **lightning** - A sensor indicating if a lightning strike has been recorded within the last minute
 
 ### Sensor
 ![sensor](https://github.com/briis/hass-SmartWeather/blob/master/images/sensor.png)<br>
@@ -69,6 +72,7 @@ sensor:
       - dewpoint
       - wind_speed
       - wind_gust
+      - wind_lull
       - wind_bearing
       - wind_direction
       - precipitation
@@ -81,6 +85,7 @@ sensor:
       - uv
       - solar_radiation
       - illuminance
+      - lightning_count
 ```
 #### Configuration Variables
 **name**<br>
@@ -96,7 +101,8 @@ Default: All Sensors are displayed
 * **wind_chill** - How cold does it feel. Only used if temperature is below 10°C (50°F)
 * **dewpoint** - Dewpoint. The atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form
 * **wind_speed** - Current Wind Speed
-* **wind_gust** - Current Wind Gust
+* **wind_gust** - Highest Wind Speed in the last minute
+* **wind_lull** - Lowest Wind Speed in the last minute
 * **wind_bearing** - Wind bearing in degrees (Example: 287°)
 * **wind_direction** - Wind bearing as directional text (Example: NNW)
 * **precipitation** - Precipitation since midnight
@@ -109,12 +115,15 @@ Default: All Sensors are displayed
 * **uv** - The UV index
 * **solar_radiation** - The current Solar Radiation measured in W/m2
 * **illuminance** - Shows the brightness in Lux
+* **lightning_count** - Shows the numbers of lightning strikes for last minute. Attributes of this sensor has more Lightning information.
 
 ### Weather
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
 The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
 
-On top of the standard attributes that a weather entity has available, the following additional attributes have been added to this Weather Entity: *Wind Gust, Dewpoint, Feels Like Temperature, Precipitation and Precipitation Rate*
+The difference between using this entity and the standard Dark Sky entity, is that *Current* data is coming from the local weather station, making it much more accurate than that what Dark Sky delivers.
+
+On top of the standard attributes that a weather entity has available, the following additional attributes have been added to this Weather Entity: *Wind Gust, Dewpoint, Feels Like Temperature, Precipitation and Precipitation Rate*. These are all *Current* values.
 
 In order to use the Weather component, add the following to your *configuration.yaml* file:
 ```yaml
