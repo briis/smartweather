@@ -1,15 +1,10 @@
 # List of Changes
 
 ### Version 0.0.5
-* Added Lightning Sensors, displaying how many Lightnings have occurred and the approximate distance. This sensor has some extra Attributes describing when a lightning was last detected, the distance away from the Weather Station and how many lightnings were detected within the last 3 hours.
-Under monitored conditions specify:
-```yaml
-sensor:
-  - platform: smartweather
-    monitored_conditions:
-      - lightning
-```
-* Updated README.md with more descriptions
+* Added new Sensor *lightning*. Displaying how many Lightnings have occurred and the approximate distance. This sensor has some extra Attributes describing when a lightning was last detected, the distance away from the Weather Station and how many lightnings were detected within the last 3 hours.
+* Added new Sensor *wind_lull*. This shows the lowest wind recorded within the last minute.
+* Updated README.md with more descriptions and added the new Sensors
+* More code clean-up
 
 ### Version 0.0.4
 * Fixed Config Validation error

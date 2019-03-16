@@ -152,6 +152,12 @@ class DarkSkyWeather(WeatherEntityExtended):
             else round(self._sw_currently.data.wind_gust * 3.6, 1)
 
     @property
+    def wind_lull(self):
+        """Return the wind lull."""
+        return self._sw_currently.data.wind_lull if 'us' in self._dark_sky.units \
+            else round(self._sw_currently.data.wind_lull * 3.6, 1)
+
+    @property
     def wind_bearing(self):
         """Return the wind bearing."""
         return self._sw_currently.data.wind_bearing

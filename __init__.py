@@ -56,6 +56,7 @@ ATTR_WEATHER_VISIBILITY = 'visibility'
 ATTR_WEATHER_WIND_BEARING = 'wind_bearing'
 ATTR_WEATHER_WIND_SPEED = 'wind_speed'
 ATTR_WEATHER_WIND_GUST = 'wind_gust'
+ATTR_WEATHER_WIND_LULL = 'wind_lull'
 ATTR_WEATHER_DEWPOINT = 'dewpoint'
 ATTR_WEATHER_FEELS_LIKE = 'feels_like'
 ATTR_WEATHER_PRECIPITATION = 'precipitation'
@@ -233,6 +234,10 @@ class WeatherEntityExtended(Entity):
         wind_gust= self.wind_gust
         if wind_gust is not None:
             data[ATTR_WEATHER_WIND_GUST] = wind_gust
+
+        wind_lull= self.wind_lull
+        if wind_lull is not None:
+            data[ATTR_WEATHER_WIND_LULL] = wind_lull
 
         visibility = self.visibility
         if visibility is not None:

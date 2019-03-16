@@ -11,7 +11,8 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 ## Installation
 1. If you don't already have a `custom_components` directory in your config directory, create it, and then create a directory called `smartweather`under that.
 2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
-3. or using Git, go to the `custom_components` directory and enter: `git clone https://github.com/briis/smartweather.git`
+3. or using Git, go to the `custom_components` directory and enter:<br>
+`git clone https://github.com/briis/smartweather.git`
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
@@ -70,6 +71,7 @@ sensor:
       - dewpoint
       - wind_speed
       - wind_gust
+      - wind_lull
       - wind_bearing
       - wind_direction
       - precipitation
@@ -98,7 +100,8 @@ Default: All Sensors are displayed
 * **wind_chill** - How cold does it feel. Only used if temperature is below 10°C (50°F)
 * **dewpoint** - Dewpoint. The atmospheric temperature (varying according to pressure and humidity) below which water droplets begin to condense and dew can form
 * **wind_speed** - Current Wind Speed
-* **wind_gust** - Current Wind Gust
+* **wind_gust** - Highest Wind Speed in the last minute
+* **wind_lull** - Lowest Wind Speed in the last minute
 * **wind_bearing** - Wind bearing in degrees (Example: 287°)
 * **wind_direction** - Wind bearing as directional text (Example: NNW)
 * **precipitation** - Precipitation since midnight

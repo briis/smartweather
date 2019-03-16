@@ -13,10 +13,10 @@ from datetime import timedelta
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 
-from . import DATA_SMARTWEATHER, CONF_NAME, ATTRIBUTION
+from . import DATA_SMARTWEATHER, ATTRIBUTION
 
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_ENTITY_NAMESPACE, CONF_MONITORED_CONDITIONS)
+    ATTR_ATTRIBUTION, CONF_NAME, CONF_ENTITY_NAMESPACE, CONF_MONITORED_CONDITIONS)
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDevice, PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
@@ -34,13 +34,14 @@ SENSOR_TYPES = {
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
+    vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string
 })
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SmartWeather binary sensor platform."""
 
+    name = config.get(CONF_NAME)
     data = hass.data[DATA_SMARTWEATHER]
-    name = hass.data[CONF_NAME]
 
     if data.data.timestamp is None:
         return

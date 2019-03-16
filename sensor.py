@@ -13,10 +13,10 @@ import logging
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 
-from . import DATA_SMARTWEATHER, CONF_NAME, ATTRIBUTION
+from . import DATA_SMARTWEATHER, ATTRIBUTION
 from homeassistant.components.sensor import ENTITY_ID_FORMAT, PLATFORM_SCHEMA
 from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, TEMP_CELSIUS, LENGTH_METERS,
+    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS, LENGTH_METERS,
     UNIT_UV_INDEX, DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_ILLUMINANCE)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
@@ -42,6 +42,7 @@ SENSOR_TYPES = {
     'wind_bearing': ['Wind Bearing', '°', 'mdi:compass-outline', None, None],
     'wind_direction': ['Wind Direction', None, 'mdi:compass-outline', None, None],
     'wind_gust': ['Wind Gust', 'm/s', 'mdi:weather-windy', None, 'mph'],
+    'wind_lull': ['Wind Lull', 'm/s', 'mdi:weather-windy', None, 'mph'],
     'precipitation': ['Rain today', 'mm', 'mdi:weather-rainy', None, 'in'],
     'precipitation_rate': ['Rain rate', 'mm/h', 'mdi:weather-pouring', None, 'in/h'],
     'precipitation_last_1hr': ['Rain last hour', 'mm', 'mdi:weather-rainy', None, 'in'],
@@ -57,8 +58,9 @@ SENSOR_TYPES = {
 
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Optional(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
-        vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)])
+    vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
+        vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
+    vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string
 })
 
 
@@ -69,8 +71,8 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     else:
         unit_system = 'imperial'
 
+    name = config.get(CONF_NAME)
     data = hass.data[DATA_SMARTWEATHER]
-    name = hass.data[CONF_NAME]
 
     if data.data.timestamp is None:
         return
