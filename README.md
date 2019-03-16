@@ -115,7 +115,7 @@ Default: All Sensors are displayed
 * **uv** - The UV index
 * **solar_radiation** - The current Solar Radiation measured in W/m2
 * **illuminance** - Shows the brightness in Lux
-* **lightning_count** - Show the numbers of lightning strikes for last minute. Attributes of this sensor has more Lightining information
+* **lightning_count** - Shows the numbers of lightning strikes for last minute. Attributes of this sensor has more Lightning information.
 
 ### Weather
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
