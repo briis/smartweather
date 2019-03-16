@@ -44,6 +44,7 @@ binary_sensor:
     monitored_conditions:
       - raining
       - freezing
+      - lightning
 ```
 #### Configuration Variables
 **name**<br>
