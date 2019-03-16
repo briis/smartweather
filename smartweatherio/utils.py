@@ -69,6 +69,14 @@ class Conversion:
             # Return value in m/s
             return round(value,1)
 
+    def distance(value, unit):
+        if unit.lower() == 'imperial':
+            # Return value in mi
+            return round(value*0.621371192,1)
+        else:
+            # Return value in m/s
+            return round(value,0)
+
     def wind_direction(bearing):
         direction_array = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N']
         direction = direction_array[int((bearing + 11.25) / 22.5)]

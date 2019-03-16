@@ -20,6 +20,7 @@ class WeatherData(UnicodeMixin):
 
     def currentdata(self):
         dtformat = datetime.datetime.fromtimestamp(self.json['obs'][0]['timestamp']).strftime('%Y-%m-%d %H:%M:%S')
+        liformat = datetime.datetime.fromtimestamp(self.json['obs'][0]['lightning_strike_last_epoch']).strftime('%Y-%m-%d %H:%M:%S')
         return CurrentData(
             self.json['station_name'],
             dtformat,
@@ -44,7 +45,11 @@ class WeatherData(UnicodeMixin):
             Conversion.volume(float(self.json['obs'][0]['precip_accum_last_24hr']), self.units),
             Conversion.volume(float(self.json['obs'][0]['precip_accum_local_yesterday']), self.units),
             int(self.json['obs'][0]['solar_radiation']),
-            int(self.json['obs'][0]['brightness'])
+            int(self.json['obs'][0]['brightness']),
+            liformat,
+            Conversion.distance(self.json['obs'][0]['lightning_strike_last_distance'], self.units),
+            int(self.json['obs'][0]['lightning_strike_count']),
+            int(self.json['obs'][0]['lightning_strike_count_last_3hr'])
             )
 
 class Alert(UnicodeMixin):
@@ -66,7 +71,8 @@ class Alert(UnicodeMixin):
 class CurrentData:
     def __init__(self, station_location, timestamp, temperature, feels_like, wind_speed, wind_bearing, wind_direction, wind_gust,
                  uv, precipitation,humidity, precipitation_rate, rain_rate_raw, pressure, latitude, longitude, heat_index, wind_chill, dewpoint,
-                 precipitation_last_1hr, precipitation_last_24hr, precipitation_yesterday, solar_radiation, brightness
+                 precipitation_last_1hr, precipitation_last_24hr, precipitation_yesterday, solar_radiation, brightness,lightning_time,
+                 lightning_distance, lightning_count,lightning_count_3hour
                  ):
         self.station_location = station_location
         self.timestamp = timestamp
@@ -91,6 +97,10 @@ class CurrentData:
         self.precipitation_yesterday = precipitation_yesterday
         self.solar_radiation = solar_radiation
         self.illuminance = brightness
+        self.lightning_time = lightning_time
+        self.lightning_distance = lightning_distance
+        self.lightning = lightning_count
+        self.lightning_count_3hour = lightning_count_3hour
 
         if rain_rate_raw > 0:
             self.raining = True

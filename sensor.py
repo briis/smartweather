@@ -27,6 +27,9 @@ DEPENDENCIES = ['smartweather']
 ATTR_LAST_UPDATE = 'last_update'
 ATTR_STATION_LOCATION = 'station_location'
 ATTR_STATION_POSITION = 'station_position'
+ATTR_LIGHTNING_DETECTED = 'last_detected'
+ATTR_LIGHTNING_DISTANCE = 'lightning_distance'
+ATTR_LIGHTNING_LAST_3HOUR = 'lightning_last_3hr'
 
 # Sensor types are defined like: Name, Metric unit, icon, device class, Imperial unit
 SENSOR_TYPES = {
@@ -48,7 +51,8 @@ SENSOR_TYPES = {
     'pressure': ['Pressure', 'hPa', 'mdi:gauge', DEVICE_CLASS_PRESSURE, 'inHg'],
     'uv': ['UV', UNIT_UV_INDEX,'mdi:weather-sunny', None, None],
     'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None],
-    'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None]
+    'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None],
+    'lightning': ['Lightning', None, 'mdi:flash', None, None]
 }
 
 
@@ -129,6 +133,16 @@ class SmartWeatherCurrentSensor(Entity):
         attr[ATTR_LAST_UPDATE] = self.data.data.timestamp
         attr[ATTR_STATION_LOCATION] = self.data.data.station_location
         attr[ATTR_STATION_POSITION] = 'Lat: '+str(self.data.data.latitude)+', Lon: '+str(self.data.data.longitude)
+
+        if self._name.lower() == 'lightning':
+            if self._unit_system == 'imperial':
+                distance_unit = 'mi'
+            else:
+                distance_unit = 'km'
+            attr[ATTR_LIGHTNING_DETECTED] = self.data.data.lightning_time
+            attr[ATTR_LIGHTNING_LAST_3HOUR] = self.data.data.lightning_count_3hour
+            attr[ATTR_LIGHTNING_DISTANCE] = str(self.data.data.lightning_distance) + ' ' + distance_unit
+
         return attr
 
     def update(self):
