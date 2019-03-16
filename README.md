@@ -55,6 +55,7 @@ Default value: SmartWeather
 Default: All Sensors are displayed
 * **raining** - A sensor indicating if it is currently raining
 * **freezing** - A sensor indicating if it is currently freezing outside.
+* **lightning** - A sensor indicating if a lightning strike has been recorded within the last minute
 
 ### Sensor
 ![sensor](https://github.com/briis/hass-SmartWeather/blob/master/images/sensor.png)<br>
@@ -84,7 +85,7 @@ sensor:
       - uv
       - solar_radiation
       - illuminance
-      - lightning
+      - lightning_count
 ```
 #### Configuration Variables
 **name**<br>
@@ -114,7 +115,7 @@ Default: All Sensors are displayed
 * **uv** - The UV index
 * **solar_radiation** - The current Solar Radiation measured in W/m2
 * **illuminance** - Shows the brightness in Lux
-* **lightning** -
+* **lightning_count** - Show the numbers of lightning strikes for last minute. Attributes of this sensor has more Lightining information
 
 ### Weather
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>

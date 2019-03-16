@@ -28,7 +28,8 @@ _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
     'raining': ['Raining', None, 'mdi:water', 'mdi:water-off'],
-    'freezing': ['Freezing', None, 'mdi:fridge', 'mdi:fridge-outline']
+    'freezing': ['Freezing', None, 'mdi:fridge', 'mdi:fridge-outline'],
+    'lightning': ['Lightning', None, 'mdi:flash-circle', 'mdi:flash-off']
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({

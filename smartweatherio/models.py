@@ -101,9 +101,10 @@ class CurrentData:
         self.illuminance = brightness
         self.lightning_time = lightning_time
         self.lightning_distance = lightning_distance
-        self.lightning = lightning_count
-        self.lightning_count_3hour = lightning_count_3hour
+        self.lightning_count = lightning_count
+        self.lightning_last_3hr = lightning_count_3hour
 
+        """ Binary Sensor Values """
         if rain_rate_raw > 0:
             self.raining = True
         else:
@@ -113,3 +114,8 @@ class CurrentData:
             self.freezing = True
         else:
             self.freezing = False
+
+        if lightning_count > 0:
+            self.lightning = True
+        else:
+            self.lightning = False

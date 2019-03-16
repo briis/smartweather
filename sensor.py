@@ -53,7 +53,7 @@ SENSOR_TYPES = {
     'uv': ['UV', UNIT_UV_INDEX,'mdi:weather-sunny', None, None],
     'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None],
     'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None],
-    'lightning': ['Lightning', None, 'mdi:flash', None, None]
+    'lightning_count': ['Lightning Count', None, 'mdi:flash', None, None]
 }
 
 
@@ -136,13 +136,13 @@ class SmartWeatherCurrentSensor(Entity):
         attr[ATTR_STATION_LOCATION] = self.data.data.station_location
         attr[ATTR_STATION_POSITION] = 'Lat: '+str(self.data.data.latitude)+', Lon: '+str(self.data.data.longitude)
 
-        if self._name.lower() == 'lightning':
+        if self._name.lower() == 'lightning count':
             if self._unit_system == 'imperial':
                 distance_unit = 'mi'
             else:
                 distance_unit = 'km'
             attr[ATTR_LIGHTNING_DETECTED] = self.data.data.lightning_time
-            attr[ATTR_LIGHTNING_LAST_3HOUR] = self.data.data.lightning_count_3hour
+            attr[ATTR_LIGHTNING_LAST_3HOUR] = self.data.data.lightning_last_3hr
             attr[ATTR_LIGHTNING_DISTANCE] = str(self.data.data.lightning_distance) + ' ' + distance_unit
 
         return attr
