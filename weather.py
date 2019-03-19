@@ -7,7 +7,6 @@
     For a full description, go here: https://github.com/briis/hass-SmartWeather
 
     Author: Bjarne Riis
-
 """
 import logging
 from datetime import datetime, timedelta
