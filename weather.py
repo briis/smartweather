@@ -9,23 +9,28 @@
     Author: Bjarne Riis
 
 """
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 
-from requests.exceptions import (
-    ConnectionError as ConnectError, HTTPError, Timeout)
+from requests.exceptions import ConnectionError as ConnectError
+from requests.exceptions import HTTPError, Timeout
+
+import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
+from homeassistant.components.weather import (ATTR_FORECAST_CONDITION,
+                                              ATTR_FORECAST_PRECIPITATION,
+                                              ATTR_FORECAST_TEMP,
+                                              ATTR_FORECAST_TEMP_LOW,
+                                              ATTR_FORECAST_TIME,
+                                              ATTR_FORECAST_WIND_BEARING,
+                                              ATTR_FORECAST_WIND_SPEED,
+                                              PLATFORM_SCHEMA)
+from homeassistant.const import (CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE,
+                                 CONF_MODE, CONF_NAME, TEMP_CELSIUS,
+                                 TEMP_FAHRENHEIT)
+from homeassistant.util import Throttle
 
 from . import DATA_SMARTWEATHER, WeatherEntityExtended
-from homeassistant.components.weather import (
-    ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP,
-    ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, ATTR_FORECAST_WIND_BEARING,
-    ATTR_FORECAST_WIND_SPEED, PLATFORM_SCHEMA)
-from homeassistant.const import (
-    CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE, CONF_MODE, CONF_NAME,
-    TEMP_CELSIUS, TEMP_FAHRENHEIT)
-import homeassistant.helpers.config_validation as cv
-from homeassistant.util import Throttle
 
 DEPENDENCIES = ['smartweather']
 REQUIREMENTS = ['python-forecastio==1.4.0']

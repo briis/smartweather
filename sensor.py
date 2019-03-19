@@ -10,26 +10,29 @@
 """
 import logging
 
-import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
-
-from . import DATA_SMARTWEATHER, ATTRIBUTION
+import voluptuous as vol
 from homeassistant.components.sensor import ENTITY_ID_FORMAT, PLATFORM_SCHEMA
-from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS, CONF_NAME, TEMP_CELSIUS, LENGTH_METERS,
-    UNIT_UV_INDEX, DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, DEVICE_CLASS_PRESSURE, DEVICE_CLASS_ILLUMINANCE)
+from homeassistant.const import (ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS,
+                                 CONF_NAME, DEVICE_CLASS_HUMIDITY,
+                                 DEVICE_CLASS_ILLUMINANCE,
+                                 DEVICE_CLASS_PRESSURE,
+                                 DEVICE_CLASS_TEMPERATURE, LENGTH_METERS,
+                                 TEMP_CELSIUS, UNIT_UV_INDEX)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
-_LOGGER = logging.getLogger(__name__)
+from . import ATTRIBUTION, DATA_SMARTWEATHER
 
 DEPENDENCIES = ['smartweather']
 
-ATTR_LAST_UPDATE = 'last_update'
-ATTR_STATION_LOCATION = 'station_location'
-ATTR_STATION_POSITION = 'station_position'
+_LOGGER = logging.getLogger(__name__)
+
 ATTR_LIGHTNING_DETECTED = 'last_detected'
 ATTR_LIGHTNING_DISTANCE = 'lightning_distance'
 ATTR_LIGHTNING_LAST_3HOUR = 'lightning_last_3hr'
+ATTR_LAST_UPDATE = 'last_update'
+ATTR_STATION_LOCATION = 'station_location'
+ATTR_STATION_POSITION = 'station_position'
 
 # Sensor types are defined like: Name, Metric unit, icon, device class, Imperial unit
 SENSOR_TYPES = {
@@ -66,10 +69,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SmartWeather sensor platform."""
-    if hass.config.units.is_metric:
-        unit_system = 'metric'
-    else:
-        unit_system = 'imperial'
+    unit_system = 'metric' if hass.config.units.is_metric else 'imperial'
 
     name = config.get(CONF_NAME)
     data = hass.data[DATA_SMARTWEATHER]
@@ -80,12 +80,12 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     sensors = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         sensors.append(SmartWeatherCurrentSensor(hass, data, variable, name, unit_system))
-        _LOGGER.debug("Sensor added: " + variable)
+        _LOGGER.debug("Sensor added: %s", variable)
 
     add_entities(sensors, True)
 
 class SmartWeatherCurrentSensor(Entity):
-    """ Implementation of a SmartWeather Weatherflow Current Sensor """
+    """ Implementation of a SmartWeather Weatherflow Current Sensor. """
 
     def __init__(self, hass, data, condition, name, unit_system):
         """Initialize the sensor."""
@@ -112,10 +112,9 @@ class SmartWeatherCurrentSensor(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
-        if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._condition][4] is None):
-            return SENSOR_TYPES[self._condition][4]
-        else:
-            return SENSOR_TYPES[self._condition][1]
+        return SENSOR_TYPES[self._condition][4] \
+            if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._condition][4] is None) \
+            else SENSOR_TYPES[self._condition][1]
 
     @property
     def icon(self):
@@ -134,16 +133,13 @@ class SmartWeatherCurrentSensor(Entity):
         attr[ATTR_ATTRIBUTION] = ATTRIBUTION
         attr[ATTR_LAST_UPDATE] = self.data.data.timestamp
         attr[ATTR_STATION_LOCATION] = self.data.data.station_location
-        attr[ATTR_STATION_POSITION] = 'Lat: '+str(self.data.data.latitude)+', Lon: '+str(self.data.data.longitude)
+        attr[ATTR_STATION_POSITION] = "Lat: {}, Lon: {}".format(self.data.data.latitude,self.data.data.longitude)
 
-        if self._name.lower() == 'lightning count':
-            if self._unit_system == 'imperial':
-                distance_unit = 'mi'
-            else:
-                distance_unit = 'km'
+        if self._name.lower() == "lightning count":
+            distance_unit = 'mi' if self._unit_system == 'imperial' else 'km'
             attr[ATTR_LIGHTNING_DETECTED] = self.data.data.lightning_time
             attr[ATTR_LIGHTNING_LAST_3HOUR] = self.data.data.lightning_last_3hr
-            attr[ATTR_LIGHTNING_DISTANCE] = str(self.data.data.lightning_distance) + ' ' + distance_unit
+            attr[ATTR_LIGHTNING_DISTANCE] = "{} {}".format(self.data.data.lightning_distance, distance_unit)
 
         return attr
 

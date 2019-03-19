@@ -9,34 +9,38 @@
     Author: Bjarne Riis
 
 """
-from datetime import timedelta
 import logging
+from datetime import timedelta
+
+from requests.exceptions import ConnectionError as ConnectError
+from requests.exceptions import HTTPError, Timeout
 
 import voluptuous as vol
-
-from requests.exceptions import (
-    ConnectionError as ConnectError, HTTPError, Timeout)
-
-from homeassistant.helpers import (
-    config_validation as cv, discovery)
-
-from homeassistant.const import (CONF_NAME, CONF_API_KEY)
-from homeassistant.util import Throttle
+from homeassistant.components.weather import (ATTR_FORECAST_CONDITION,
+                                              ATTR_FORECAST_PRECIPITATION,
+                                              ATTR_FORECAST_TEMP,
+                                              ATTR_FORECAST_TEMP_LOW,
+                                              ATTR_FORECAST_TIME,
+                                              ATTR_FORECAST_WIND_BEARING,
+                                              ATTR_FORECAST_WIND_SPEED)
+from homeassistant.const import (CONF_API_KEY, CONF_NAME, PRECISION_TENTHS,
+                                 PRECISION_WHOLE, TEMP_CELSIUS)
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import discovery
 from homeassistant.helpers.entity import Entity
-from homeassistant.components.weather import (
-    ATTR_FORECAST_CONDITION, ATTR_FORECAST_PRECIPITATION, ATTR_FORECAST_TEMP,
-    ATTR_FORECAST_TEMP_LOW, ATTR_FORECAST_TIME, ATTR_FORECAST_WIND_BEARING,
-    ATTR_FORECAST_WIND_SPEED)
 from homeassistant.helpers.temperature import display_temp as show_temp
-from homeassistant.const import (PRECISION_TENTHS, PRECISION_WHOLE, TEMP_CELSIUS)
+from homeassistant.util import Throttle
+
+REQUIREMENTS = ['pysmartweatherio==0.1.1']
 
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = 'smartweather'
-DATA_SMARTWEATHER = 'SmartWeather'
-CONF_STATION_ID = 'station_id'
 
-ATTRIBUTION = 'Weather data powered by a SmartWeather Weather Station'
+ATTRIBUTION = "Weather data powered by a SmartWeather Weather Station"
+
+CONF_STATION_ID = 'station_id'
+DATA_SMARTWEATHER = 'SmartWeather'
 
 ATTR_CONDITION_CLASS = 'condition_class'
 ATTR_FORECAST = 'forecast'
@@ -48,19 +52,19 @@ ATTR_FORECAST_TIME = 'datetime'
 ATTR_FORECAST_WIND_BEARING = 'wind_bearing'
 ATTR_FORECAST_WIND_SPEED = 'wind_speed'
 ATTR_WEATHER_ATTRIBUTION = 'attribution'
+ATTR_WEATHER_DEWPOINT = 'dewpoint'
+ATTR_WEATHER_FEELS_LIKE = 'feels_like'
 ATTR_WEATHER_HUMIDITY = 'humidity'
 ATTR_WEATHER_OZONE = 'ozone'
+ATTR_WEATHER_PRECIPITATION = 'precipitation'
+ATTR_WEATHER_PRECIPITATION_RATE = 'precipitation_rate'
 ATTR_WEATHER_PRESSURE = 'pressure'
 ATTR_WEATHER_TEMPERATURE = 'temperature'
 ATTR_WEATHER_VISIBILITY = 'visibility'
 ATTR_WEATHER_WIND_BEARING = 'wind_bearing'
-ATTR_WEATHER_WIND_SPEED = 'wind_speed'
 ATTR_WEATHER_WIND_GUST = 'wind_gust'
 ATTR_WEATHER_WIND_LULL = 'wind_lull'
-ATTR_WEATHER_DEWPOINT = 'dewpoint'
-ATTR_WEATHER_FEELS_LIKE = 'feels_like'
-ATTR_WEATHER_PRECIPITATION = 'precipitation'
-ATTR_WEATHER_PRECIPITATION_RATE = 'precipitation_rate'
+ATTR_WEATHER_WIND_SPEED = 'wind_speed'
 
 MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=60)
 
@@ -79,12 +83,9 @@ def setup(hass, config):
 
     conf = config[DOMAIN]
 
-    _LOGGER.debug("Platform Station ID: " + conf[CONF_STATION_ID] + " API Key: " + conf[CONF_API_KEY])
+    _LOGGER.debug("Platform Station ID: %s API Key: %s", conf[CONF_STATION_ID], conf[CONF_API_KEY])
 
-    if hass.config.units.is_metric:
-        unit_system = 'metric'
-    else:
-        unit_system = 'imperial'
+    unit_system = 'metric' if hass.config.units.is_metric else 'imperial'
 
     stationid = conf[CONF_STATION_ID]
     api_key = conf[CONF_API_KEY]
@@ -102,7 +103,7 @@ def setup(hass, config):
     return True
 
 class SmartWeatherCurrentData:
-    """ Get the current data from the Weatherstation """
+    """ Get the current data from the Weatherstation. """
 
     def __init__(self, hass, station_id, unit_system, api_key):
         """Initialize the data object."""
@@ -114,10 +115,10 @@ class SmartWeatherCurrentData:
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Get the latest data from the Weatherstation."""
-        from .smartweatherio import load_weatherdata as lw
+        from pysmartweatherio import load_stationdata
 
         try:
-            weather = lw(self._station_id, self._api_key, self._unit_system)
+            weather = load_stationdata(self._station_id, self._api_key, self._unit_system)
             self.data = weather.currentdata()
 
             if self.data is None:
