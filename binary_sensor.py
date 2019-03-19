@@ -10,17 +10,16 @@
 import logging
 from datetime import timedelta
 
-import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
-
-from . import DATA_SMARTWEATHER, ATTRIBUTION
-
-from homeassistant.const import (
-    ATTR_ATTRIBUTION, CONF_NAME, CONF_ENTITY_NAMESPACE, CONF_MONITORED_CONDITIONS)
-
-from homeassistant.components.binary_sensor import (
-    BinarySensorDevice, PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
+import voluptuous as vol
+from homeassistant.components.binary_sensor import (ENTITY_ID_FORMAT,
+                                                    PLATFORM_SCHEMA,
+                                                    BinarySensorDevice)
+from homeassistant.const import (ATTR_ATTRIBUTION, CONF_ENTITY_NAMESPACE,
+                                 CONF_MONITORED_CONDITIONS, CONF_NAME)
 from homeassistant.helpers.entity import Entity, generate_entity_id
+
+from . import ATTRIBUTION, DATA_SMARTWEATHER
 
 DEPENDENCIES = ['smartweather']
 
@@ -50,12 +49,12 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     sensors = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
         sensors.append(SmartWeatherBinarySensor(hass, data, variable, name))
-        _LOGGER.debug("Binary ensor added: " + variable)
+        _LOGGER.debug("Binary ensor added: %s", variable)
 
     add_entities(sensors, True)
 
 class SmartWeatherBinarySensor(BinarySensorDevice):
-    """ Implementation of a SmartWeather Weatherflow Current Sensor """
+    """ Implementation of a SmartWeather Weatherflow Current Sensor. """
 
     def __init__(self, hass, data, condition, name):
         """Initialize the sensor."""
@@ -82,10 +81,8 @@ class SmartWeatherBinarySensor(BinarySensorDevice):
     @property
     def icon(self):
         """Icon to use in the frontend."""
-        if getattr(self.data.data, self._condition):
-            return SENSOR_TYPES[self._condition][2]
-        else:
-            return SENSOR_TYPES[self._condition][3]
+        return SENSOR_TYPES[self._condition][2] if getattr(self.data.data, self._condition) \
+            else SENSOR_TYPES[self._condition][3]
 
     @property
     def device_class(self):
