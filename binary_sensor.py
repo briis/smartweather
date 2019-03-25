@@ -5,7 +5,7 @@
 
     For a full description, go here: https://github.com/briis/hass-SmartWeather
 
-    Author: Bjarne Riis 
+    Author: Bjarne Riis
 """
 import logging
 from datetime import timedelta
@@ -28,7 +28,7 @@ _LOGGER = logging.getLogger(__name__)
 SENSOR_TYPES = {
     'raining': ['Raining', None, 'mdi:water', 'mdi:water-off'],
     'freezing': ['Freezing', None, 'mdi:fridge', 'mdi:fridge-outline'],
-    'lightning': ['Lightning', None, 'mdi:flash-circle', 'mdi:flash-off']
+    'lightning': ['Lightning', None, 'mdi:weather-lightning', 'mdi:flash-off']
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
