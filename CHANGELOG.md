@@ -1,9 +1,14 @@
 # List of Changes
 
+### Version 0.1.1
+* Updated the Icons for the Lightning Sensors
+* Fixed Rain Rate too low
+* Bumped *pysmartweatherio* to V0.1.2
+
 ### Version 0.1.0
 * The smartweatherio part of this module has now converted to a PyPi module, so that it will be downloaded automatically during first run. That means that the subsirectory *smartweatherio* and all the files in there can be deleted.
 * More code cleanup, to conform to the Style Guidelines in Home Assistant
- 
+
 ### Version 0.0.5
 * Added new Sensor *lightning_count*. Displaying how many lightning strikes have occurred within the last minute. This sensor has some extra Attributes describing when a lightning was last detected, the distance away from the Weather Station and how many lightning strikes were detected within the last 3 hours.<br>
 **Please note**: Depending of the placement of the sensor, it might sometimes produce false positives.

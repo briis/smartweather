@@ -55,7 +55,7 @@ SENSOR_TYPES = {
     'uv': ['UV', UNIT_UV_INDEX,'mdi:weather-sunny', None, None],
     'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None],
     'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None],
-    'lightning_count': ['Lightning Count', None, 'mdi:flash', None, None]
+    'lightning_count': ['Lightning Count', None, 'mdi:weather-lightning', None, None]
 }
 
 
