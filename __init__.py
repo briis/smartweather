@@ -30,7 +30,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.temperature import display_temp as show_temp
 from homeassistant.util import Throttle
 
-REQUIREMENTS = ['pysmartweatherio==0.1.2']
+REQUIREMENTS = ['pysmartweatherio==0.1.3']
 
 _LOGGER = logging.getLogger(__name__)
 
