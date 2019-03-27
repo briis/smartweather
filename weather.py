@@ -28,6 +28,7 @@ from homeassistant.const import (CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE,
                                  CONF_MODE, CONF_NAME, TEMP_CELSIUS,
                                  TEMP_FAHRENHEIT)
 from homeassistant.util import Throttle
+from homeassistant.util.temperature import convert as convert_temperature
 
 from . import DATA_SMARTWEATHER, WeatherEntityExtended
 
@@ -120,7 +121,11 @@ class DarkSkyWeather(WeatherEntityExtended):
     @property
     def temperature(self):
         """Return the temperature."""
-        return self._sw_currently.data.temperature
+        temperature = self._sw_currently.data.temperature
+        if 'us' in self._dark_sky.units:
+            return round(
+                convert_temperature(temperature, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        return temperature
 
     @property
     def temperature_unit(self):
@@ -131,12 +136,20 @@ class DarkSkyWeather(WeatherEntityExtended):
     @property
     def dewpoint(self):
         """Return the dewpoint."""
-        return self._sw_currently.data.dewpoint
+        dewpoint = self._sw_currently.data.dewpoint
+        if 'us' in self._dark_sky.units:
+            return round(
+                convert_temperature(dewpoint, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        return dewpoint
 
     @property
     def feels_like(self):
         """Return the calculated Feels Like Temperature"""
-        return self._sw_currently.data.feels_like_temperature
+        feels_like = self._sw_currently.data.feels_like_temperature
+        if 'us' in self._dark_sky.units:
+            return round(
+                convert_temperature(feels_like, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        return feels_like
 
     @property
     def humidity(self):
