@@ -1,5 +1,8 @@
 # List of Changes
 
+### Version 0.1.3
+* Fixed Temperature error in the Weather Card, when using Imperial Units
+
 ### Version 0.1.2
 * Updated the Icons for the Lightning Sensors
 * Fixed Rain Rate too low
