@@ -14,6 +14,16 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 3. or using Git, go to the `custom_components` directory and enter:<br>
 `git clone https://github.com/briis/smartweather.git`
 
+## Track Updates
+This custom component can be tracked with the help of the [Custom Updater](https://github.com/custom-components/custom_updater) component.
+
+In your configuration.yaml file add the following:
+```yaml
+custom_updater:
+component_urls:
+  - https://raw.githubusercontent.com/briis/smartweather/master/custom_updater.json
+```
+
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
 
