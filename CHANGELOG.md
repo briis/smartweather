@@ -1,5 +1,8 @@
 # List of Changes
 
+### Version 0.1.4
+* Bumped pysmartweatherio to V0.1.5, which fixes a problem when a brand new station is used.
+
 ### Version 0.1.3
 * Fixed Temperature error in the Weather Card, when using Imperial Units
 
