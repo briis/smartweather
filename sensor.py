@@ -24,6 +24,8 @@ from . import ATTRIBUTION, DATA_SMARTWEATHER
 
 DEPENDENCIES = ['smartweather']
 
+__version__ = "0.1.4"
+
 _LOGGER = logging.getLogger(__name__)
 
 ATTR_LIGHTNING_DETECTED = 'last_detected'

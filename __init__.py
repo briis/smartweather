@@ -32,6 +32,8 @@ from homeassistant.util import Throttle
 
 REQUIREMENTS = ['pysmartweatherio==0.1.5']
 
+__version__ = "0.1.4"
+
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = 'smartweather'
