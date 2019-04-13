@@ -2,7 +2,7 @@
    "smartweather" : {
       "updated_at" : "2019-04-10",
       "local_location" : "/custom_components/smartweather/__init__.py",
-      "version" : "0.1.4",
+      "version" : "0.1.5",
       "changelog" : "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
       "visit_repo" : "https://github.com/briis/smartweather",
       "remote_location" : "https://raw.githubusercontent.com/briis/smartweather/master/__init__.py"
