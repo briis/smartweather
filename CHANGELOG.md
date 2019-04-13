@@ -1,5 +1,8 @@
 # List of Changes
 
+### Version 0.1.5
+* Bumped pysmartweatherio to V0.1.8, where the component now handles when either AIR or SKY unit is not installed.
+
 ### Version 0.1.4
 * Bumped pysmartweatherio to V0.1.5, which fixes a problem when a brand new station is used.
 
