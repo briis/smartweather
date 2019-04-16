@@ -75,6 +75,7 @@ In order to use the Sensors, add the following to your *configuration.yaml* file
 # Example configuration.yaml entry
 sensor:
   - platform: smartweather
+    wind_unit: kmh
     monitored_conditions:
       - temperature
       - feels_like_temperature
@@ -99,6 +100,10 @@ sensor:
       - lightning_count
 ```
 #### Configuration Variables
+**wind_unit**<br>
+(string)(optional) If Home Assistant Unit System is *metric*, specify `kmh` to get units in km/h. Else this has no effect.<br>
+Default Value: m/s if Home Assistant Unit System is *metric*, and mph if Unit System is *imperial*
+
 **name**<br>
 (string)(Optional) Additional name for the sensors.<br>
 Default value: SmartWeather
