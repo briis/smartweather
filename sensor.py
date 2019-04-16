@@ -24,7 +24,9 @@ from . import ATTRIBUTION, DATA_SMARTWEATHER
 
 DEPENDENCIES = ['smartweather']
 
-__version__ = "0.1.4"
+__version__ = "0.1.6"
+
+CONF_WIND_UNIT = 'wind_unit'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -64,6 +66,7 @@ SENSOR_TYPES = {
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
+    vol.Optional(CONF_WIND_UNIT, default='ms'): cv.string,
     vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string
 })
 
@@ -74,13 +77,14 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     name = config.get(CONF_NAME)
     data = hass.data[DATA_SMARTWEATHER]
+    wind_unit = config.get(CONF_WIND_UNIT)
 
     if data.data.timestamp is None:
         return
 
     sensors = []
     for variable in config[CONF_MONITORED_CONDITIONS]:
-        sensors.append(SmartWeatherCurrentSensor(hass, data, variable, name, unit_system))
+        sensors.append(SmartWeatherCurrentSensor(hass, data, variable, name, unit_system, wind_unit))
         _LOGGER.debug("Sensor added: %s", variable)
 
     add_entities(sensors, True)
@@ -88,10 +92,11 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 class SmartWeatherCurrentSensor(Entity):
     """ Implementation of a SmartWeather Weatherflow Current Sensor. """
 
-    def __init__(self, hass, data, condition, name, unit_system):
+    def __init__(self, hass, data, condition, name, unit_system, wind_unit):
         """Initialize the sensor."""
         self._condition = condition
         self._unit_system = unit_system
+        self._wind_unit = wind_unit
         self.data = data
         self._name = SENSOR_TYPES[self._condition][0]
         self.entity_id = generate_entity_id(ENTITY_ID_FORMAT, '{} {}'.format(name, SENSOR_TYPES[self._condition][0]), hass=hass)
@@ -107,15 +112,26 @@ class SmartWeatherCurrentSensor(Entity):
         if hasattr(self.data.data, self._condition):
             variable = getattr(self.data.data, self._condition)
             if not (variable is None):
-                return variable
+                if SENSOR_TYPES[self._sensor][1] == 'm/s':
+                    return round(variable*3.6,1) \
+                        if self._wind_unit == 'kmh' \
+                        else variable
+                else:
+                    return variable
         return None
 
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
-        return SENSOR_TYPES[self._condition][4] \
-            if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._condition][4] is None) \
-            else SENSOR_TYPES[self._condition][1]
+        if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._sensor][4] is None):
+            return SENSOR_TYPES[self._sensor][4]
+        else:
+            if SENSOR_TYPES[self._sensor][1] == 'm/s':
+                return 'km/h' \
+                    if self._wind_unit == 'kmh' \
+                    else SENSOR_TYPES[self._sensor][1]
+            else:
+                return SENSOR_TYPES[self._sensor][1]
 
     @property
     def icon(self):

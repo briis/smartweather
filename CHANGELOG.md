@@ -1,5 +1,8 @@
 # List of Changes
 
+### Version 0.1.6
+* Added configuration option for Wind Unit, when Home Assistant Unit System is metric. You can now specify if you want Wind Units in km/h. Default for metric is m/s and for Imperial it is mph. See README.md for information on how to set this up.
+
 ### Version 0.1.5
 * Bumped pysmartweatherio to V0.1.8, where the component now handles when either AIR or SKY unit is not installed.
 
