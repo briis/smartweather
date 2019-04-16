@@ -112,7 +112,7 @@ class SmartWeatherCurrentSensor(Entity):
         if hasattr(self.data.data, self._condition):
             variable = getattr(self.data.data, self._condition)
             if not (variable is None):
-                if SENSOR_TYPES[self._sensor][1] == 'm/s':
+                if SENSOR_TYPES[self._condition][1] == 'm/s':
                     return round(variable*3.6,1) \
                         if self._wind_unit == 'kmh' \
                         else variable
@@ -123,15 +123,15 @@ class SmartWeatherCurrentSensor(Entity):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
-        if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._sensor][4] is None):
-            return SENSOR_TYPES[self._sensor][4]
+        if self._unit_system == 'imperial' and not (SENSOR_TYPES[self._condition][4] is None):
+            return SENSOR_TYPES[self._condition][4]
         else:
-            if SENSOR_TYPES[self._sensor][1] == 'm/s':
+            if SENSOR_TYPES[self._condition][1] == 'm/s':
                 return 'km/h' \
                     if self._wind_unit == 'kmh' \
-                    else SENSOR_TYPES[self._sensor][1]
+                    else SENSOR_TYPES[self._condition][1]
             else:
-                return SENSOR_TYPES[self._sensor][1]
+                return SENSOR_TYPES[self._condition][1]
 
     @property
     def icon(self):
