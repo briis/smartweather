@@ -1,11 +1,14 @@
 {
     "smartweather": {
-        "updated_at": "2019-04-14",
+        "updated_at": "2019-04-29",
         "local_location": "/custom_components/smartweather/__init__.py",
-        "version": "0.1.5",
+        "version": "0.1.7",
         "changelog": "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
         "visit_repo": "https://github.com/briis/smartweather",
-        "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/__init__.py"
+        "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/__init__.py",
+        "resources": [
+            "https://raw.githubusercontent.com/briis/smartweather/master/manifest.json"
+        ]
     },
     "sensor.smartweather": {
         "updated_at": "2019-04-16",
