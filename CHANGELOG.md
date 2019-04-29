@@ -1,7 +1,7 @@
 # List of Changes
 
 ### Version 0.1.7
-* Added `manifest.json` to ensure compliance with Home Assistant >= 0.92.x. This file needs to be downloaded manually before upgrading
+* Added `manifest.json` to ensure compliance with Home Assistant >= 0.92.x. If Custom Updater is not the latest version, this file needs to be downloaded manually before upgrading
 
 ### Version 0.1.6
 * Added configuration option for Wind Unit, when Home Assistant Unit System is metric. You can now specify if you want Wind Units in km/h. Default for metric is m/s and for Imperial it is mph. See README.md for information on how to set this up.
