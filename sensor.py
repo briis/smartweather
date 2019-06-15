@@ -24,8 +24,6 @@ from . import ATTRIBUTION, DATA_SMARTWEATHER
 
 DEPENDENCIES = ['smartweather']
 
-__version__ = "0.1.6"
-
 CONF_WIND_UNIT = 'wind_unit'
 
 _LOGGER = logging.getLogger(__name__)
@@ -52,7 +50,6 @@ SENSOR_TYPES = {
     'precipitation': ['Rain today', 'mm', 'mdi:weather-rainy', None, 'in'],
     'precipitation_rate': ['Rain rate', 'mm/h', 'mdi:weather-pouring', None, 'in/h'],
     'precipitation_last_1hr': ['Rain last hour', 'mm', 'mdi:weather-rainy', None, 'in'],
-    'precipitation_last_24hr': ['Rain last 24hr', 'mm', 'mdi:weather-rainy', None, 'in'],
     'precipitation_yesterday': ['Rain yesterday', 'mm', 'mdi:weather-rainy', None, 'in'],
     'humidity': ['Humidity', '%', 'mdi:water-percent', DEVICE_CLASS_HUMIDITY, None],
     'pressure': ['Pressure', 'hPa', 'mdi:gauge', DEVICE_CLASS_PRESSURE, 'inHg'],

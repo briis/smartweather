@@ -1,5 +1,11 @@
 # List of Changes
 
+### Version 0.1.9
+* Removed Precipitation Last 24hr, as this data is no longer available in the REST API from WeatherFlow
+
+### Version 0.1.8
+* Optimized Custom Updater, so that there is only **one** entry, and that all files are updated at the same time.
+
 ### Version 0.1.7
 * Added `manifest.json` to ensure compliance with Home Assistant >= 0.92.x. If Custom Updater is not the latest version, this file needs to be downloaded manually before upgrading
 

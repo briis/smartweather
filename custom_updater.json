@@ -1,37 +1,16 @@
 {
     "smartweather": {
-        "updated_at": "2019-04-29",
+        "updated_at": "2019-06-15",
         "local_location": "/custom_components/smartweather/__init__.py",
-        "version": "0.1.7",
+        "version": "0.1.9",
         "changelog": "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
         "visit_repo": "https://github.com/briis/smartweather",
         "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/__init__.py",
         "resources": [
-            "https://raw.githubusercontent.com/briis/smartweather/master/manifest.json"
+            "https://raw.githubusercontent.com/briis/smartweather/master/manifest.json",
+            "https://raw.githubusercontent.com/briis/smartweather/master/sensor.py",
+            "https://raw.githubusercontent.com/briis/smartweather/master/binary_sensor.py",
+            "https://raw.githubusercontent.com/briis/smartweather/master/weather.py"
         ]
-    },
-    "sensor.smartweather": {
-        "updated_at": "2019-04-16",
-        "local_location": "/custom_components/smartweather/sensor.py",
-        "version": "0.1.6",
-        "changelog": "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
-        "visit_repo": "https://github.com/briis/smartweather",
-        "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/sensor.py"
-    },
-    "binary_sensor.smartweather": {
-        "updated_at": "2019-04-10",
-        "local_location": "/custom_components/smartweather/binary_sensor.py",
-        "version": "0.1.4",
-        "changelog": "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
-        "visit_repo": "https://github.com/briis/smartweather",
-        "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/binary_sensor.py"
-    },
-    "weather.smartweather": {
-        "updated_at": "2019-04-10",
-        "local_location": "/custom_components/smartweather/weather.py",
-        "version": "0.1.4",
-        "changelog": "https://github.com/briis/smartweather/blob/master/CHANGELOG.md",
-        "visit_repo": "https://github.com/briis/smartweather",
-        "remote_location": "https://raw.githubusercontent.com/briis/smartweather/master/weather.py"
     }
 }
