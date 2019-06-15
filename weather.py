@@ -33,9 +33,6 @@ from homeassistant.util.temperature import convert as convert_temperature
 from . import DATA_SMARTWEATHER, WeatherEntityExtended
 
 DEPENDENCIES = ['smartweather']
-REQUIREMENTS = ['python-forecastio==1.4.0']
-
-__version__ = "0.1.4"
 
 _LOGGER = logging.getLogger(__name__)
 
