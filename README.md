@@ -10,7 +10,7 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 
 ## Installation
 1. If you don't already have a `custom_components` directory in your config directory, create it, and then create a directory called `smartweather`under that.
-2. Copy all the files from this repository in to the *smartweather* folder. Remember to maintain the directory structure.
+2. Copy `__init__.py`, `sensor.py`, `binary_sensor.py`, `weather.py` and `manifest.json` to the `smartweather` directory.
 3. or using Git, go to the `custom_components` directory and enter:<br>
 `git clone https://github.com/briis/smartweather.git`
 
