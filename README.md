@@ -1,9 +1,8 @@
 # Smart Weather for Home Assistant
 ![WeatherFlow Logo](https://github.com/briis/hass-SmartWeather/blob/master/images/weatherflow.png)<br>
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 This a *custom component* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Smart Weather weather station produced by *WeatherFlow* and Forecast data from *Dark Sky*.
 
-![GitHub release](https://img.shields.io/github/release/briis/smartweather.svg)
+![GitHub release](https://img.shields.io/github/release/briis/smartweather.svg) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component.
 
@@ -16,14 +15,15 @@ The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.i
 `git clone https://github.com/briis/smartweather.git`
 
 ## Track Updates
-This custom component can be tracked with the help of the [Custom Updater](https://github.com/custom-components/custom_updater) component.
+This custom component can be tracked with the help of the [Custom Updater](https://github.com/custom-components/custom_updater) component or [HACS](https://github.com/custom-components/hacs/).
 
-In your configuration.yaml file add the following:
+For custom_updater, in your configuration.yaml file add the following:
 ```yaml
 custom_updater:
 component_urls:
   - https://raw.githubusercontent.com/briis/smartweather/master/custom_updater.json
 ```
+For HACS, add `briis/smartweather` as an integration under settings -> custom repositories
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
