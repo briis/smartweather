@@ -1,5 +1,8 @@
 # List of Changes
 
+### Version 0.1.9.1
+* Change structure of repository to support [HACS](https://custom-components.github.io/hacs/)
+
 ### Version 0.1.9
 * Removed Precipitation Last 24hr, as this data is no longer available in the REST API from WeatherFlow
 
