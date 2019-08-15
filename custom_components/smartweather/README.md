@@ -24,6 +24,8 @@ component_urls:
   - https://raw.githubusercontent.com/briis/smartweather/master/custom_updater.json
 ```
 
+The Integration also supports the new HACS Community Store. Read more here [HACS](https://github.com/custom-components/hacs).
+
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
 
