@@ -25,6 +25,7 @@ component_urls:
 ```
 
 The Integration also supports the new HACS Community Store. Read more here [HACS](https://github.com/custom-components/hacs).
+Currently this is NOT part of the default HACS repository, but you can add it manually by going to `Settings` in HACS and then add `briis/smartweather` as an `Integration`.
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
