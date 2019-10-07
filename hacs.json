@@ -1,0 +1,4 @@
+{
+  "name": "SmartWeather",
+  "iot_class": ["Cloud Polling", "Local Polling"]
+}
