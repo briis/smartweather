@@ -3,7 +3,7 @@
 This a *custom component* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Smart Weather weather station produced by *WeatherFlow* and Forecast data from *Dark Sky*.
 
 ![GitHub release](https://img.shields.io/github/release/briis/smartweather.svg)
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component.
 
@@ -24,8 +24,7 @@ weather.py
 ```
 
 ## HACS Installation
-The Integration also supports the new HACS Community Store. Read more here [HACS](https://github.com/custom-components/hacs).
-Currently this is NOT part of the default HACS repository, but you can add it manually by going to `Settings` in HACS and then add `briis/smartweather` as an `Integration`.
+This Integration is part of the default HACS store, so search for *Weatherflow Smart Weather* in HACS.
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
