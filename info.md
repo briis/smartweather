@@ -8,24 +8,6 @@ It can create several `sensor` entities for each weather reading like Temperatur
 
 The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.io/SmartWeather/api/swagger/) REST API to retrieve current data for a local WeatherStation, and it uses [Dark Sky](https://darksky.net/dev) to retrieve Forecast data if the `weather` component is activated.
 
-## Installation
-1. If you don't already have a `custom_components` directory in your config directory, create it, and then create a directory called `smartweather`under that.
-2. Copy `__init__.py`, `sensor.py`, `binary_sensor.py`, `weather.py` and `manifest.json` to the `smartweather` directory.
-3. or using Git, go to the `custom_components` directory and enter:<br>
-`git clone https://github.com/briis/smartweather.git`
-
-## Track Updates
-This custom component can be tracked with the help of the [Custom Updater](https://github.com/custom-components/custom_updater) component.
-
-In your configuration.yaml file add the following:
-```yaml
-custom_updater:
-component_urls:
-  - https://raw.githubusercontent.com/briis/smartweather/master/custom_updater.json
-```
-
-The Integration also supports the new HACS Community Store. Read more here [HACS](https://github.com/custom-components/hacs).
-
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
 
