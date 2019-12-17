@@ -28,7 +28,6 @@ smartweather:
 Default value: SmartWeather
 
 ### Binary Sensor
-![binary_sensor](https://github.com/briis/hass-SmartWeather/blob/master/images/binary_sensor.png)<br>
 In order to use the Binary Sensors, add the following to your *configuration.yaml* file:
 ```yaml
 # Example configuration.yaml entry
@@ -52,7 +51,6 @@ Default: All Sensors are displayed
 * **lightning** - A sensor indicating if a lightning strike has been recorded within the last minute
 
 ### Sensor
-![sensor](https://github.com/briis/hass-SmartWeather/blob/master/images/sensor.png)<br>
 In order to use the Sensors, add the following to your *configuration.yaml* file:
 ```yaml
 # Example configuration.yaml entry
@@ -115,7 +113,6 @@ Default: All Sensors are displayed
 * **lightning_count** - Shows the numbers of lightning strikes for last minute. Attributes of this sensor has more Lightning information.
 
 ### Weather
-![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
 The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
 
 The difference between using this entity and the standard Dark Sky entity, is that *Current* data is coming from the local weather station, making it much more accurate than that what Dark Sky delivers.
