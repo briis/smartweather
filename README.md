@@ -3,28 +3,28 @@
 This a *custom component* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Smart Weather weather station produced by *WeatherFlow* and Forecast data from *Dark Sky*.
 
 ![GitHub release](https://img.shields.io/github/release/briis/smartweather.svg)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 It can create several `sensor` entities for each weather reading like Temperature, Precipitation, Rain etc. and it can create two `binary_sensor`, one indicating if it freezes outside and one indicating if it is raining. Finally it can also create a `weather` component, that then combines the real-time readings from the Weather Station and the Forecast data from Dark Sky, in to a standard `weather`component.
 
 The `smartweather` component uses the [WeatherFlow](https://weatherflow.github.io/SmartWeather/api/swagger/) REST API to retrieve current data for a local WeatherStation, and it uses [Dark Sky](https://darksky.net/dev) to retrieve Forecast data if the `weather` component is activated.
 
-## Installation
-1. If you don't already have a `custom_components` directory in your config directory, create it, and then create a directory called `smartweather`under that.
-2. Copy `__init__.py`, `sensor.py`, `binary_sensor.py`, `weather.py` and `manifest.json` to the `smartweather` directory.
-3. or using Git, go to the `custom_components` directory and enter:<br>
-`git clone https://github.com/briis/smartweather.git`
+## Manual Installation
+To add SMARTWEATHER to your installation, create this folder structure in your /config directory:
 
-## Track Updates
-This custom component can be tracked with the help of the [Custom Updater](https://github.com/custom-components/custom_updater) component.
+`custom_components/smartweather`.
+Then, drop the following files into that folder:
 
-In your configuration.yaml file add the following:
 ```yaml
-custom_updater:
-component_urls:
-  - https://raw.githubusercontent.com/briis/smartweather/master/custom_updater.json
+__init__.py
+manifest.json
+sensor.py
+binary_sensor.py
+weather.py
 ```
 
-The Integration also supports the new HACS Community Store. Read more here [HACS](https://github.com/custom-components/hacs).
+## HACS Installation
+This Integration is part of the default HACS store, so search for *Weatherflow Smart Weather* in HACS.
 
 ## Configuration
 Start by configuring the core platform. No matter which of the entities you activate, this has to be configured. The core platform by itself does nothing else than fetch the current data from *WeatherFlow*, so by activating this you will not see any entities being created in Home Assistant.
