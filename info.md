@@ -72,6 +72,8 @@ sensor:
       - precipitation_rate
       - precipitation_last_1hr
       - precipitation_yesterday
+      - precip_minutes_local_day
+      - precip_minutes_local_yesterday
       - humidity
       - pressure
       - uv
@@ -105,6 +107,8 @@ Default: All Sensors are displayed
 * **precipitation_rate** - The current precipitation rate - 0 if it is not raining
 * **precipitation_last_1hr** - Precipitation in the last hour
 * **precipitation_yesterday** - Precipitation yesterday
+* **precip_minutes_local_day** - Number of minutes it has been raining for the current day
+* **precip_minutes_local_yesterday** - Number of minutes it has been raining yesterday
 * **humidity** - Current humidity in %
 * **pressure** - Current barometric pressure, taking in to account the position of the station
 * **uv** - The UV index
