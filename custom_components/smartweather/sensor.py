@@ -17,7 +17,7 @@ from homeassistant.const import (ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS,
                                  DEVICE_CLASS_ILLUMINANCE,
                                  DEVICE_CLASS_PRESSURE,
                                  DEVICE_CLASS_TEMPERATURE, LENGTH_METERS,
-                                 TEMP_CELSIUS, UNIT_UV_INDEX)
+                                 TEMP_CELSIUS, TEMP_FAHRENHEIT, UNIT_UV_INDEX)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
 from . import ATTRIBUTION, DATA_SMARTWEATHER
@@ -37,11 +37,11 @@ ATTR_STATION_POSITION = 'station_position'
 
 # Sensor types are defined like: Name, Metric unit, icon, device class, Imperial unit
 SENSOR_TYPES = {
-    'temperature': ['Temperature', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, None],
-    'feels_like_temperature': ['Feels Like', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, None],
-    'heat_index': ['Heat Index', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, None],
-    'wind_chill': ['Wind Chill', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, None],
-    'dewpoint': ['Dewpoint', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, None],
+    'temperature': ['Temperature', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, TEMP_FAHRENHEIT],
+    'feels_like_temperature': ['Feels Like', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, TEMP_FAHRENHEIT],
+    'heat_index': ['Heat Index', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, TEMP_FAHRENHEIT],
+    'wind_chill': ['Wind Chill', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, TEMP_FAHRENHEIT],
+    'dewpoint': ['Dewpoint', TEMP_CELSIUS, 'mdi:thermometer', DEVICE_CLASS_TEMPERATURE, TEMP_FAHRENHEIT],
     'wind_speed': ['Wind Speed', 'm/s', 'mdi:weather-windy', None, 'mph'],
     'wind_bearing': ['Wind Bearing', '°', 'mdi:compass-outline', None, None],
     'wind_direction': ['Wind Direction', None, 'mdi:compass-outline', None, None],
