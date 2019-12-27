@@ -30,8 +30,6 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.temperature import display_temp as show_temp
 from homeassistant.util import Throttle
 
-__version__ = "0.1.9"
-
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = 'smartweather'
