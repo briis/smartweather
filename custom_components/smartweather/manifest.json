@@ -4,5 +4,5 @@
     "documentation": "https://github.com/briis/smartweather",
     "dependencies": [],
     "codeowners": ["@briis"],
-    "requirements": ["pysmartweatherio==0.2.4", "python-forecastio==1.4.0"]
+    "requirements": ["pysmartweatherio==0.2.5", "python-forecastio==1.4.0"]
 }
