@@ -121,9 +121,9 @@ class DarkSkyWeather(WeatherEntityExtended):
     def temperature(self):
         """Return the temperature."""
         temperature = self._sw_currently.data.temperature
-        if 'us' in self._dark_sky.units:
-            return round(
-                convert_temperature(temperature, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        # if 'us' in self._dark_sky.units:
+        #     return round(
+        #         convert_temperature(temperature, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
         return temperature
 
     @property
@@ -136,18 +136,18 @@ class DarkSkyWeather(WeatherEntityExtended):
     def dewpoint(self):
         """Return the dewpoint."""
         dewpoint = self._sw_currently.data.dewpoint
-        if 'us' in self._dark_sky.units:
-            return round(
-                convert_temperature(dewpoint, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        # if 'us' in self._dark_sky.units:
+        #     return round(
+        #         convert_temperature(dewpoint, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
         return dewpoint
 
     @property
     def feels_like(self):
         """Return the calculated Feels Like Temperature"""
         feels_like = self._sw_currently.data.feels_like_temperature
-        if 'us' in self._dark_sky.units:
-            return round(
-                convert_temperature(feels_like, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
+        # if 'us' in self._dark_sky.units:
+        #     return round(
+        #         convert_temperature(feels_like, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
         return feels_like
 
     @property
