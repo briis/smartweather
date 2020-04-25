@@ -116,7 +116,14 @@ class SmartWeatherCurrentSensor(Entity):
                         if self._wind_unit == 'kmh' \
                         else variable
                 else:
-                    return variable
+                    if SENSOR_TYPES[self._condition][0].lower() == "rain rate":
+                        _LOGGER.debug("Rain Rate: %s", variable)
+                        if self._unit_system == 'imperial':
+                            return round(variable, 3)
+                        else:
+                            return round(variable, 2)
+                    else:
+                        return variable
         return None
 
     @property
