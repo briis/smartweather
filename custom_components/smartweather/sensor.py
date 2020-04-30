@@ -17,7 +17,7 @@ from homeassistant.const import (ATTR_ATTRIBUTION, CONF_MONITORED_CONDITIONS,
                                  DEVICE_CLASS_ILLUMINANCE,
                                  DEVICE_CLASS_PRESSURE,
                                  DEVICE_CLASS_TEMPERATURE, LENGTH_METERS,
-                                 TEMP_CELSIUS, TEMP_FAHRENHEIT, UNIT_UV_INDEX)
+                                 TEMP_CELSIUS, TEMP_FAHRENHEIT, UV_INDEX)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
 from . import ATTRIBUTION, DATA_SMARTWEATHER
@@ -53,7 +53,7 @@ SENSOR_TYPES = {
     'precipitation_yesterday': ['Rain yesterday', 'mm', 'mdi:weather-rainy', None, 'in'],
     'humidity': ['Humidity', '%', 'mdi:water-percent', DEVICE_CLASS_HUMIDITY, None],
     'pressure': ['Pressure', 'hPa', 'mdi:gauge', DEVICE_CLASS_PRESSURE, 'inHg'],
-    'uv': ['UV', UNIT_UV_INDEX,'mdi:weather-sunny', None, None],
+    'uv': ['UV', UV_INDEX,'mdi:weather-sunny', None, None],
     'solar_radiation': ['Solar Radiation', 'W/m2', 'mdi:solar-power', None, None],
     'illuminance': ['Illuminance', 'Lx', 'mdi:brightness-5', DEVICE_CLASS_ILLUMINANCE, None],
     'lightning_count': ['Lightning Count', None, 'mdi:weather-lightning', None, None],
