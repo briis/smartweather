@@ -13,6 +13,11 @@ binary_sensor:
 sensor:
   - platform: smartweather
 
+weather:
+  - platform: smartweather
+    api_key: !secret ds_key
+    mode: daily
+
 logger:
   default: error
   logs:

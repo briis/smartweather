@@ -112,3 +112,4 @@ custom_components/.DS_Store
 .DS_Store
 .DS_Store
 .DS_Store
+.devcontainer/secrets.yaml
