@@ -10,32 +10,49 @@
 import logging
 from datetime import timedelta
 
+try:
+    from homeassistant.components.binary_sensor import (
+        BinarySensorEntity as BinarySensorDevice,
+    )
+except ImportError:
+    # Prior to HA v0.110
+    from homeassistant.components.binary_sensor import BinarySensorDevice
+
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
-from homeassistant.components.binary_sensor import (ENTITY_ID_FORMAT,
-                                                    PLATFORM_SCHEMA,
-                                                    BinarySensorDevice)
-from homeassistant.const import (ATTR_ATTRIBUTION, CONF_ENTITY_NAMESPACE,
-                                 CONF_MONITORED_CONDITIONS, CONF_NAME)
+from homeassistant.components.binary_sensor import (
+    ENTITY_ID_FORMAT,
+    PLATFORM_SCHEMA,
+)
+from homeassistant.const import (
+    ATTR_ATTRIBUTION,
+    CONF_ENTITY_NAMESPACE,
+    CONF_MONITORED_CONDITIONS,
+    CONF_NAME,
+)
 from homeassistant.helpers.entity import Entity, generate_entity_id
 
 from . import ATTRIBUTION, DATA_SMARTWEATHER
 
-DEPENDENCIES = ['smartweather']
+DEPENDENCIES = ["smartweather"]
 
 _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
-    'raining': ['Raining', None, 'mdi:water', 'mdi:water-off'],
-    'freezing': ['Freezing', None, 'mdi:fridge', 'mdi:fridge-outline'],
-    'lightning': ['Lightning', None, 'mdi:weather-lightning', 'mdi:flash-off']
+    "raining": ["Raining", None, "mdi:water", "mdi:water-off"],
+    "freezing": ["Freezing", None, "mdi:fridge", "mdi:fridge-outline"],
+    "lightning": ["Lightning", None, "mdi:weather-lightning", "mdi:flash-off"],
 }
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)):
-        vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
-    vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string
-})
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+    {
+        vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)): vol.All(
+            cv.ensure_list, [vol.In(SENSOR_TYPES)]
+        ),
+        vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string,
+    }
+)
+
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the SmartWeather binary sensor platform."""
@@ -53,6 +70,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     add_entities(sensors, True)
 
+
 class SmartWeatherBinarySensor(BinarySensorDevice):
     """ Implementation of a SmartWeather Weatherflow Current Sensor. """
 
@@ -62,7 +80,11 @@ class SmartWeatherBinarySensor(BinarySensorDevice):
         self.data = data
         self._device_class = SENSOR_TYPES[self._condition][1]
         self._name = SENSOR_TYPES[self._condition][0]
-        self.entity_id = generate_entity_id(ENTITY_ID_FORMAT, '{} {}'.format(name, SENSOR_TYPES[self._condition][0]), hass=hass)
+        self.entity_id = generate_entity_id(
+            ENTITY_ID_FORMAT,
+            "{} {}".format(name, SENSOR_TYPES[self._condition][0]),
+            hass=hass,
+        )
 
     @property
     def name(self):
@@ -81,8 +103,11 @@ class SmartWeatherBinarySensor(BinarySensorDevice):
     @property
     def icon(self):
         """Icon to use in the frontend."""
-        return SENSOR_TYPES[self._condition][2] if getattr(self.data.data, self._condition) \
+        return (
+            SENSOR_TYPES[self._condition][2]
+            if getattr(self.data.data, self._condition)
             else SENSOR_TYPES[self._condition][3]
+        )
 
     @property
     def device_class(self):
