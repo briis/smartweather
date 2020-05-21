@@ -1,0 +1,19 @@
+default_config:
+
+ptvsd:
+  wait: False # Set to True if you want hass to break and wait for debugger to attach
+
+smartweather:
+  station_id: 2777
+  api_key: "20c70eae-e62f-4d3b-b3a4-8586e90f3ac8"
+
+binary_sensor:
+  - platform: smartweather
+
+sensor:
+  - platform: smartweather
+
+logger:
+  default: error
+  logs:
+    custom_components.smartweather: debug
