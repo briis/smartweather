@@ -4,7 +4,7 @@
 	"image": "ludeeus/container:integration",
 	"context": "..",
 	"appPort": [
-		"9123:8123"
+		"9126:8123"
 	],
 	"postCreateCommand": "container install",
 	"runArgs": [
