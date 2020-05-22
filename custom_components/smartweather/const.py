@@ -16,6 +16,8 @@ from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAI
 
 DOMAIN = "smartweather"
 
+ATTR_STATION_NAME = "station_name"
+ATTR_UPDATED = "updated"
 CONF_STATION_ID = "station_id"
 CONF_WIND_UNIT = "wind_unit"
 

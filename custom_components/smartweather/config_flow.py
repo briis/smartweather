@@ -19,6 +19,7 @@ from homeassistant.const import (
 
 from homeassistant.config_entries import ConfigFlow
 from homeassistant.helpers import aiohttp_client
+from homeassistant.util import slugify
 
 from .const import (
     DOMAIN,
@@ -74,6 +75,10 @@ class SmartWeatherFlowHandler(ConfigFlow):
 
         try:
             unique_id = await smartweather.get_station_name()
+            unique_id = slugify(unique_id).capitalize()
+            underscore_pos = unique_id.find("_")
+            if underscore_pos > 0:
+                unique_id = unique_id.split("_")[0]
         except InvalidApiKey:
             errors["base"] = "api_error"
             return await self._show_setup_form(errors)

@@ -28,6 +28,8 @@ from homeassistant.util import slugify
 from .const import (
     DOMAIN,
     DEFAULT_ATTRIBUTION,
+    ATTR_STATION_NAME,
+    ATTR_UPDATED,
     CONF_STATION_ID,
     ENTITY_ID_SENSOR_FORMAT,
     ENTITY_UNIQUE_ID,
@@ -39,13 +41,6 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-ATTR_LIGHTNING_DETECTED = "last_detected"
-ATTR_LIGHTNING_DISTANCE = "lightning_distance"
-ATTR_LIGHTNING_LAST_3HOUR = "lightning_last_3hr"
-ATTR_LAST_UPDATE = "last_update"
-ATTR_STATION_LOCATION = "station_location"
-ATTR_STATION_POSITION = "station_position"
 
 # Sensor types are defined like: Name, Unit Type, icon, device class
 SENSOR_TYPES = {
@@ -108,6 +103,19 @@ SENSOR_TYPES = {
     "solar_radiation": ["Solar Radiation", "W/m2", "mdi:solar-power", None],
     "brightness": ["Brightness", "Lx", "mdi:brightness-5", DEVICE_CLASS_ILLUMINANCE,],
     "lightning_strike_count": ["Lightning Count", None, "mdi:weather-lightning", None],
+    "lightning_strike_last_distance": [
+        "Lightning Distance",
+        UNIT_TYPE_DISTANCE,
+        "mdi:weather-lightning",
+        None,
+    ],
+    "lightning_strike_last_time": ["Lightning Time", "", "mdi:clock-outline", None,],
+    "lightning_strike_count_last_3hr": [
+        "Lightning Last 3Hrs",
+        "",
+        "mdi:history",
+        None,
+    ],
     "precip_minutes_local_day": ["Rain minutes today", "min", "mdi:timer", None],
     "precip_minutes_local_yesterday": [
         "Rain minutes yesterday",
@@ -134,7 +142,7 @@ async def async_setup_entry(
     sensors = []
     for sensor in SENSOR_TYPES:
         sensors.append(
-            SmartWeatherSensor(coordinator, sensor, units, entry.data[CONF_STATION_ID])
+            SmartWeatherSensor(coordinator, sensor, units, entry.data[CONF_ID])
         )
         _LOGGER.debug(f"SENSOR ADDED: {sensor}")
     async_add_entities(sensors, True)
@@ -145,17 +153,18 @@ async def async_setup_entry(
 class SmartWeatherSensor(Entity):
     """ Implementation of a SmartWeather Weatherflow Sensor. """
 
-    def __init__(self, coordinator, sensor, units, station_id):
+    def __init__(self, coordinator, sensor, units, instance):
         """Initialize the sensor."""
         self.coordinator = coordinator
         self._units = units
         self._sensor = sensor
         self._state = None
+        self._station_name = instance
         self._name = SENSOR_TYPES[self._sensor][0]
         self.entity_id = ENTITY_ID_SENSOR_FORMAT.format(
-            station_id, slugify(self._name).replace(" ", "_")
+            slugify(instance), slugify(self._name).replace(" ", "_")
         )
-        self._unique_id = ENTITY_UNIQUE_ID.format(station_id, self._sensor)
+        self._unique_id = ENTITY_UNIQUE_ID.format(slugify(instance), self._sensor)
 
     @property
     def name(self):
@@ -192,10 +201,12 @@ class SmartWeatherSensor(Entity):
     @property
     def device_state_attributes(self):
         """Return the state attributes of the device."""
-        attr = {}
-        attr[ATTR_ATTRIBUTION] = DEFAULT_ATTRIBUTION
 
-        return attr
+        return {
+            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+            ATTR_STATION_NAME: self._station_name,
+            ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
+        }
 
     async def async_added_to_hass(self):
         """When entity is added to hass."""

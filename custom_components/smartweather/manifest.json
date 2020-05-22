@@ -8,6 +8,6 @@
         "@briis"
     ],
     "requirements": [
-        "pysmartweatherio==1.0.4"
+        "pysmartweatherio==1.0.5"
     ]
 }

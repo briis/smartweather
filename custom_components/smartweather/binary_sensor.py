@@ -28,6 +28,8 @@ from homeassistant.util import slugify
 from .const import (
     DOMAIN,
     DEFAULT_ATTRIBUTION,
+    ATTR_STATION_NAME,
+    ATTR_UPDATED,
     ENTITY_ID_BINARY_SENSOR_FORMAT,
     ENTITY_UNIQUE_ID,
     CONF_STATION_ID,
@@ -54,7 +56,7 @@ async def async_setup_entry(
     sensors = []
     for sensor in SENSOR_TYPES:
         sensors.append(
-            SmartWeatherBinarySensor(coordinator, sensor, entry.data[CONF_STATION_ID])
+            SmartWeatherBinarySensor(coordinator, sensor, entry.data[CONF_ID])
         )
         _LOGGER.debug(f"BINARY SENSOR ADDED: {sensor}")
 
@@ -66,16 +68,17 @@ async def async_setup_entry(
 class SmartWeatherBinarySensor(BinarySensorDevice):
     """ Implementation of a SmartWeather Weatherflow Current Sensor. """
 
-    def __init__(self, coordinator, sensor, station_id):
+    def __init__(self, coordinator, sensor, instance):
         """Initialize the sensor."""
         self.coordinator = coordinator
         self._sensor = sensor
         self._device_class = SENSOR_TYPES[self._sensor][1]
         self._name = SENSOR_TYPES[self._sensor][0]
+        self._station = instance
         self.entity_id = ENTITY_ID_BINARY_SENSOR_FORMAT.format(
-            station_id, slugify(self._name).replace(" ", "_")
+            slugify(instance), slugify(self._name).replace(" ", "_")
         )
-        self._unique_id = ENTITY_UNIQUE_ID.format(station_id, self._sensor)
+        self._unique_id = ENTITY_UNIQUE_ID.format(slugify(instance), self._sensor)
 
     @property
     def unique_id(self):
@@ -109,9 +112,12 @@ class SmartWeatherBinarySensor(BinarySensorDevice):
     @property
     def device_state_attributes(self):
         """Return the state attributes of the device."""
-        attr = {}
-        attr[ATTR_ATTRIBUTION] = DEFAULT_ATTRIBUTION
-        return attr
+        return {
+            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+            # ATTR_STATION_NAME: getattr(self.coordinator.data[0], "station_name", None),
+            ATTR_STATION_NAME: self._station,
+            ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
+        }
 
     async def async_added_to_hass(self):
         """When entity is added to hass."""
