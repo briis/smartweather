@@ -139,7 +139,9 @@ Default: All Sensors are displayed
 
 ### Weather
 ![weather](https://github.com/briis/hass-SmartWeather/blob/master/images/weather.png)<br>
-The Weather Entity uses Dark Sky for forecast data. So in order to use this Entity you must obtain a API Key from Dark Sky. The API key is free but requires registration. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
+The Weather Entity uses Dark Sky for forecast data. Unfortunately it is no longer possible for new users to obtain an API Key, as DarkSky was aquired by Apple, and they decided to close down registration for new users. People who allready have a DarkSky API Key, can use this until the end of 2021. You can make up to 1000 calls per day for free which means that you could make one approximately every 86 seconds.
+
+I made an alternative Weather Forecast provider, where data is pulled from [Weatherbit.io](https://www.weatherbit.io/). This is not integrated with your SmartWeather data, but I just wanted to mention it, in case you are looking for an alternative to DarkSky. Find the [module here](https://github.com/briis/weatherbit).
 
 The difference between using this entity and the standard Dark Sky entity, is that *Current* data is coming from the local weather station, making it much more accurate than that what Dark Sky delivers.
 
