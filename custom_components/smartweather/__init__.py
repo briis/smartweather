@@ -8,9 +8,10 @@
 
     Author: Bjarne Riis
 """
-import logging
-from datetime import timedelta
 
+import logging
+import requests
+from datetime import timedelta
 from requests.exceptions import ConnectionError as ConnectError
 from requests.exceptions import HTTPError, Timeout
 
@@ -22,8 +23,12 @@ from homeassistant.components.weather import (ATTR_FORECAST_CONDITION,
                                               ATTR_FORECAST_TIME,
                                               ATTR_FORECAST_WIND_BEARING,
                                               ATTR_FORECAST_WIND_SPEED)
-from homeassistant.const import (CONF_API_KEY, CONF_NAME, PRECISION_TENTHS,
-                                 PRECISION_WHOLE, TEMP_CELSIUS)
+from homeassistant.const import (CONF_API_KEY, 
+                                CONF_NAME, 
+                                PRECISION_TENTHS,
+                                PRECISION_WHOLE,
+                                TEMP_CELSIUS,
+                                TEMP_FAHRENHEIT)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import discovery
 from homeassistant.helpers.entity import Entity
@@ -55,6 +60,7 @@ ATTR_WEATHER_HUMIDITY = 'humidity'
 ATTR_WEATHER_OZONE = 'ozone'
 ATTR_WEATHER_PRECIPITATION = 'precipitation'
 ATTR_WEATHER_PRECIPITATION_RATE = 'precipitation_rate'
+ATTR_FORECAST_PRECIPITATION_PROBABILITY = "precipitation_probability"
 ATTR_WEATHER_PRESSURE = 'pressure'
 ATTR_WEATHER_TEMPERATURE = 'temperature'
 ATTR_WEATHER_VISIBILITY = 'visibility'
@@ -104,14 +110,27 @@ class SmartWeatherCurrentData:
 
     def __init__(self, hass, station_id, unit_system, api_key):
         """Initialize the data object."""
+        _LOGGER.debug('Smartweather init()')
         self._station_id = station_id
         self._unit_system = unit_system
+        self._hass = hass
         self._api_key = api_key
         self.data = None
+        self._session = requests.Session()
+        self._session.headers = {
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'gzip'
+        }
+
+        # Hacky addition from forecast API
+        self.forecast = None
+        self.forecast_current_conditions = None
+        self.observations = None
 
     @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Get the latest data from the Weatherstation."""
+        _LOGGER.debug('Smartweather update()')
         from pysmartweatherio import load_stationdata
 
         try:
@@ -125,58 +144,103 @@ class SmartWeatherCurrentData:
             _LOGGER.error("Unable to connect to WeatherFlow. %s", error)
             self.data = None
 
+        # Now try to get Forecast data 
+        # TODO: should probably be added to pysmartweatherio's load_stationdata() instead.
+    
+        observations_url = "https://swd.weatherflow.com/swd/rest/observations/station?"\
+                          f"station_id={self._station_id}&"\
+                          f"api_key={self._api_key}"
+        
+        observations_response =  self._session.get(observations_url).json()
+        self.observations = observations_response['obs'][0]
+
+        _lat = observations_response['latitude']
+        _lon = observations_response['longitude']
+        assert _lat is not None
+        assert _lon is not None
+        
+        forecast_url = f"https://swd.weatherflow.com/swd/rest/better_forecast?"\
+                       f"station_id={self._station_id}&"\
+                       f"api_key={self._api_key}&"\
+                       f"lat={_lat}&"\
+                       f"lon={_lon}"
+
+        if self._unit_system == 'imperial': # TODO: Test this... not sure it does anything.
+            forecast_url += "&units_other=imperial"
+            
+                            # "units_temp=f&"\
+                            # "units_wind=mph&"\
+                            # "units_precip=in&"\
+                            # "units_pressure=inhg&"\
+                            # "units_distance=mi"\
+                            # "units_direction=cardinal"\
+        self.observations['temperature_unit'] = TEMP_CELSIUS # Until we figure out above... seems to always return metric
+
+        forecast_response =  self._session.get(forecast_url).json()    
+        try: 
+            assert forecast_response['status']['status_message'] == "SUCCESS"
+        except e as Exception:
+            _LOGGER.error(f"Tempest API forecast_response not SUCCESS:\n{forecast_response}")
+            raise RuntimeError(e)
+
+        self.forecast = forecast_response['forecast']
+        self.forecast_current_conditions = forecast_response['current_conditions']
+
+
 class WeatherEntityExtended(Entity):
     """ABC for weather data."""
 
-    @property
-    def temperature(self):
-        """Return the platform temperature."""
-        raise NotImplementedError()
+    ## NOTE : This messes with getAttr dynamic behavior somewhat..
 
-    @property
-    def temperature_unit(self):
-        """Return the unit of measurement."""
-        raise NotImplementedError()
+    # @property
+    # def temperature(self):
+    #     """Return the platform temperature."""
+    #     raise NotImplementedError()
 
-    @property
-    def pressure(self):
-        """Return the pressure."""
-        return None
+    # @property
+    # def temperature_unit(self):
+    #     """Return the unit of measurement."""
+    #     raise NotImplementedError()
 
-    @property
-    def humidity(self):
-        """Return the humidity."""
-        raise NotImplementedError()
+    # @property
+    # def pressure(self):
+    #     """Return the pressure."""
+    #     return None
 
-    @property
-    def wind_speed(self):
-        """Return the wind speed."""
-        return None
+    # @property
+    # def humidity(self):
+    #     """Return the humidity."""
+    #     raise NotImplementedError()
 
-    @property
-    def wind_bearing(self):
-        """Return the wind bearing."""
-        return None
+    # @property
+    # def wind_speed(self):
+    #     """Return the wind speed."""
+    #     return None
 
-    @property
-    def ozone(self):
-        """Return the ozone level."""
-        return None
+    # @property
+    # def wind_bearing(self):
+    #     """Return the wind bearing."""
+    #     return None
 
-    @property
-    def attribution(self):
-        """Return the attribution."""
-        return None
+    # @property
+    # def ozone(self):
+    #     """Return the ozone level."""
+    #     return None
 
-    @property
-    def visibility(self):
-        """Return the visibility."""
-        return None
+    # @property
+    # def attribution(self):
+    #     """Return the attribution."""
+    #     return None
 
-    @property
-    def forecast(self):
-        """Return the forecast."""
-        return None
+    # @property
+    # def visibility(self):
+    #     """Return the visibility."""
+    #     return None
+
+    # @property
+    # def forecast(self):
+    #     """Return the forecast."""
+    #     return None
 
     @property
     def precision(self):
