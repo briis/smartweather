@@ -17,14 +17,17 @@ from homeassistant.const import (
     CONF_API_KEY,
 )
 
-from homeassistant.config_entries import ConfigFlow
 from homeassistant.helpers import aiohttp_client
+from homeassistant import config_entries, core
+import homeassistant.helpers.config_validation as cv
+from homeassistant.core import callback
 from homeassistant.util import slugify
 
 from .const import (
     DOMAIN,
     CONF_STATION_ID,
     CONF_WIND_UNIT,
+    CONF_ADD_SENSORS,
     UNIT_WIND_MS,
     WIND_UNITS,
 )
@@ -32,28 +35,17 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
-@config_entries.HANDLERS.register(DOMAIN)
-class SmartWeatherFlowHandler(ConfigFlow):
+class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a SmartWeather config flow."""
 
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
+    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
-    async def _show_setup_form(self, errors=None):
-        """Show the setup form to the user."""
-        return self.async_show_form(
-            step_id="user",
-            data_schema=vol.Schema(
-                {
-                    vol.Required(CONF_API_KEY): str,
-                    vol.Required(CONF_STATION_ID): int,
-                    vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
-                        WIND_UNITS
-                    ),
-                }
-            ),
-            errors=errors or {},
-        )
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        """Get the options flow for this handler."""
+        return OptionsFlowHandler(config_entry)
 
     async def async_step_user(self, user_input=None):
         """Handle a flow initiated by the user."""
@@ -97,6 +89,49 @@ class SmartWeatherFlowHandler(ConfigFlow):
                 CONF_ID: unique_id,
                 CONF_API_KEY: user_input[CONF_API_KEY],
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
+                CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
                 CONF_WIND_UNIT: user_input.get(CONF_WIND_UNIT),
             },
+        )
+
+    async def _show_setup_form(self, errors=None):
+        """Show the setup form to the user."""
+        return self.async_show_form(
+            step_id="user",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONF_API_KEY): str,
+                    vol.Required(CONF_STATION_ID): int,
+                    vol.Optional(CONF_ADD_SENSORS, default=True): bool,
+                    vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
+                        WIND_UNITS
+                    ),
+                }
+            ),
+            errors=errors or {},
+        )
+
+
+class OptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle options."""
+
+    def __init__(self, config_entry):
+        """Initialize options flow."""
+        self.config_entry = config_entry
+
+    async def async_step_init(self, user_input=None):
+        """Manage the options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(CONF_ADD_SENSORS, default=True): bool,
+                    vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
+                        WIND_UNITS
+                    ),
+                }
+            ),
         )

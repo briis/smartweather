@@ -20,7 +20,7 @@ ATTR_STATION_NAME = "station_name"
 ATTR_UPDATED = "updated"
 CONF_STATION_ID = "station_id"
 CONF_WIND_UNIT = "wind_unit"
-
+CONF_ADD_SENSORS = "add_sensors"
 
 ENTITY_ID_SENSOR_FORMAT = SENSOR_DOMAIN + "." + "{}_{}"
 ENTITY_ID_BINARY_SENSOR_FORMAT = BINARY_SENSOR_DOMAIN + "." + "{}_{}"

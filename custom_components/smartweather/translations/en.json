@@ -10,10 +10,21 @@
                 "data": {
                     "api_key": "SmartWeather API Key",
                     "station_id": "A SmartWeather Station ID",
+                    "add_sensors": "Install individual sensors",
                     "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
                 },
                 "description": "Access local Weather Station data via SmartWeather API.",
                 "title": "WeatherFlow SmartWeather"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "add_sensors": "Install individual sensors",
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                }
             }
         }
     }

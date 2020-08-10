@@ -7,6 +7,7 @@
                 "data": {
                     "api_key": "SmartWeather API Key",
                     "station_id": "A SmartWeather Station ID",
+                    "add_sensors": "Install individual sensors",
                     "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
                 }
             }
@@ -15,6 +16,16 @@
             "api_error": "Invalid API Key. Go here: https://weatherflow.github.io/SmartWeather/api/#object-model",
             "station_error": "Invalid Station ID, or Station has no data.",
             "station_exists": "This Station ID is already configured. Select another Station."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "add_sensors": "Install individual sensors",
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                }
+            }
         }
     }
 }
