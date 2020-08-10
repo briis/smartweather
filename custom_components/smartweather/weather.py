@@ -14,7 +14,7 @@ import asyncio
 import aiohttp
 import async_timeout
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import voluptuous as vol
 
 from requests.exceptions import ConnectionError as ConnectError
@@ -247,11 +247,16 @@ class TempestWeather(WeatherEntityExtended):
     def forecast(self):
         """Return the forecast."""        
         forecast_data = []
-        daily_forcasts = iter(self._data.forecast['daily'])
-        next(daily_forcasts) # Don't want forcast for today
+        #next(daily_forcasts) # Don't want forcast for today
+        today = datetime.now()
 
-        for entry in daily_forcasts:
-            # First, calculate data from hourly that's not summed up in the daily.
+        for entry in self._data.forecast['daily']:
+            # Skip over past forecasts - seems the API sometimes returns old forecasts
+            forecast_time = datetime.fromtimestamp(entry['day_start_local'])
+            if today > forecast_time:
+                continue
+
+            # Calculate data from hourly that's not summed up in the daily.
             precip = 0
             wind_avg = []
             wind_bearing = []
