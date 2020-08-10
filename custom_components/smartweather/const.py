@@ -37,5 +37,6 @@ WIND_UNITS = [
 ]
 
 DEFAULT_ATTRIBUTION = "Weather data powered by a SmartWeather Weather Station"
+DEFAULT_SCAN_INTERVAL = 60
 
 LOGGER = logging.getLogger(__package__)

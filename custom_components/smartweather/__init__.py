@@ -14,6 +14,7 @@ from pysmartweatherio import (
 from homeassistant.const import (
     CONF_ID,
     CONF_API_KEY,
+    CONF_SCAN_INTERVAL,
 )
 
 from homeassistant.config_entries import ConfigEntry

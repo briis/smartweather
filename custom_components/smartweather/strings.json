@@ -8,7 +8,8 @@
                     "api_key": "SmartWeather API Key",
                     "station_id": "A SmartWeather Station ID",
                     "add_sensors": "Install individual sensors",
-                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)",
+                    "scan_interval": "Scan interval"
                 }
             }
         },
@@ -23,7 +24,8 @@
             "init": {
                 "data": {
                     "add_sensors": "Install individual sensors",
-                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)",
+                    "scan_interval": "Scan interval"
                 }
             }
         }

@@ -15,6 +15,7 @@ from homeassistant import config_entries
 from homeassistant.const import (
     CONF_ID,
     CONF_API_KEY,
+    CONF_SCAN_INTERVAL,
 )
 
 from homeassistant.helpers import aiohttp_client
@@ -25,6 +26,7 @@ from homeassistant.util import slugify
 
 from .const import (
     DOMAIN,
+    DEFAULT_SCAN_INTERVAL,
     CONF_STATION_ID,
     CONF_WIND_UNIT,
     CONF_ADD_SENSORS,
@@ -91,6 +93,7 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
                 CONF_WIND_UNIT: user_input.get(CONF_WIND_UNIT),
+                CONF_SCAN_INTERVAL: user_input.get(CONF_SCAN_INTERVAL),
             },
         )
 
@@ -106,6 +109,9 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
                         WIND_UNITS
                     ),
+                    vol.Optional(
+                        CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
+                    ): vol.All(vol.Coerce(int), vol.Range(min=60, max=300)),
                 }
             ),
             errors=errors or {},
