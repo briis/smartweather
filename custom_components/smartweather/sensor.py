@@ -24,21 +24,23 @@ from homeassistant.const import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import HomeAssistantType
+import homeassistant.helpers.device_registry as dr
 from homeassistant.util import slugify
 from .const import (
     DOMAIN,
     DEFAULT_ATTRIBUTION,
+    DEFAULT_BRAND,
     ATTR_STATION_NAME,
     ATTR_UPDATED,
     CONF_STATION_ID,
-    ENTITY_ID_SENSOR_FORMAT,
-    ENTITY_UNIQUE_ID,
     UNIT_TYPE_TEMP,
     UNIT_TYPE_WIND,
     UNIT_TYPE_RAIN,
     UNIT_TYPE_PRESSURE,
     UNIT_TYPE_DISTANCE,
+    CONF_ADD_SENSORS,
 )
+from .entity import SmartWeatherEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -129,20 +131,29 @@ SENSOR_TYPES = {
 async def async_setup_entry(
     hass: HomeAssistantType, entry: ConfigEntry, async_add_entities
 ) -> None:
+
+    # Exit if user did deselect sensors and alerts on config
+    if not entry.data[CONF_ADD_SENSORS]:
+        return
+
     """Set up the Meteobridge sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.data[CONF_ID]]["coordinator"]
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     if not coordinator.data:
         return
 
-    smartweather = hass.data[DOMAIN][entry.data[CONF_ID]]["smw"]
+    smartweather = hass.data[DOMAIN][entry.entry_id]["smw"]
     if not smartweather:
         return
     units = await smartweather.get_units()
 
+    station_info = hass.data[DOMAIN][entry.entry_id]["station"]
+    if not station_info:
+        return
+
     sensors = []
     for sensor in SENSOR_TYPES:
         sensors.append(
-            SmartWeatherSensor(coordinator, sensor, units, entry.data[CONF_ID])
+            SmartWeatherSensor(coordinator, entry.data, sensor, units, station_info)
         )
         _LOGGER.debug(f"SENSOR ADDED: {sensor}")
     async_add_entities(sensors, True)
@@ -150,21 +161,16 @@ async def async_setup_entry(
     return True
 
 
-class SmartWeatherSensor(Entity):
+class SmartWeatherSensor(SmartWeatherEntity, Entity):
     """ Implementation of a SmartWeather Weatherflow Sensor. """
 
-    def __init__(self, coordinator, sensor, units, instance):
+    def __init__(self, coordinator, entries, sensor, units, station_info):
         """Initialize the sensor."""
-        self.coordinator = coordinator
+        super().__init__(coordinator, entries, sensor, station_info, None)
         self._units = units
         self._sensor = sensor
         self._state = None
-        self._station_name = instance
         self._name = SENSOR_TYPES[self._sensor][0]
-        self.entity_id = ENTITY_ID_SENSOR_FORMAT.format(
-            slugify(instance), slugify(self._name).replace(" ", "_")
-        )
-        self._unique_id = ENTITY_UNIQUE_ID.format(slugify(instance), self._sensor)
 
     @property
     def name(self):
@@ -204,14 +210,6 @@ class SmartWeatherSensor(Entity):
 
         return {
             ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-            ATTR_STATION_NAME: self._station_name,
-            ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
+            # ATTR_STATION_NAME: self._station_name,
+            # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
         }
-
-    async def async_added_to_hass(self):
-        """When entity is added to hass."""
-        self.coordinator.async_add_listener(self.async_write_ha_state)
-
-    async def async_will_remove_from_hass(self):
-        """When entity will be removed from hass."""
-        self.coordinator.async_remove_listener(self.async_write_ha_state)

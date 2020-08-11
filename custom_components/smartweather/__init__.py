@@ -2,6 +2,7 @@
 import logging
 from datetime import timedelta, datetime
 import voluptuous as vol
+import asyncio
 
 from pysmartweatherio import (
     SmartWeather,
@@ -35,8 +36,12 @@ from .const import (
     CONF_STATION_ID,
     CONF_ADD_SENSORS,
     CONF_WIND_UNIT,
+    CONF_FORECAST_TYPE,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_BRAND,
     SMARTWEATHER_PLATFORMS,
+    FORECAST_TYPE_DAILY,
+    FORECAST_TYPE_HOURLY,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -60,6 +65,9 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
                 CONF_ADD_SENSORS: entry.data.get(CONF_ADD_SENSORS, True),
                 CONF_SCAN_INTERVAL: entry.data.get(
                     CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+                ),
+                CONF_FORECAST_TYPE: entry.data.get(
+                    CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY
                 ),
             },
         )
@@ -90,6 +98,30 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
         ),
     )
 
+    fcst_type = entry.options.get(CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY)
+    if fcst_type == FORECAST_TYPE_DAILY:
+        # Update Forecast with Daily data
+        fcst_coordinator = DataUpdateCoordinator(
+            hass,
+            _LOGGER,
+            name=DOMAIN,
+            update_method=smartweather.get_daily_forecast,
+            update_interval=timedelta(
+                seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+            ),
+        )
+    else:
+        # Update Forecast with Hourly data
+        fcst_coordinator = DataUpdateCoordinator(
+            hass,
+            _LOGGER,
+            name=DOMAIN,
+            update_method=smartweather.get_hourly_forecast,
+            update_interval=timedelta(
+                seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+            ),
+        )
+
     try:
         station_info = await smartweather.get_station_hardware()
     except InvalidApiKey:
@@ -106,10 +138,13 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
 
     # Fetch initial data so we have data when entities subscribe
     await coordinator.async_refresh()
-    hass.data[DOMAIN][entry.data[CONF_ID]] = {
+    await fcst_coordinator.async_refresh()
+    hass.data[DOMAIN][entry.entry_id] = {
         "coordinator": coordinator,
+        "fcst_coordinator": fcst_coordinator,
         "smw": smartweather,
         "station": station_info,
+        "fcst_type": fcst_type,
     }
 
     await _async_get_or_create_smartweather_device_in_registry(
@@ -131,13 +166,14 @@ async def _async_get_or_create_smartweather_device_in_registry(
     hass: HomeAssistantType, entry: ConfigEntry, svr
 ) -> None:
     device_registry = await dr.async_get_registry(hass)
+    device_key = f"{entry.data[CONF_STATION_ID]}"
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
-        connections={(dr.CONNECTION_NETWORK_MAC, svr["serial_number"])},
-        identifiers={(DOMAIN, svr["serial_number"])},
+        connections={(dr.CONNECTION_NETWORK_MAC, device_key)},
+        identifiers={(DOMAIN, device_key)},
         manufacturer=DEFAULT_BRAND,
         name=svr["station_name"],
-        model=svr["device_id"],
+        model=svr["station_type"],
         sw_version=svr["firmware_revision"],
     )
 

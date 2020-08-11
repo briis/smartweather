@@ -30,6 +30,10 @@ from .const import (
     CONF_STATION_ID,
     CONF_WIND_UNIT,
     CONF_ADD_SENSORS,
+    CONF_FORECAST_TYPE,
+    FORECAST_TYPE_DAILY,
+    FORECAST_TYPE_HOURLY,
+    FORECAST_TYPES,
     UNIT_WIND_MS,
     WIND_UNITS,
 )
@@ -69,10 +73,10 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
             unique_id = await smartweather.get_station_name()
-            unique_id = slugify(unique_id).capitalize()
-            underscore_pos = unique_id.find("_")
-            if underscore_pos > 0:
-                unique_id = unique_id.split("_")[0]
+            # unique_id = slugify(unique_id).capitalize()
+            # underscore_pos = unique_id.find("_")
+            # if underscore_pos > 0:
+            #     unique_id = unique_id.split("_")[0]
         except InvalidApiKey:
             errors["base"] = "api_error"
             return await self._show_setup_form(errors)
@@ -91,6 +95,7 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_ID: unique_id,
                 CONF_API_KEY: user_input[CONF_API_KEY],
                 CONF_STATION_ID: user_input[CONF_STATION_ID],
+                CONF_FORECAST_TYPE: user_input[CONF_FORECAST_TYPE],
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
                 CONF_WIND_UNIT: user_input.get(CONF_WIND_UNIT),
                 CONF_SCAN_INTERVAL: user_input.get(CONF_SCAN_INTERVAL),
@@ -106,6 +111,9 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_API_KEY): str,
                     vol.Required(CONF_STATION_ID): int,
                     vol.Optional(CONF_ADD_SENSORS, default=True): bool,
+                    vol.Optional(
+                        CONF_FORECAST_TYPE, default=FORECAST_TYPE_DAILY
+                    ): vol.In(FORECAST_TYPES),
                     vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
                         WIND_UNITS
                     ),
@@ -134,10 +142,22 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             step_id="init",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(CONF_ADD_SENSORS, default=True): bool,
-                    vol.Optional(CONF_WIND_UNIT, default=UNIT_WIND_MS): vol.In(
-                        WIND_UNITS
-                    ),
+                    vol.Optional(
+                        CONF_FORECAST_TYPE,
+                        default=self.config_entry.options.get(
+                            CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY
+                        ),
+                    ): vol.In(FORECAST_TYPES),
+                    vol.Optional(
+                        CONF_ADD_SENSORS,
+                        default=self.config_entry.options.get(CONF_ADD_SENSORS, True),
+                    ): bool,
+                    vol.Optional(
+                        CONF_WIND_UNIT,
+                        default=self.config_entry.options.get(
+                            CONF_WIND_UNIT, UNIT_WIND_MS
+                        ),
+                    ): vol.In(WIND_UNITS),
                 }
             ),
         )
