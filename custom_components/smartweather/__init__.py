@@ -37,16 +37,17 @@ from .const import (
     CONF_ADD_SENSORS,
     CONF_WIND_UNIT,
     CONF_FORECAST_TYPE,
+    CONF_FORECAST_INTERVAL,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_FORECAST_INTERVAL,
     DEFAULT_BRAND,
     SMARTWEATHER_PLATFORMS,
     FORECAST_TYPE_DAILY,
     FORECAST_TYPE_HOURLY,
+    UNIT_WIND_MS,
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-# SCAN_INTERVAL = timedelta(seconds=60)
 
 
 async def async_setup(hass: HomeAssistantType, config: ConfigType) -> bool:
@@ -63,8 +64,12 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
             entry,
             options={
                 CONF_ADD_SENSORS: entry.data.get(CONF_ADD_SENSORS, True),
+                CONF_WIND_UNIT: entry.data.get(CONF_WIND_UNIT, UNIT_WIND_MS),
                 CONF_SCAN_INTERVAL: entry.data.get(
                     CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+                ),
+                CONF_FORECAST_INTERVAL: entry.data.get(
+                    CONF_FORECAST_INTERVAL, DEFAULT_FORECAST_INTERVAL
                 ),
                 CONF_FORECAST_TYPE: entry.data.get(
                     CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY
@@ -79,12 +84,10 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
         entry.data[CONF_API_KEY],
         entry.data[CONF_STATION_ID],
         unit_system,
-        entry.data[CONF_WIND_UNIT],
+        entry.options[CONF_WIND_UNIT],
         session,
     )
     _LOGGER.debug("Connected to SmartWeather Platform")
-
-    # unique_id = entry.data[CONF_ID]
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = smartweather
 
@@ -107,7 +110,9 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
             name=DOMAIN,
             update_method=smartweather.get_daily_forecast,
             update_interval=timedelta(
-                seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+                minutes=entry.options.get(
+                    CONF_FORECAST_INTERVAL, DEFAULT_FORECAST_INTERVAL
+                )
             ),
         )
     else:
@@ -118,7 +123,9 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
             name=DOMAIN,
             update_method=smartweather.get_hourly_forecast,
             update_interval=timedelta(
-                seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+                minutes=entry.options.get(
+                    CONF_FORECAST_INTERVAL, DEFAULT_FORECAST_INTERVAL
+                )
             ),
         )
 

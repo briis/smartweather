@@ -30,6 +30,7 @@ CONF_STATION_ID = "station_id"
 CONF_WIND_UNIT = "wind_unit"
 CONF_ADD_SENSORS = "add_sensors"
 CONF_FORECAST_TYPE = "forecast_type"
+CONF_FORECAST_INTERVAL = "forecast_interval"
 
 SMARTWEATHER_PLATFORMS = [
     "binary_sensor",
@@ -45,6 +46,7 @@ WIND_UNITS = [
 DEFAULT_BRAND = "WeatherFlow"
 DEFAULT_ATTRIBUTION = "Powered by a WeatherFlow Smart Weather Station"
 DEFAULT_SCAN_INTERVAL = 60
+DEFAULT_FORECAST_INTERVAL = 5
 
 DEVICE_TYPE_WEATHER = "weather"
 

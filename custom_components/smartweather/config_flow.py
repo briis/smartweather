@@ -27,10 +27,12 @@ from homeassistant.util import slugify
 from .const import (
     DOMAIN,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_FORECAST_INTERVAL,
     CONF_STATION_ID,
     CONF_WIND_UNIT,
     CONF_ADD_SENSORS,
     CONF_FORECAST_TYPE,
+    CONF_FORECAST_INTERVAL,
     FORECAST_TYPE_DAILY,
     FORECAST_TYPE_HOURLY,
     FORECAST_TYPES,
@@ -99,6 +101,7 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_ADD_SENSORS: user_input[CONF_ADD_SENSORS],
                 CONF_WIND_UNIT: user_input.get(CONF_WIND_UNIT),
                 CONF_SCAN_INTERVAL: user_input.get(CONF_SCAN_INTERVAL),
+                CONF_FORECAST_INTERVAL: user_input.get(CONF_FORECAST_INTERVAL),
             },
         )
 
@@ -120,6 +123,9 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Optional(
                         CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
                     ): vol.All(vol.Coerce(int), vol.Range(min=60, max=300)),
+                    vol.Optional(
+                        CONF_FORECAST_INTERVAL, default=DEFAULT_FORECAST_INTERVAL
+                    ): vol.All(vol.Coerce(int), vol.Range(min=5, max=60)),
                 }
             ),
             errors=errors or {},
@@ -158,6 +164,18 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                             CONF_WIND_UNIT, UNIT_WIND_MS
                         ),
                     ): vol.In(WIND_UNITS),
+                    vol.Optional(
+                        CONF_SCAN_INTERVAL,
+                        default=self.config_entry.options.get(
+                            CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=60, max=300)),
+                    vol.Optional(
+                        CONF_FORECAST_INTERVAL,
+                        default=self.config_entry.options.get(
+                            CONF_FORECAST_INTERVAL, DEFAULT_FORECAST_INTERVAL
+                        ),
+                    ): vol.All(vol.Coerce(int), vol.Range(min=5, max=60)),
                 }
             ),
         )
