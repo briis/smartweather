@@ -4,11 +4,19 @@ from typing import Dict, List
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION,
     ATTR_FORECAST_PRECIPITATION,
+    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
     ATTR_FORECAST_TEMP,
     ATTR_FORECAST_TEMP_LOW,
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
+    ATTR_WEATHER_ATTRIBUTION,
+    ATTR_WEATHER_HUMIDITY,
+    ATTR_WEATHER_OZONE,
+    ATTR_WEATHER_PRESSURE,
+    ATTR_WEATHER_TEMPERATURE,
+    ATTR_WEATHER_WIND_BEARING,
+    ATTR_WEATHER_WIND_SPEED,
     WeatherEntity,
 )
 from homeassistant.config_entries import ConfigEntry
@@ -22,8 +30,7 @@ from homeassistant.const import (
     TEMP_CELSIUS,
 )
 from homeassistant.helpers.typing import HomeAssistantType
-from homeassistant.util.distance import convert as convert_distance
-from homeassistant.util.pressure import convert as convert_pressure
+from homeassistant.util.dt import utc_from_timestamp
 import homeassistant.helpers.device_registry as dr
 from .const import (
     DOMAIN,
@@ -31,7 +38,6 @@ from .const import (
     ATTR_UPDATED,
     ATTR_STATION_ID,
     ATTR_CURRENT_ICON,
-    ATTR_FCST_POP,
     ATTR_FCST_UV,
     DEFAULT_ATTRIBUTION,
     DEVICE_TYPE_WEATHER,
@@ -202,6 +208,12 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
             ATTR_STATION_ID: self._station_id,
             ATTR_CURRENT_ICON: self.current_condition,
             ATTR_FCST_UV: self.uv,
+            ATTR_WEATHER_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+            ATTR_WEATHER_HUMIDITY: self.humidity,
+            ATTR_WEATHER_PRESSURE: self.pressure,
+            ATTR_WEATHER_TEMPERATURE: self.temperature,
+            ATTR_WEATHER_WIND_BEARING: self.wind_bearing,
+            ATTR_WEATHER_WIND_SPEED: self.wind_speed,
         }
 
     @property
@@ -220,11 +232,13 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
             if self._forecast_type == FORECAST_TYPE_DAILY:
                 data.append(
                     {
-                        ATTR_FORECAST_TIME: forecast.timestamp,
+                        ATTR_FORECAST_TIME: utc_from_timestamp(
+                            forecast.epochtime
+                        ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temp_high,
                         ATTR_FORECAST_TEMP_LOW: forecast.temp_low,
                         ATTR_FORECAST_PRECIPITATION: forecast.precip,
-                        ATTR_FCST_POP: forecast.precip_probability,
+                        ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
                         ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
@@ -234,10 +248,12 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
             else:
                 data.append(
                     {
-                        ATTR_FORECAST_TIME: forecast.timestamp,
+                        ATTR_FORECAST_TIME: utc_from_timestamp(
+                            forecast.epochtime
+                        ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temperature,
                         ATTR_FORECAST_PRECIPITATION: forecast.precip,
-                        ATTR_FCST_POP: forecast.precip_probability,
+                        ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
                         ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
