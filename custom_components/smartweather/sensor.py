@@ -133,10 +133,14 @@ async def async_setup_entry(
 ) -> None:
 
     # Exit if user did deselect sensors and alerts on config
-    if not entry.options[CONF_ADD_SENSORS]:
+    if not entry.data[CONF_ADD_SENSORS]:
         return
 
     """Set up the Meteobridge sensor platform."""
+    fcst_coordinator = hass.data[DOMAIN][entry.entry_id]["fcst_coordinator"]
+    if not fcst_coordinator.data:
+        return
+
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     if not coordinator.data:
         return
@@ -153,7 +157,9 @@ async def async_setup_entry(
     sensors = []
     for sensor in SENSOR_TYPES:
         sensors.append(
-            SmartWeatherSensor(coordinator, entry.data, sensor, units, station_info)
+            SmartWeatherSensor(
+                coordinator, entry.data, sensor, units, station_info, fcst_coordinator
+            )
         )
         _LOGGER.debug(f"SENSOR ADDED: {sensor}")
     async_add_entities(sensors, True)
@@ -164,9 +170,11 @@ async def async_setup_entry(
 class SmartWeatherSensor(SmartWeatherEntity, Entity):
     """ Implementation of a SmartWeather Weatherflow Sensor. """
 
-    def __init__(self, coordinator, entries, sensor, units, station_info):
+    def __init__(
+        self, coordinator, entries, sensor, units, station_info, fcst_coordinator
+    ):
         """Initialize the sensor."""
-        super().__init__(coordinator, entries, sensor, station_info, None)
+        super().__init__(coordinator, entries, sensor, station_info, fcst_coordinator)
         self._units = units
         self._sensor = sensor
         self._state = None

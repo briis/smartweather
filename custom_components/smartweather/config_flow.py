@@ -113,7 +113,7 @@ class SmartWeatherFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_API_KEY): str,
                     vol.Required(CONF_STATION_ID): int,
-                    vol.Optional(CONF_ADD_SENSORS, default=True): bool,
+                    vol.Required(CONF_ADD_SENSORS, default=True): bool,
                     vol.Optional(
                         CONF_FORECAST_TYPE, default=FORECAST_TYPE_DAILY
                     ): vol.In(FORECAST_TYPES),
@@ -154,10 +154,6 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                             CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY
                         ),
                     ): vol.In(FORECAST_TYPES),
-                    vol.Optional(
-                        CONF_ADD_SENSORS,
-                        default=self.config_entry.options.get(CONF_ADD_SENSORS, True),
-                    ): bool,
                     vol.Optional(
                         CONF_WIND_UNIT,
                         default=self.config_entry.options.get(

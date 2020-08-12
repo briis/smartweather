@@ -31,6 +31,7 @@ from .const import (
     ATTR_STATION_NAME,
     ATTR_UPDATED,
     CONF_STATION_ID,
+    CONF_ADD_SENSORS,
 )
 
 from .entity import SmartWeatherEntity
@@ -49,6 +50,14 @@ async def async_setup_entry(
 ) -> None:
     """Add binary sensors for SmartWeather"""
 
+    # Exit if user did deselect sensors and alerts on config
+    if not entry.data[CONF_ADD_SENSORS]:
+        return
+
+    fcst_coordinator = hass.data[DOMAIN][entry.entry_id]["fcst_coordinator"]
+    if not fcst_coordinator.data:
+        return
+
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     if not coordinator.data:
         return
@@ -60,7 +69,9 @@ async def async_setup_entry(
     sensors = []
     for sensor in SENSOR_TYPES:
         sensors.append(
-            SmartWeatherBinarySensor(coordinator, entry.data, sensor, station_info)
+            SmartWeatherBinarySensor(
+                coordinator, entry.data, sensor, station_info, fcst_coordinator
+            )
         )
         _LOGGER.debug(f"BINARY SENSOR ADDED: {sensor}")
 
@@ -72,9 +83,9 @@ async def async_setup_entry(
 class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorDevice):
     """ Implementation of a SmartWeather Weatherflow Binary Sensor. """
 
-    def __init__(self, coordinator, entries, sensor, station_info):
+    def __init__(self, coordinator, entries, sensor, station_info, fcst_coordinator):
         """Initialize the sensor."""
-        super().__init__(coordinator, entries, sensor, station_info, None)
+        super().__init__(coordinator, entries, sensor, station_info, fcst_coordinator)
         self._sensor = sensor
         self._device_class = SENSOR_TYPES[self._sensor][1]
         self._name = SENSOR_TYPES[self._sensor][0]

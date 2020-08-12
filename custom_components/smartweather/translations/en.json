@@ -28,7 +28,6 @@
                     "forecast_type": "Hourly or Daily Forecast",
                     "scan_interval": "Interval between current data updates (Sec)",
                     "forecast_interval": "Interval between Forecast updates (Min)",
-                    "add_sensors": "Install individual sensors",
                     "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
                 }
             }
