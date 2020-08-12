@@ -118,11 +118,16 @@ SENSOR_TYPES = {
         "mdi:history",
         None,
     ],
-    "precip_minutes_local_day": ["Rain minutes today", "min", "mdi:timer", None],
+    "precip_minutes_local_day": [
+        "Rain minutes today",
+        "min",
+        "mdi:timer-outline",
+        None,
+    ],
     "precip_minutes_local_yesterday": [
         "Rain minutes yesterday",
         "min",
-        "mdi:timer",
+        "mdi:timer-outline",
         None,
     ],
 }
