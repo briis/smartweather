@@ -133,7 +133,7 @@ async def async_setup_entry(
 ) -> None:
 
     # Exit if user did deselect sensors and alerts on config
-    if not entry.data[CONF_ADD_SENSORS]:
+    if not entry.options[CONF_ADD_SENSORS]:
         return
 
     """Set up the Meteobridge sensor platform."""
