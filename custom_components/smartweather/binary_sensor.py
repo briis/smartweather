@@ -3,7 +3,7 @@
     This component will read the local or public weatherstation data
     and create a few binary sensors.
 
-    For a full description, go here: https://github.com/briis/hass-SmartWeather
+    For a full description, go here: https://github.com/briis/smartweather
 
     Author: Bjarne Riis
 """
@@ -18,23 +18,23 @@ except ImportError:
     # Prior to HA v0.110
     from homeassistant.components.binary_sensor import BinarySensorDevice
 
-import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
-from homeassistant.components.binary_sensor import (
-    ENTITY_ID_FORMAT,
-    PLATFORM_SCHEMA,
-)
 from homeassistant.const import (
     ATTR_ATTRIBUTION,
-    CONF_ENTITY_NAMESPACE,
-    CONF_MONITORED_CONDITIONS,
-    CONF_NAME,
+    CONF_ID,
 )
+from homeassistant.components.binary_sensor import ENTITY_ID_FORMAT
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.helpers.entity import Entity, generate_entity_id
+from .const import (
+    DOMAIN,
+    DEFAULT_ATTRIBUTION,
+    ATTR_UPDATED,
+    CONF_STATION_ID,
+    CONF_ADD_SENSORS,
+)
 
-from . import ATTRIBUTION, DATA_SMARTWEATHER
-
-DEPENDENCIES = ["smartweather"]
+from .entity import SmartWeatherEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,47 +44,51 @@ SENSOR_TYPES = {
     "lightning": ["Lightning", None, "mdi:weather-lightning", "mdi:flash-off"],
 }
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_MONITORED_CONDITIONS, default=list(SENSOR_TYPES)): vol.All(
-            cv.ensure_list, [vol.In(SENSOR_TYPES)]
-        ),
-        vol.Optional(CONF_NAME, default=DATA_SMARTWEATHER): cv.string,
-    }
-)
 
+async def async_setup_entry(
+    hass: HomeAssistantType, entry: ConfigEntry, async_add_entities
+) -> None:
+    """Add binary sensors for SmartWeather"""
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the SmartWeather binary sensor platform."""
+    # Exit if user did deselect sensors and alerts on config
+    if not entry.data[CONF_ADD_SENSORS]:
+        return
 
-    name = config.get(CONF_NAME)
-    data = hass.data[DATA_SMARTWEATHER]
+    fcst_coordinator = hass.data[DOMAIN][entry.entry_id]["fcst_coordinator"]
+    if not fcst_coordinator.data:
+        return
 
-    if data.data.timestamp is None:
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    if not coordinator.data:
+        return
+
+    station_info = hass.data[DOMAIN][entry.entry_id]["station"]
+    if not station_info:
         return
 
     sensors = []
-    for variable in config[CONF_MONITORED_CONDITIONS]:
-        sensors.append(SmartWeatherBinarySensor(hass, data, variable, name))
-        _LOGGER.debug("Binary ensor added: %s", variable)
-
-    add_entities(sensors, True)
-
-
-class SmartWeatherBinarySensor(BinarySensorDevice):
-    """ Implementation of a SmartWeather Weatherflow Current Sensor. """
-
-    def __init__(self, hass, data, condition, name):
-        """Initialize the sensor."""
-        self._condition = condition
-        self.data = data
-        self._device_class = SENSOR_TYPES[self._condition][1]
-        self._name = SENSOR_TYPES[self._condition][0]
-        self.entity_id = generate_entity_id(
-            ENTITY_ID_FORMAT,
-            "{} {}".format(name, SENSOR_TYPES[self._condition][0]),
-            hass=hass,
+    for sensor in SENSOR_TYPES:
+        sensors.append(
+            SmartWeatherBinarySensor(
+                coordinator, entry.data, sensor, station_info, fcst_coordinator
+            )
         )
+        _LOGGER.debug(f"BINARY SENSOR ADDED: {sensor}")
+
+    async_add_entities(sensors, True)
+
+    return True
+
+
+class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorDevice):
+    """ Implementation of a SmartWeather Weatherflow Binary Sensor. """
+
+    def __init__(self, coordinator, entries, sensor, station_info, fcst_coordinator):
+        """Initialize the sensor."""
+        super().__init__(coordinator, entries, sensor, station_info, fcst_coordinator)
+        self._sensor = sensor
+        self._device_class = SENSOR_TYPES[self._sensor][1]
+        self._name = f"{DOMAIN.capitalize()} {SENSOR_TYPES[self._sensor][0]}"
 
     @property
     def name(self):
@@ -94,33 +98,28 @@ class SmartWeatherBinarySensor(BinarySensorDevice):
     @property
     def is_on(self):
         """Return the state of the sensor."""
-        if hasattr(self.data.data, self._condition):
-            variable = getattr(self.data.data, self._condition)
-            if not (variable is None):
-                return variable
-        return None
+        return getattr(self.coordinator.data[0], self._sensor) is True
 
     @property
     def icon(self):
         """Icon to use in the frontend."""
         return (
-            SENSOR_TYPES[self._condition][2]
-            if getattr(self.data.data, self._condition)
-            else SENSOR_TYPES[self._condition][3]
+            SENSOR_TYPES[self._sensor][2]
+            if getattr(self.coordinator.data[0], self._sensor)
+            else SENSOR_TYPES[self._sensor][3]
         )
 
     @property
     def device_class(self):
         """Return the device class of the sensor."""
-        return SENSOR_TYPES[self._condition][1]
+        return SENSOR_TYPES[self._sensor][1]
 
-    @property
-    def device_state_attributes(self):
-        """Return the state attributes of the device."""
-        attr = {}
-        attr[ATTR_ATTRIBUTION] = ATTRIBUTION
-        return attr
-
-    def update(self):
-        """Update current conditions."""
-        self.data.update()
+    # @property
+    # def device_state_attributes(self):
+    #     """Return the state attributes of the device."""
+    #     return {
+    #         ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+    #         # ATTR_STATION_NAME: getattr(self.coordinator.data[0], "station_name", None),
+    #         # ATTR_STATION_NAME: self._station,
+    #         # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
+    #     }

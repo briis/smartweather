@@ -1,0 +1,36 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "WeatherFlow SmartWeather",
+                "description": "Access local Weather Station data via SmartWeather API.",
+                "data": {
+                    "api_key": "SmartWeather API Key",
+                    "station_id": "A SmartWeather Station ID",
+                    "forecast_type": "Hourly or Daily Forecast",
+                    "scan_interval": "Interval between current data updates (Sec)",
+                    "forecast_interval": "Interval between Forecast updates (Min)",
+                    "add_sensors": "Install individual sensors",
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                }
+            }
+        },
+        "error": {
+            "api_error": "Invalid API Key. Go here: https://weatherflow.github.io/SmartWeather/api/#object-model",
+            "station_error": "Invalid Station ID, or Station has no data.",
+            "station_exists": "This Station ID is already configured. Select another Station."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "forecast_type": "Hourly or Daily Forecast",
+                    "scan_interval": "Interval between current data updates (Sec)",
+                    "forecast_interval": "Interval between Forecast updates (Min)",
+                    "wind_unit": "Wind Unit to use. (Only applicable if using Metric Units)"
+                }
+            }
+        }
+    }
+}

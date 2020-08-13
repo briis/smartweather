@@ -1,8 +1,13 @@
 {
     "domain": "smartweather",
-    "name": "WeatherFlow Smart Weather Component for Home Assistant",
+    "name": "WeatherFlow Smart Weather",
     "documentation": "https://github.com/briis/smartweather",
+    "config_flow": true,
     "dependencies": [],
-    "codeowners": ["@briis"],
-    "requirements": ["pysmartweatherio==0.2.8", "python-forecastio==1.4.0"]
+    "codeowners": [
+        "@briis"
+    ],
+    "requirements": [
+        "pysmartweatherio==2.0.8"
+    ]
 }

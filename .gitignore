@@ -113,3 +113,4 @@ custom_components/.DS_Store
 .DS_Store
 .DS_Store
 .devcontainer/secrets.yaml
+custom_components/smartweather/__init__org.py

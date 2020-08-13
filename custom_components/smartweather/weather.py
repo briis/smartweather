@@ -1,300 +1,261 @@
-"""
-    Support for the SmartWeather Weatherstation from WeatherFlow
-    This component will read the local or public weatherstation data
-    and create sensors for each type.
-    Support for retrieving meteorological data from Dark Sky.
-
-    For a full description, go here: https://github.com/briis/hass-SmartWeather
-
-    Author: Bjarne Riis
-"""
+"""Support for the SmartWeather weather service."""
 import logging
-from datetime import datetime, timedelta
-
-from requests.exceptions import ConnectionError as ConnectError
-from requests.exceptions import HTTPError, Timeout
-
-import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
-from homeassistant.components.weather import (ATTR_FORECAST_CONDITION,
-                                              ATTR_FORECAST_PRECIPITATION,
-                                              ATTR_FORECAST_TEMP,
-                                              ATTR_FORECAST_TEMP_LOW,
-                                              ATTR_FORECAST_TIME,
-                                              ATTR_FORECAST_WIND_BEARING,
-                                              ATTR_FORECAST_WIND_SPEED,
-                                              PLATFORM_SCHEMA)
-from homeassistant.const import (CONF_API_KEY, CONF_LATITUDE, CONF_LONGITUDE,
-                                 CONF_MODE, CONF_NAME, TEMP_CELSIUS,
-                                 TEMP_FAHRENHEIT)
-from homeassistant.util import Throttle
-from homeassistant.util.temperature import convert as convert_temperature
-
-from . import DATA_SMARTWEATHER, WeatherEntityExtended
-
-DEPENDENCIES = ['smartweather']
+from typing import Dict, List
+from homeassistant.components.weather import (
+    ATTR_FORECAST_CONDITION,
+    ATTR_FORECAST_PRECIPITATION,
+    ATTR_FORECAST_PRECIPITATION_PROBABILITY,
+    ATTR_FORECAST_TEMP,
+    ATTR_FORECAST_TEMP_LOW,
+    ATTR_FORECAST_TIME,
+    ATTR_FORECAST_WIND_BEARING,
+    ATTR_FORECAST_WIND_SPEED,
+    ATTR_WEATHER_ATTRIBUTION,
+    ATTR_WEATHER_HUMIDITY,
+    ATTR_WEATHER_OZONE,
+    ATTR_WEATHER_PRESSURE,
+    ATTR_WEATHER_TEMPERATURE,
+    ATTR_WEATHER_WIND_BEARING,
+    ATTR_WEATHER_WIND_SPEED,
+    WeatherEntity,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (
+    CONF_ID,
+    LENGTH_METERS,
+    LENGTH_MILES,
+    LENGTH_KILOMETERS,
+    PRESSURE_HPA,
+    PRESSURE_INHG,
+    TEMP_CELSIUS,
+)
+from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.util.dt import utc_from_timestamp
+import homeassistant.helpers.device_registry as dr
+from .const import (
+    DOMAIN,
+    ATTR_UPDATED,
+    ATTR_CURRENT_ICON,
+    ATTR_FCST_UV,
+    DEFAULT_ATTRIBUTION,
+    DEVICE_TYPE_WEATHER,
+    FORECAST_TYPE_DAILY,
+    FORECAST_TYPE_HOURLY,
+    CONDITION_CLASSES,
+    CONF_STATION_ID,
+    CONF_FORECAST_TYPE,
+)
+from .entity import SmartWeatherEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-ATTRIBUTION = "Powered by Dark Sky and SmartWeather Weather Station"
 
-FORECAST_MODE = ['hourly', 'daily']
+async def async_setup_entry(
+    hass: HomeAssistantType, entry: ConfigEntry, async_add_entities
+) -> None:
+    """Add a weather entity from station_id."""
 
-MAP_CONDITION = {
-    'clear-day': 'sunny',
-    'clear-night': 'clear-night',
-    'rain': 'rainy',
-    'snow': 'snowy',
-    'sleet': 'snowy-rainy',
-    'wind': 'windy',
-    'fog': 'fog',
-    'cloudy': 'cloudy',
-    'partly-cloudy-day': 'partlycloudy',
-    'partly-cloudy-night': 'partlycloudy',
-    'hail': 'hail',
-    'thunderstorm': 'lightning',
-    'tornado': None,
-}
+    unit_system = "metric" if hass.config.units.is_metric else "imperial"
 
-CONF_UNITS = 'units'
+    fcst_coordinator = hass.data[DOMAIN][entry.entry_id]["fcst_coordinator"]
+    if not fcst_coordinator.data:
+        return
 
-DEFAULT_NAME = 'smartweather'
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    if not coordinator.data:
+        return
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
-    vol.Required(CONF_API_KEY): cv.string,
-    vol.Optional(CONF_LATITUDE): cv.latitude,
-    vol.Optional(CONF_LONGITUDE): cv.longitude,
-    vol.Optional(CONF_MODE, default='hourly'): vol.In(FORECAST_MODE),
-    vol.Optional(CONF_UNITS): vol.In(['auto', 'si', 'us', 'ca', 'uk', 'uk2']),
-    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-})
+    station_info = hass.data[DOMAIN][entry.entry_id]["station"]
+    if not station_info:
+        return
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=3)
+    fcst_type = hass.data[DOMAIN][entry.entry_id]["fcst_type"]
+    if not fcst_type:
+        return
 
+    weather_entity = SmartWeatherWeather(
+        coordinator,
+        entry.data,
+        DEVICE_TYPE_WEATHER,
+        station_info,
+        fcst_coordinator,
+        unit_system,
+        fcst_type,
+    )
 
-def setup_platform(hass, config, add_entities, discovery_info=None):
-    """Set up the Dark Sky weather."""
-    latitude = config.get(CONF_LATITUDE, hass.config.latitude)
-    longitude = config.get(CONF_LONGITUDE, hass.config.longitude)
-    name = config.get(CONF_NAME)
-    mode = config.get(CONF_MODE)
-    sw_currently = hass.data[DATA_SMARTWEATHER]
+    async_add_entities([weather_entity], True)
 
-    _LOGGER.debug("Weather API Key: " + config.get(CONF_API_KEY))
-
-    units = config.get(CONF_UNITS)
-    if not units:
-        units = 'ca' if hass.config.units.is_metric else 'us'
-
-    dark_sky = DarkSkyData(
-        config.get(CONF_API_KEY), latitude, longitude, units)
-
-    add_entities([DarkSkyWeather(name, dark_sky, mode, sw_currently)], True)
+    return True
 
 
-class DarkSkyWeather(WeatherEntityExtended):
-    """Representation of a weather condition."""
+class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
+    """Representation of a weather entity."""
 
-    def __init__(self, name, dark_sky, mode, sw_currently):
-        """Initialize Dark Sky weather."""
-        self._name = name
-        self._dark_sky = dark_sky
-        self._mode = mode
-
-        self._ds_data = None
-        self._ds_currently = None
-        self._ds_hourly = None
-        self._ds_daily = None
-        self._sw_currently = sw_currently
+    def __init__(
+        self,
+        coordinator,
+        entries,
+        device_type,
+        server,
+        fcst_coordinator,
+        unit_system,
+        fcst_type,
+    ) -> None:
+        """Initialize the SmartWeather weather entity."""
+        super().__init__(coordinator, entries, device_type, server, fcst_coordinator)
+        self._name = f"{DOMAIN.capitalize()} {entries[CONF_ID]}"
+        self._unit_system = unit_system
+        self._forecast_type = fcst_type
 
     @property
-    def attribution(self):
-        """Return the attribution."""
-        return ATTRIBUTION
-
-    @property
-    def name(self):
+    def name(self) -> str:
         """Return the name of the sensor."""
         return self._name
 
     @property
-    def temperature(self):
+    def temperature(self) -> int:
         """Return the temperature."""
-        temperature = self._sw_currently.data.temperature
-        # if 'us' in self._dark_sky.units:
-        #     return round(
-        #         convert_temperature(temperature, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
-        return temperature
+        if self._current is not None:
+            # Current Temperature is in Fahrenheit if Units is Imperial
+            # we need to convert back to C, as HA also is converting
+            # if self._unit_system == "imperial":
+            #     return (self._current.air_temperature - 32) / 1.8
+            # else:
+            #     return self._current.air_temperature
+            return self._current.air_temperature
+
+        return None
 
     @property
-    def temperature_unit(self):
+    def temperature_unit(self) -> str:
         """Return the unit of measurement."""
-        return TEMP_FAHRENHEIT if 'us' in self._dark_sky.units \
-            else TEMP_CELSIUS
+        return TEMP_CELSIUS
 
     @property
-    def dewpoint(self):
-        """Return the dewpoint."""
-        dewpoint = self._sw_currently.data.dewpoint
-        # if 'us' in self._dark_sky.units:
-        #     return round(
-        #         convert_temperature(dewpoint, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
-        return dewpoint
-
-    @property
-    def feels_like(self):
-        """Return the calculated Feels Like Temperature"""
-        feels_like = self._sw_currently.data.feels_like_temperature
-        # if 'us' in self._dark_sky.units:
-        #     return round(
-        #         convert_temperature(feels_like, TEMP_CELSIUS, TEMP_FAHRENHEIT), 2)
-        return feels_like
-
-    @property
-    def humidity(self):
+    def humidity(self) -> int:
         """Return the humidity."""
-        return self._sw_currently.data.humidity
+        if self._current is not None:
+            return self._current.relative_humidity
+        return None
 
     @property
-    def wind_speed(self):
+    def wind_speed(self) -> float:
         """Return the wind speed."""
-        return self._sw_currently.data.wind_speed if 'us' in self._dark_sky.units \
-            else round(self._sw_currently.data.wind_speed * 3.6, 1)
+        if self._current is not None:
+            return self._current.wind_avg
+        return None
 
     @property
-    def wind_gust(self):
-        """Return the wind gust."""
-        return self._sw_currently.data.wind_gust if 'us' in self._dark_sky.units \
-            else round(self._sw_currently.data.wind_gust * 3.6, 1)
+    def wind_gust(self) -> float:
+        """Return the wind Gust."""
+        if self._current is not None:
+            return self._current.wind_gust
+        return None
 
     @property
-    def wind_lull(self):
-        """Return the wind lull."""
-        return self._sw_currently.data.wind_lull if 'us' in self._dark_sky.units \
-            else round(self._sw_currently.data.wind_lull * 3.6, 1)
-
-    @property
-    def wind_bearing(self):
+    def wind_bearing(self) -> int:
         """Return the wind bearing."""
-        return self._sw_currently.data.wind_bearing
+        if self._current is not None:
+            return self._current.wind_bearing
+        return None
 
     @property
-    def precipitation(self):
-        """Return Precipitation for today."""
-        return str(self._sw_currently.data.precipitation)
+    def precipitation(self) -> float:
+        """Return the precipitation."""
+        if self._current is not None:
+            return self._current.precip_accum_local_day
+        return None
 
     @property
-    def precipitation_rate(self):
-        """Return Precipitation Rate."""
-        return str(self._sw_currently.data.precipitation_rate)
-
-    @property
-    def ozone(self):
-        """Return the ozone level."""
-        return self._ds_currently.get('ozone')
-
-    @property
-    def pressure(self):
+    def pressure(self) -> int:
         """Return the pressure."""
-        return self._sw_currently.data.pressure
+        if self._current is not None:
+            return round(self._current.station_pressure, 2)
+        return None
 
     @property
-    def visibility(self):
-        """Return the visibility."""
-        return self._ds_currently.get('visibility')
+    def uv(self) -> int:
+        """Return the UV Index."""
+        if self._current is not None:
+            return round(self._current.uv, 1)
+        return None
 
     @property
-    def condition(self):
+    def current_condition(self) -> int:
+        """Return Current Condition Icon."""
+        if self._forecast is not None:
+            return self._forecast.current_icon
+        return None
+
+    @property
+    def condition(self) -> str:
         """Return the weather condition."""
-        return MAP_CONDITION.get(self._ds_currently.get('icon'))
+        return next(
+            (k for k, v in CONDITION_CLASSES.items() if self.current_condition in v),
+            None,
+        )
 
     @property
-    def forecast(self):
-        """Return the forecast array."""
-        # Per conversation with Joshua Reyes of Dark Sky, to get the total
-        # forecasted precipitation, you have to multiple the intensity by
-        # the hours for the forecast interval
-        def calc_precipitation(intensity, hours):
-            amount = None
-            if intensity is not None:
-                amount = round((intensity * hours), 1)
-            return amount if amount > 0 else None
+    def attribution(self) -> str:
+        """Return the attribution."""
+        return DEFAULT_ATTRIBUTION
 
-        data = None
+    @property
+    def device_state_attributes(self) -> Dict:
+        """Return SmartWeather specific attributes."""
+        return {
+            ATTR_CURRENT_ICON: self.current_condition,
+            ATTR_FCST_UV: self.uv,
+            ATTR_WEATHER_HUMIDITY: self.humidity,
+            ATTR_WEATHER_PRESSURE: self.pressure,
+            ATTR_WEATHER_TEMPERATURE: self.temperature,
+            ATTR_WEATHER_WIND_BEARING: self.wind_bearing,
+            ATTR_WEATHER_WIND_SPEED: self.wind_speed,
+        }
 
-        if self._mode == 'daily':
-            data = [{
-                ATTR_FORECAST_TIME:
-                    datetime.fromtimestamp(entry.d.get('time')).isoformat(),
-                ATTR_FORECAST_TEMP:
-                    entry.d.get('temperatureHigh'),
-                ATTR_FORECAST_TEMP_LOW:
-                    entry.d.get('temperatureLow'),
-                ATTR_FORECAST_PRECIPITATION:
-                    calc_precipitation(entry.d.get('precipIntensity'), 24),
-                ATTR_FORECAST_WIND_SPEED:
-                    entry.d.get('windSpeed'),
-                ATTR_FORECAST_WIND_BEARING:
-                    entry.d.get('windBearing'),
-                ATTR_FORECAST_CONDITION:
-                    MAP_CONDITION.get(entry.d.get('icon'))
-            } for entry in self._ds_daily.data]
-        else:
-            data = [{
-                ATTR_FORECAST_TIME:
-                    datetime.fromtimestamp(entry.d.get('time')).isoformat(),
-                ATTR_FORECAST_TEMP:
-                    entry.d.get('temperature'),
-                ATTR_FORECAST_PRECIPITATION:
-                    calc_precipitation(entry.d.get('precipIntensity'), 1),
-                ATTR_FORECAST_CONDITION:
-                    MAP_CONDITION.get(entry.d.get('icon'))
-            } for entry in self._ds_hourly.data]
+    @property
+    def forecast(self) -> List:
+        """Return the forecast."""
+        if self.fcst_coordinator.data is None or len(self.fcst_coordinator.data) < 2:
+            return None
+
+        data = []
+
+        for forecast in self.fcst_coordinator.data:
+            condition = next(
+                (k for k, v in CONDITION_CLASSES.items() if forecast.icon in v), None,
+            )
+
+            if self._forecast_type == FORECAST_TYPE_DAILY:
+                data.append(
+                    {
+                        ATTR_FORECAST_TIME: utc_from_timestamp(
+                            forecast.epochtime
+                        ).isoformat(),
+                        ATTR_FORECAST_TEMP: forecast.temp_high,
+                        ATTR_FORECAST_TEMP_LOW: forecast.temp_low,
+                        ATTR_FORECAST_PRECIPITATION: forecast.precip,
+                        ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
+                        ATTR_FORECAST_CONDITION: condition,
+                        ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
+                        ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
+                        "icon": forecast.icon,  # REMOVE when we know all icons
+                    }
+                )
+            else:
+                data.append(
+                    {
+                        ATTR_FORECAST_TIME: utc_from_timestamp(
+                            forecast.epochtime
+                        ).isoformat(),
+                        ATTR_FORECAST_TEMP: forecast.temperature,
+                        ATTR_FORECAST_PRECIPITATION: forecast.precip,
+                        ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
+                        ATTR_FORECAST_CONDITION: condition,
+                        ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
+                        ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
+                        "icon": forecast.icon,  # REMOVE when we know all icons
+                    }
+                )
 
         return data
-
-    def update(self):
-        """Get the latest data from Dark Sky."""
-        self._dark_sky.update()
-
-        self._ds_data = self._dark_sky.data
-        self._ds_currently = self._dark_sky.currently.d
-        self._ds_hourly = self._dark_sky.hourly
-        self._ds_daily = self._dark_sky.daily
-
-
-class DarkSkyData:
-    """Get the latest data from Dark Sky."""
-
-    def __init__(self, api_key, latitude, longitude, units):
-        """Initialize the data object."""
-        self._api_key = api_key
-        self.latitude = latitude
-        self.longitude = longitude
-        self.requested_units = units
-
-        self.data = None
-        self.currently = None
-        self.hourly = None
-        self.daily = None
-
-    @Throttle(MIN_TIME_BETWEEN_UPDATES)
-    def update(self):
-        """Get the latest data from Dark Sky."""
-        import forecastio
-
-        try:
-            self.data = forecastio.load_forecast(
-                self._api_key, self.latitude, self.longitude,
-                units=self.requested_units)
-            self.currently = self.data.currently()
-            self.hourly = self.data.hourly()
-            self.daily = self.data.daily()
-        except (ConnectError, HTTPError, Timeout, ValueError) as error:
-            _LOGGER.error("Unable to connect to Dark Sky. %s", error)
-            self.data = None
-
-    @property
-    def units(self):
-        """Get the unit system of returned data."""
-        return self.data.json.get('flags').get('units')
