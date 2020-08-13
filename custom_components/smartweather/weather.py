@@ -121,10 +121,12 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         if self._current is not None:
             # Current Temperature is in Fahrenheit if Units is Imperial
             # we need to convert back to C, as HA also is converting
-            if self._unit_system == "imperial":
-                return (self._current.air_temperature - 32) / 1.8
-            else:
-                return self._current.air_temperature
+            # if self._unit_system == "imperial":
+            #     return (self._current.air_temperature - 32) / 1.8
+            # else:
+            #     return self._current.air_temperature
+            return self._current.air_temperature
+
         return None
 
     @property
@@ -203,7 +205,7 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
 
     @property
     def device_state_attributes(self) -> Dict:
-        """Return Weatherbit specific attributes."""
+        """Return SmartWeather specific attributes."""
         return {
             ATTR_STATION_ID: self._station_id,
             ATTR_CURRENT_ICON: self.current_condition,

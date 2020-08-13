@@ -1,7 +1,11 @@
 """Base Entity definition for SmartWeather Integration."""
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.device_registry as dr
-from homeassistant.const import ATTR_ATTRIBUTION
+from typing import Dict, List
+from homeassistant.const import (
+    ATTR_ATTRIBUTION,
+    ATTR_FRIENDLY_NAME,
+)
 from .const import (
     DOMAIN,
     ATTR_BRAND,
@@ -66,6 +70,13 @@ class SmartWeatherEntity(Entity):
     def available(self):
         """Return if entity is available."""
         return self.coordinator.last_update_success
+
+    @property
+    def device_state_attributes(self) -> Dict:
+        """Return SmartWeather specific attributes."""
+        return {
+            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+        }
 
     async def async_added_to_hass(self):
         """When entity is added to hass."""

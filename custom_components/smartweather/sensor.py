@@ -183,7 +183,7 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
         self._units = units
         self._sensor = sensor
         self._state = None
-        self._name = SENSOR_TYPES[self._sensor][0]
+        self._name = f"{DOMAIN.capitalize()} {SENSOR_TYPES[self._sensor][0]}"
 
     @property
     def name(self):
@@ -217,12 +217,12 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
         """Return the device class of the sensor."""
         return SENSOR_TYPES[self._sensor][3]
 
-    @property
-    def device_state_attributes(self):
-        """Return the state attributes of the device."""
+    # @property
+    # def device_state_attributes(self):
+    #     """Return the state attributes of the device."""
 
-        return {
-            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-            # ATTR_STATION_NAME: self._station_name,
-            # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
-        }
+    #     return {
+    #         ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+    #         # ATTR_STATION_NAME: self._station_name,
+    #         # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
+    #     }
