@@ -29,7 +29,6 @@ from homeassistant.helpers.entity import Entity, generate_entity_id
 from .const import (
     DOMAIN,
     DEFAULT_ATTRIBUTION,
-    ATTR_STATION_NAME,
     ATTR_UPDATED,
     CONF_STATION_ID,
     CONF_ADD_SENSORS,

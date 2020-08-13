@@ -34,9 +34,7 @@ from homeassistant.util.dt import utc_from_timestamp
 import homeassistant.helpers.device_registry as dr
 from .const import (
     DOMAIN,
-    ATTR_STATION_NAME,
     ATTR_UPDATED,
-    ATTR_STATION_ID,
     ATTR_CURRENT_ICON,
     ATTR_FCST_UV,
     DEFAULT_ATTRIBUTION,
@@ -106,7 +104,6 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         """Initialize the SmartWeather weather entity."""
         super().__init__(coordinator, entries, device_type, server, fcst_coordinator)
         self._name = f"{DOMAIN.capitalize()} {entries[CONF_ID]}"
-        self._station_id = entries[CONF_STATION_ID]
         self._unit_system = unit_system
         self._forecast_type = fcst_type
 
@@ -207,10 +204,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def device_state_attributes(self) -> Dict:
         """Return SmartWeather specific attributes."""
         return {
-            ATTR_STATION_ID: self._station_id,
             ATTR_CURRENT_ICON: self.current_condition,
             ATTR_FCST_UV: self.uv,
-            ATTR_WEATHER_ATTRIBUTION: DEFAULT_ATTRIBUTION,
             ATTR_WEATHER_HUMIDITY: self.humidity,
             ATTR_WEATHER_PRESSURE: self.pressure,
             ATTR_WEATHER_TEMPERATURE: self.temperature,

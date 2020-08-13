@@ -19,9 +19,9 @@ from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAI
 
 DOMAIN = "smartweather"
 
-ATTR_STATION_NAME = "station_name"
+ATTR_SMARTWEATHER_STATION_NAME = "station_name"
+ATTR_SMARTWEATHER_STATION_ID = "station_id"
 ATTR_UPDATED = "updated"
-ATTR_STATION_ID = "station_id"
 ATTR_BRAND = "Brand"
 ATTR_CURRENT_ICON = "current_icon"
 ATTR_FCST_UV = "uv"

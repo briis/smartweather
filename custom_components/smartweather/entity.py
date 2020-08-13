@@ -9,8 +9,7 @@ from homeassistant.const import (
 from .const import (
     DOMAIN,
     ATTR_BRAND,
-    ATTR_STATION_NAME,
-    ATTR_STATION_ID,
+    ATTR_SMARTWEATHER_STATION_ID,
     ATTR_UPDATED,
     CONF_STATION_ID,
     DEFAULT_BRAND,
@@ -76,6 +75,7 @@ class SmartWeatherEntity(Entity):
         """Return SmartWeather specific attributes."""
         return {
             ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+            ATTR_SMARTWEATHER_STATION_ID: self._device_key,
         }
 
     async def async_added_to_hass(self):
