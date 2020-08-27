@@ -163,7 +163,7 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def precipitation(self) -> float:
         """Return the precipitation."""
         if self._current is not None:
-            return self._current.precip_accum_local_day
+            return round(self._current.precip_accum_local_day, 1)
         return None
 
     @property
