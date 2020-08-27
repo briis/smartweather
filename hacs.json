@@ -1,4 +1,11 @@
 {
   "name": "WeatherFlow Smart Weather Component for Home Assistant",
-  "domains": ["binary_sensor", "sensor", "weather"]
+  "domains": [
+    "binary_sensor",
+    "sensor",
+    "weather"
+  ],
+  "iot_class": [
+    "Cloud Polling"
+  ]
 }
