@@ -1,5 +1,6 @@
 {
   "name": "WeatherFlow Smart Weather",
+  "render_readme": false,
   "domains": [
     "binary_sensor",
     "sensor",
