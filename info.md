@@ -1,4 +1,5 @@
 # Smart Weather for Home Assistant
+
 {% if prerelease %}
 
 #### THIS IS A BETA RELEASE AND HAS BREAKING CHANGES IF YOU HAVE THE OLD VERSION RUNNING
@@ -27,8 +28,8 @@ So when upgrading do the following in this order:
 6. When HA is back online, go to *Configuration* and then *Integrations*, click the + sign in the bottom right, and search for SmartWeather.
 7. Fill out the Configuration Options, and click *Submit*. You should now have all the Devices and Entities configured.
 
-
 {% else %}
+
 This a *custom integration* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Smart Weather weather station produced by *WeatherFlow* and Forecast data from *Dark Sky*.
 
 ![GitHub release](https://img.shields.io/github/release/briis/smartweather.svg)
@@ -169,4 +170,5 @@ Default value: SmartWeather<br>
 **mode**<br>
 (string)(Optional) *hourly* for hour based forecast, and *daily* for day based forecast<br>
 Default value: hourly
+
 {% endif %}
