@@ -234,7 +234,7 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                         ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temp_high,
                         ATTR_FORECAST_TEMP_LOW: forecast.temp_low,
-                        ATTR_FORECAST_PRECIPITATION: forecast.precip,
+                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1),
                         ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
@@ -249,7 +249,7 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                             forecast.epochtime
                         ).isoformat(),
                         ATTR_FORECAST_TEMP: forecast.temperature,
-                        ATTR_FORECAST_PRECIPITATION: forecast.precip,
+                        ATTR_FORECAST_PRECIPITATION: round(forecast.precip, 1),
                         ATTR_FORECAST_PRECIPITATION_PROBABILITY: forecast.precip_probability,
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
