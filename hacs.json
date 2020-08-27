@@ -1,5 +1,5 @@
 {
-  "name": "WeatherFlow weather Integration",
+  "name": "WeatherFlow Smart Weather",
   "domains": [
     "binary_sensor",
     "sensor",
