@@ -55,9 +55,9 @@ CONDITION_CLASSES = {
     "clear-night": ["cc-clear-night", "clear-night"],
     "cloudy": ["cc-cloudy", "cloudy"],
     "exceptional": [],
-    "fog": [741],
-    "hail": [623],
-    "lightning": [230, 231],
+    "fog": ["cc-fog", "fog"],
+    "hail": ["cc-hail", "hail"],
+    "lightning": ["cc-thunderstorm", "thunderstorm"],
     "lightning-rainy": [200, 201, 202],
     "partlycloudy": [
         "cc-partly-cloudy-day",
