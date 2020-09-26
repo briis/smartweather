@@ -69,7 +69,7 @@ CONDITION_CLASSES = {
         "cc-possibly-rainy-day",
         "cc-possibly-rainy-night",
     ],
-    "pouring": [502, 522],
+    "pouring": ["cc-thunderstorm", "thunderstorm"],
     "rainy": ["rainy", "chance-rain", "cc-rainy", "cc-chance-rain",],
     "snowy": [600, 601, 602, 621, 622, 623],
     "snowy-rainy": [610, 611, 612],
