@@ -60,4 +60,5 @@ During installation you will have the option of selecting if you want to:
 * have Daily or Hourly based Forecast data
 * use mps or km/h as wind unit if you use the Metric unit system
 * set the interval for updating current data anf forecast data
+
 These settings can also be changed after you add the Integration, by using the *Options* link on the Integration widget.
