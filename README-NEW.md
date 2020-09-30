@@ -53,3 +53,11 @@ To upgrade perform the below steps in that order:
 6. When HA is back online, go to *Configuration* and then *Integrations*, click the + sign in the bottom right, and search for SmartWeather.
 7. Fill out the Configuration Options, and click *Submit*. You should now have all the Devices and Entities configured.
 
+## Configuration
+To add SmartWeather to your installation, go to the Integration page inside the configuration panel and add a Personal Weather station by providing the API Key and Station ID of yours or a another Weatherflow Weather Station.
+
+During installation you will have the option of selecting if you want to:
+* have Daily or Hourly based Forecast data
+* use mps or km/h as wind unit if you use the Metric unit system
+* set the interval for updating current data anf forecast data
+These settings can also be changed after you add the Integration, by using the *Options* link on the Integration widget.
