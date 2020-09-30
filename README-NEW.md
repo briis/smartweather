@@ -63,8 +63,8 @@ During installation you will have the option of selecting if you want to:
 
 These settings can also be changed after you add the Integration, by using the *Options* link on the Integration widget.
 
-### API Key for SmartWeather
+#### API Key for SmartWeather
 The WeatherFlow REST API requires a API Key, but for personal use, you can use a development key, which you can [find here](https://weatherflow.github.io/SmartWeather/api/#getting-started). Please note the restrictions applied.
 
-### Station ID
+#### Station ID
 If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
