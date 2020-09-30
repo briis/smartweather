@@ -42,3 +42,14 @@ translation (Directory with all files)
 ```
 
 ### Upgrade from version 1.x
+The integration has been rewritten, to use *Config Flow* as configuration option, so if you have a previous version installed, you must first remove that.
+
+To upgrade perform the below steps in that order:
+1. Edit the *yaml* files that contain references to `smartweather` and remove them from the file. (configuration.yaml and were ever you store `sensor`, `binary_sensor` and `weather` configuration)
+2. Remove the Integration from HACS
+3. Restart Home Assistant
+4. When HA is back online go to HACS and install the new Version of *SmartWeather*
+5. Restart Home Assistant
+6. When HA is back online, go to *Configuration* and then *Integrations*, click the + sign in the bottom right, and search for SmartWeather.
+7. Fill out the Configuration Options, and click *Submit*. You should now have all the Devices and Entities configured.
+
