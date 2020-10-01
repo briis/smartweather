@@ -99,3 +99,5 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *wind_chill* - Wind Chill Temperature.
 * *wind_gust* - Wind Gust Speed.
 * *wind_direction* - Wind Direction Compass Symbol.
+
+Default they are named: `sensor.smartweather_SENSORNAME`. They all have a Unique ID, so you can rename them to whatever you like aftwards.
