@@ -1,0 +1,36 @@
+{
+    "config": {
+        "error": {
+            "api_error": "Ugyldig API-nøkkel. Gå hit: https://weatherflow.github.io/SmartWeather/api/#object-model",
+            "station_error": "Ugyldig stasjon-ID, eller stasjon har ingen data.",
+            "station_exists": "Denne stasjon-ID-en er allerede konfigurert. Velg en annen stasjon."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_key": "SmartWeather API-nøkkel",
+                    "station_id": "En SmartWeather Station ID",
+                    "forecast_type": "Prognose per time eller daglig",
+                    "scan_interval": "Intervall mellom nåværende dataoppdateringer (sek)",
+                    "forecast_interval": "Intervall mellom prognoseoppdateringer (min.)",
+                    "add_sensors": "Installer individuelle sensorer",
+                    "wind_unit": "Vindenhet til å bruke. (Gjelder bare hvis du bruker metriske enheter)"
+                },
+                "description": "Få tilgang til lokale værstasjonsdata via SmartWeather API.",
+                "title": "WeatherFlow SmartWeather"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "forecast_type": "Prognose per time eller daglig",
+                    "scan_interval": "Intervall mellom nåværende dataoppdateringer (sek)",
+                    "forecast_interval": "Intervall mellom prognoseoppdateringer (min.)",
+                    "wind_unit": "Vindenhet til å bruke. (Gjelder bare hvis du bruker metriske enheter)"
+                }
+            }
+        }
+    }
+}
