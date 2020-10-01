@@ -42,6 +42,8 @@ translation (Directory with all files)
 ```
 
 ### Upgrade from version 1.x
+**Please be aware** that the old sensor names and the new sensor names might not match. So if you use this in any Automations, Value Templates, Scripts etc. you will have to change those after adding the new component.
+
 The integration has been rewritten, to use *Config Flow* as configuration option, so if you have a previous version installed, you must first remove that.
 
 To upgrade perform the below steps in that order:
@@ -100,4 +102,4 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *wind_gust* - Wind Gust Speed.
 * *wind_direction* - Wind Direction Compass Symbol.
 
-Default they are named: `sensor.smartweather_SENSORNAME`. They all have a Unique ID, so you can rename them to whatever you like aftwards.
+Default they are named: `sensor.smartweather_SENSORNAME`. They all have a Unique ID, so you can rename them to whatever you like afterwards.
