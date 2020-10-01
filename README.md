@@ -68,3 +68,34 @@ The WeatherFlow REST API requires a API Key, but for personal use, you can use a
 
 #### Station ID
 If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
+
+## Sensors
+For each Station ID you add, the following sensors are being added to Home Assistant:
+
+* air_density - Air Density.
+* air_temperature - Outside Temperature.
+* brightness - Brightness in Lux
+* dew_point - Outside Dewpoint.
+* feels_like - Outside Feels Like Temp.
+* heat_index - Outside Heat Index.
+* lightning_strike_last_time - the date and time of last strike.
+* lightning_strike_last_distance - the distance away of last strike.
+* lightning_strike_count - the daily strike count.
+* lightning_strike_count_last_3hr - the strike count last 3hr.
+* precip_accum_last_1hr - Precipition for the Last Hour.
+* precip_accum_local_day - Precipition for the Day.
+* precip_accum_local_yesterday - Precipition for Yesterday.
+* precip_rate( - current precipitaion rate.
+* precip_minutes_local_day - Precipition Minutes Today.
+* precip_minutes_local_yesterday - Precipition Minutes Yesterday.
+* relative_humidity - relative Humidity.
+* solar_radiation - Solar Radiation.
+* station_pressure - Station Pressure.
+* timestamp  - Data Timestamp.
+* station_name - Station Name.
+* uv( - UV Index.
+* wind_avg - Wind Speed Average.
+* wind_bearing - Wind Bearing as Degree.
+* wind_chill - Wind Chill Temperature.
+* wind_gust - Wind Gust Speed.
+* wind_direction - Wind Direction Compass Symbol.
