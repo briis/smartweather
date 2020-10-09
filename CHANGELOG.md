@@ -1,4 +1,4 @@
-### V2.0.4
+### V2.0.4 - NOT RELEASED YET
 
 * Added Norwegian translation for Config Flow (Thanks to @hwikene)
 * Added Danish translation for Config Flow
