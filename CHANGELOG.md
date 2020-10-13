@@ -1,4 +1,4 @@
-### V2.0.4 - NOT RELEASED YET
+### V2.0.4
 
 * Fixed crash when returned sensor value was None - Issue #42
 * Added Norwegian translation for Config Flow (Thanks to @hwikene)
