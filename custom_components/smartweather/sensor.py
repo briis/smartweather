@@ -102,7 +102,12 @@ SENSOR_TYPES = {
     ],
     "uv": ["UV", "UV", "mdi:weather-sunny", None],
     "solar_radiation": ["Solar Radiation", "W/m2", "mdi:solar-power", None],
-    "brightness": ["Brightness", "Lx", "mdi:brightness-5", DEVICE_CLASS_ILLUMINANCE,],
+    "brightness": [
+        "Brightness",
+        "Lx",
+        "mdi:brightness-5",
+        DEVICE_CLASS_ILLUMINANCE,
+    ],
     "lightning_strike_count": ["Lightning Count", None, "mdi:weather-lightning", None],
     "lightning_strike_last_distance": [
         "Lightning Distance",
@@ -110,7 +115,12 @@ SENSOR_TYPES = {
         "mdi:weather-lightning",
         None,
     ],
-    "lightning_strike_last_time": ["Lightning Time", "", "mdi:clock-outline", None,],
+    "lightning_strike_last_time": [
+        "Lightning Time",
+        "",
+        "mdi:clock-outline",
+        None,
+    ],
     "lightning_strike_count_last_3hr": [
         "Lightning Last 3Hrs",
         "",
@@ -193,7 +203,7 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
     def state(self):
         """Return the state of the sensor."""
         value = getattr(self.coordinator.data[0], self._sensor, None)
-        if not isinstance(value, str):
+        if not isinstance(value, str) and value is not None:
             return round(value, 1)
 
         return value
