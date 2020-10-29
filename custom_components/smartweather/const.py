@@ -58,7 +58,7 @@ CONDITION_CLASSES = {
     "fog": ["cc-fog", "fog"],
     "hail": ["cc-hail", "hail"],
     "lightning": ["cc-thunderstorm", "thunderstorm"],
-    "lightning-rainy": [200, 201, 202],
+    "lightning-rainy": ["cc-possibly-thunderstorm-day", "possibly-thunderstorm-day"],
     "partlycloudy": [
         "cc-partly-cloudy-day",
         "cc-partly-cloudy-night",
@@ -70,7 +70,12 @@ CONDITION_CLASSES = {
         "cc-possibly-rainy-night",
     ],
     "pouring": ["cc-thunderstorm", "thunderstorm"],
-    "rainy": ["rainy", "chance-rain", "cc-rainy", "cc-chance-rain",],
+    "rainy": [
+        "rainy",
+        "chance-rain",
+        "cc-rainy",
+        "cc-chance-rain",
+    ],
     "snowy": [600, 601, 602, 621, 622, 623],
     "snowy-rainy": [610, 611, 612],
     "sunny": ["cc-clear-day", "clear-day"],
