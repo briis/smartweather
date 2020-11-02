@@ -29,6 +29,8 @@ from .const import (
     DOMAIN,
     ATTR_CURRENT_ICON,
     ATTR_FCST_UV,
+    ATTR_TEMP_HIGH_TODAY,
+    ATTR_TEMP_LOW_TODAY,
     DEFAULT_ATTRIBUTION,
     DEVICE_TYPE_WEATHER,
     FORECAST_TYPE_DAILY,
@@ -179,6 +181,20 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         )
 
     @property
+    def temp_high_today(self) -> float:
+        """Return Todays High Temp Forecast."""
+        if self._forecast is not None:
+            return self._forecast.temp_high_today
+        return None
+
+    @property
+    def temp_low_today(self) -> float:
+        """Return Todays Low Temp Forecast."""
+        if self._forecast is not None:
+            return self._forecast.temp_low_today
+        return None
+
+    @property
     def attribution(self) -> str:
         """Return the attribution."""
         return DEFAULT_ATTRIBUTION
@@ -194,6 +210,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
             ATTR_WEATHER_TEMPERATURE: self.temperature,
             ATTR_WEATHER_WIND_BEARING: self.wind_bearing,
             ATTR_WEATHER_WIND_SPEED: self.wind_speed,
+            ATTR_TEMP_HIGH_TODAY: self.temp_high_today,
+            ATTR_TEMP_LOW_TODAY: self.temp_low_today,
         }
 
     @property
