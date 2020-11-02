@@ -11,16 +11,10 @@ import logging
 
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import (
-    ATTR_ATTRIBUTION,
-    CONF_ID,
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_ILLUMINANCE,
     DEVICE_CLASS_PRESSURE,
     DEVICE_CLASS_TEMPERATURE,
-    LENGTH_METERS,
-    TEMP_CELSIUS,
-    TEMP_FAHRENHEIT,
-    UV_INDEX,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import HomeAssistantType
@@ -28,10 +22,6 @@ import homeassistant.helpers.device_registry as dr
 from homeassistant.util import slugify
 from .const import (
     DOMAIN,
-    DEFAULT_ATTRIBUTION,
-    DEFAULT_BRAND,
-    ATTR_UPDATED,
-    CONF_STATION_ID,
     UNIT_TYPE_TEMP,
     UNIT_TYPE_WIND,
     UNIT_TYPE_RAIN,
@@ -225,13 +215,3 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
     def device_class(self):
         """Return the device class of the sensor."""
         return SENSOR_TYPES[self._sensor][3]
-
-    # @property
-    # def device_state_attributes(self):
-    #     """Return the state attributes of the device."""
-
-    #     return {
-    #         ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-    #         # ATTR_STATION_NAME: self._station_name,
-    #         # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
-    #     }

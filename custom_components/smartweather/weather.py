@@ -10,9 +10,7 @@ from homeassistant.components.weather import (
     ATTR_FORECAST_TIME,
     ATTR_FORECAST_WIND_BEARING,
     ATTR_FORECAST_WIND_SPEED,
-    ATTR_WEATHER_ATTRIBUTION,
     ATTR_WEATHER_HUMIDITY,
-    ATTR_WEATHER_OZONE,
     ATTR_WEATHER_PRESSURE,
     ATTR_WEATHER_TEMPERATURE,
     ATTR_WEATHER_WIND_BEARING,
@@ -22,11 +20,6 @@ from homeassistant.components.weather import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_ID,
-    LENGTH_METERS,
-    LENGTH_MILES,
-    LENGTH_KILOMETERS,
-    PRESSURE_HPA,
-    PRESSURE_INHG,
     TEMP_CELSIUS,
 )
 from homeassistant.helpers.typing import HomeAssistantType
@@ -34,16 +27,12 @@ from homeassistant.util.dt import utc_from_timestamp
 import homeassistant.helpers.device_registry as dr
 from .const import (
     DOMAIN,
-    ATTR_UPDATED,
     ATTR_CURRENT_ICON,
     ATTR_FCST_UV,
     DEFAULT_ATTRIBUTION,
     DEVICE_TYPE_WEATHER,
     FORECAST_TYPE_DAILY,
-    FORECAST_TYPE_HOURLY,
     CONDITION_CLASSES,
-    CONF_STATION_ID,
-    CONF_FORECAST_TYPE,
 )
 from .entity import SmartWeatherEntity
 
@@ -116,12 +105,6 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def temperature(self) -> int:
         """Return the temperature."""
         if self._current is not None:
-            # Current Temperature is in Fahrenheit if Units is Imperial
-            # we need to convert back to C, as HA also is converting
-            # if self._unit_system == "imperial":
-            #     return (self._current.air_temperature - 32) / 1.8
-            # else:
-            #     return self._current.air_temperature
             return self._current.air_temperature
 
         return None
@@ -223,7 +206,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
 
         for forecast in self.fcst_coordinator.data:
             condition = next(
-                (k for k, v in CONDITION_CLASSES.items() if forecast.icon in v), None,
+                (k for k, v in CONDITION_CLASSES.items() if forecast.icon in v),
+                None,
             )
 
             if self._forecast_type == FORECAST_TYPE_DAILY:

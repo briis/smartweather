@@ -2,15 +2,10 @@
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.device_registry as dr
 from typing import Dict, List
-from homeassistant.const import (
-    ATTR_ATTRIBUTION,
-    ATTR_FRIENDLY_NAME,
-)
+from homeassistant.const import ATTR_ATTRIBUTION
 from .const import (
     DOMAIN,
-    ATTR_BRAND,
     ATTR_SMARTWEATHER_STATION_ID,
-    ATTR_UPDATED,
     CONF_STATION_ID,
     DEFAULT_BRAND,
     DEFAULT_ATTRIBUTION,
