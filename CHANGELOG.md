@@ -1,8 +1,8 @@
-### V2.0.5 (NOT RELEASED YET)
+### V2.0.5
 
 * Added two new Attributes to Weather Card `today_high_temp` and `today_low_temp` which gives the forecasted High and Low temperature for the current day.
-* Based on latest information from WeatherFlow, the Condition Icons have now been finalized.
-* Forecasted precipitation is now reported as null, if there is now precipitation expected. This is the standard used throughout Home Assistant.
+* Based on latest information from WeatherFlow, the Condition Icons have now been finalized. That will fix Issue #44
+* Forecasted precipitation is now reported as null, if there is now precipitation expected. This is the standard used throughout Home Assistant. Fixing Issue #45
 
 ### V2.0.4
 
