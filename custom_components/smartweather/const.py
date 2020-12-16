@@ -65,7 +65,7 @@ CONDITION_CLASSES = {
         "partly-cloudy-day",
         "partly-cloudy-night",
     ],
-    "pouring": ["rainy"],
+    # "pouring": ["rainy"],
     "rainy": [
         "rainy",
         "possibly-rainy-day",
@@ -75,5 +75,5 @@ CONDITION_CLASSES = {
     "snowy-rainy": ["sleet", "possibly-sleet-day", "possibly-sleet-night"],
     "sunny": ["clear-day"],
     "windy": ["windy"],
-    "windy-variant": ["windy"],
+    # "windy-variant": ["windy"],
 }

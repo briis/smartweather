@@ -1,3 +1,7 @@
+### UNRELEASED
+
+* `FIXED` Pouring was shown as condition and icon, when WeatherFlow was reporting *rainy*. The *pouring* condition does not exist in the API, so this has been removed, and *rainy* will now be the default value.
+
 ### V2.0.5
 
 * Added two new Attributes to Weather Card `today_high_temp` and `today_low_temp` which gives the forecasted High and Low temperature for the current day.
