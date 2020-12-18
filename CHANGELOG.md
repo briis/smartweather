@@ -1,6 +1,7 @@
 ### UNRELEASED
 
 * `FIXED` Pouring was shown as condition and icon, when WeatherFlow was reporting *rainy*. The *pouring* condition does not exist in the API, so this has been removed, and *rainy* will now be the default value.
+* `ADDED`: There is now a new sensor being created for each battery powered HW device attached to the Hub. This sensor shows the current Volt for each of the devices. The sensor will update its state every hour. Closing Issue #46
 
 ### V2.0.5
 
