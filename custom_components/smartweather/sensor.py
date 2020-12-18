@@ -8,9 +8,11 @@
     Author: Bjarne Riis
 """
 import logging
+from typing import Dict
 
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import (
+    ATTR_ATTRIBUTION,
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_ILLUMINANCE,
     DEVICE_CLASS_PRESSURE,
@@ -22,6 +24,9 @@ from homeassistant.helpers.typing import HomeAssistantType
 import homeassistant.helpers.device_registry as dr
 from homeassistant.util import slugify
 from .const import (
+    ATTR_DEVICE_TYPE,
+    ATTR_SMARTWEATHER_STATION_ID,
+    DEFAULT_ATTRIBUTION,
     DOMAIN,
     UNIT_TYPE_TEMP,
     UNIT_TYPE_WIND,
@@ -259,3 +264,24 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
     def device_class(self):
         """Return the device class of the sensor."""
         return SENSOR_TYPES[self._sensor][3]
+
+    @property
+    def device_state_attributes(self) -> Dict:
+        """Return SmartWeather specific attributes."""
+        if "battery" in self._sensor:
+            value_type = None
+            for row in self.device_coordinator.data:
+                if str(row.device_id) in self._sensor:
+                    value_type = row.device_type_desc
+                    break
+
+            return {
+                ATTR_DEVICE_TYPE: value_type,
+                ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+                ATTR_SMARTWEATHER_STATION_ID: self._device_key,
+            }
+        else:
+            return {
+                ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+                ATTR_SMARTWEATHER_STATION_ID: self._device_key,
+            }

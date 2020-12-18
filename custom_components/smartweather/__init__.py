@@ -191,7 +191,7 @@ async def _async_get_or_create_smartweather_device_in_registry(
         identifiers={(DOMAIN, device_key)},
         manufacturer=DEFAULT_BRAND,
         name=svr["station_name"],
-        model=DEFAULT_BRAND,
+        model=svr["station_type"],
         sw_version=svr["firmware_revision"],
     )
 

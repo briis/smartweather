@@ -29,7 +29,7 @@ class SmartWeatherEntity(Entity):
 
         self._entity = entity
         self._platform_serial = self.server["serial_number"]
-        self._platform_id = DEFAULT_BRAND
+        self._platform_id = server["station_type"]
         self._device_key = f"{self.entries[CONF_STATION_ID]}"
         if self._entity == DEVICE_TYPE_WEATHER:
             self._unique_id = self._device_key

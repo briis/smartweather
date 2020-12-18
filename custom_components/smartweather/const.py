@@ -21,6 +21,7 @@ DOMAIN = "smartweather"
 
 ATTR_SMARTWEATHER_STATION_NAME = "station_name"
 ATTR_SMARTWEATHER_STATION_ID = "station_id"
+ATTR_DEVICE_TYPE = "device_type"
 ATTR_TEMP_HIGH_TODAY = "temp_high_today"
 ATTR_TEMP_LOW_TODAY = "temp_low_today"
 ATTR_UPDATED = "updated"
