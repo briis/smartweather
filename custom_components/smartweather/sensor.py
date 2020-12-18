@@ -237,8 +237,8 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
                     break
         else:
             value = getattr(self.coordinator.data[0], self._sensor, None)
-        if not isinstance(value, str) and value is not None:
-            return round(value, 1)
+            if not isinstance(value, str) and value is not None:
+                return round(value, 1)
 
         return value
 
