@@ -16,17 +16,20 @@ from .const import (
 class SmartWeatherEntity(Entity):
     """Base class for SmartWeather Entities."""
 
-    def __init__(self, coordinator, entries, entity, server, fcst_coordinator):
+    def __init__(
+        self, coordinator, entries, entity, server, fcst_coordinator, device_coordinator
+    ):
         """Initialize the SmartWeather Entity."""
         super().__init__()
         self.coordinator = coordinator
         self.fcst_coordinator = fcst_coordinator
+        self.device_coordinator = device_coordinator
         self.entries = entries
         self.server = server
 
         self._entity = entity
         self._platform_serial = self.server["serial_number"]
-        self._platform_id = self.server["station_type"]
+        self._platform_id = DEFAULT_BRAND
         self._device_key = f"{self.entries[CONF_STATION_ID]}"
         if self._entity == DEVICE_TYPE_WEATHER:
             self._unique_id = self._device_key
@@ -82,3 +85,8 @@ class SmartWeatherEntity(Entity):
         self.async_on_remove(
             self.fcst_coordinator.async_add_listener(self.async_write_ha_state)
         )
+
+        if self.device_coordinator is not None:
+            self.async_on_remove(
+                self.device_coordinator.async_add_listener(self.async_write_ha_state)
+            )

@@ -93,7 +93,9 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         fcst_type,
     ) -> None:
         """Initialize the SmartWeather weather entity."""
-        super().__init__(coordinator, entries, device_type, server, fcst_coordinator)
+        super().__init__(
+            coordinator, entries, device_type, server, fcst_coordinator, None
+        )
         self._name = f"{DOMAIN.capitalize()} {entries[CONF_ID]}"
         self._unit_system = unit_system
         self._forecast_type = fcst_type

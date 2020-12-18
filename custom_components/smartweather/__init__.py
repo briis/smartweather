@@ -38,12 +38,12 @@ from .const import (
     CONF_WIND_UNIT,
     CONF_FORECAST_TYPE,
     CONF_FORECAST_INTERVAL,
+    DEFAULT_DEVICE_INTERVAL,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_FORECAST_INTERVAL,
     DEFAULT_BRAND,
     SMARTWEATHER_PLATFORMS,
     FORECAST_TYPE_DAILY,
-    FORECAST_TYPE_HOURLY,
     UNIT_WIND_MS,
 )
 
@@ -101,6 +101,14 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
         ),
     )
 
+    device_coordinator = DataUpdateCoordinator(
+        hass,
+        _LOGGER,
+        name=DOMAIN,
+        update_method=smartweather.get_device_data,
+        update_interval=timedelta(minutes=DEFAULT_DEVICE_INTERVAL),
+    )
+
     fcst_type = entry.options.get(CONF_FORECAST_TYPE, FORECAST_TYPE_DAILY)
     if fcst_type == FORECAST_TYPE_DAILY:
         # Update Forecast with Daily data
@@ -131,6 +139,7 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
 
     try:
         station_info = await smartweather.get_station_hardware()
+        station_data = station_info[0]
     except InvalidApiKey:
         _LOGGER.error(
             "Could not Authorize against Weatherflow Server. Please reinstall integration."
@@ -145,17 +154,19 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry) -> bool
 
     # Fetch initial data so we have data when entities subscribe
     await coordinator.async_refresh()
+    await device_coordinator.async_refresh()
     await fcst_coordinator.async_refresh()
     hass.data[DOMAIN][entry.entry_id] = {
         "coordinator": coordinator,
+        "device_coordinator": device_coordinator,
         "fcst_coordinator": fcst_coordinator,
         "smw": smartweather,
-        "station": station_info,
+        "station": station_data,
         "fcst_type": fcst_type,
     }
 
     await _async_get_or_create_smartweather_device_in_registry(
-        hass, entry, station_info
+        hass, entry, station_data
     )
 
     for platform in SMARTWEATHER_PLATFORMS:
@@ -180,7 +191,7 @@ async def _async_get_or_create_smartweather_device_in_registry(
         identifiers={(DOMAIN, device_key)},
         manufacturer=DEFAULT_BRAND,
         name=svr["station_name"],
-        model=svr["station_type"],
+        model=DEFAULT_BRAND,
         sw_version=svr["firmware_revision"],
     )
 

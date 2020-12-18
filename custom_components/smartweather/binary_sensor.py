@@ -85,7 +85,9 @@ class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorDevice):
 
     def __init__(self, coordinator, entries, sensor, station_info, fcst_coordinator):
         """Initialize the sensor."""
-        super().__init__(coordinator, entries, sensor, station_info, fcst_coordinator)
+        super().__init__(
+            coordinator, entries, sensor, station_info, fcst_coordinator, None
+        )
         self._sensor = sensor
         self._device_class = SENSOR_TYPES[self._sensor][1]
         self._name = f"{DOMAIN.capitalize()} {SENSOR_TYPES[self._sensor][0]}"
