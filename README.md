@@ -65,8 +65,8 @@ During installation you will have the option of selecting if you want to:
 
 These settings can also be changed after you add the Integration, by using the *Options* link on the Integration widget.
 
-### API Key for SmartWeather
-The WeatherFlow REST API requires a API Key, but for personal use, ~~you can use a development key, which you can [find here](https://weatherflow.github.io/SmartWeather/api/#getting-started). Please note the restrictions applied~~. The Development Key is no longer Public available, so unless you have a Personal API Key, this Integration cannot be used, before the final changes to the new API has been released. 
+### Token for SmartWeather
+The WeatherFlow REST API requires a Token. If you own a WeatherFlow station you can [login with your account](https://tempestwx.com/settings/tokens) and create the token.
 
 WeatherFlow is releasing a new Authorization flow, so in the future you will have to obtain your own personal key, or use Oauth2 to retrieve data. The *developer key* will continue to operate through the end of 2020, but after that, you will need to obtain your own key. You can read [more here](https://weatherflow.github.io/Tempest/api/oauth.html) on how to obtain your own key - please note Oauth2 is not currently implemented in this integration.
 
@@ -103,5 +103,6 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *wind_chill* - Wind Chill Temperature.
 * *wind_gust* - Wind Gust Speed.
 * *wind_direction* - Wind Direction Compass Symbol.
+* *battery_DEVICE_NAME* - Reporting the current Voltage of each unit attached to the Hub. There will be one sensor per device.
 
 Default they are named: `sensor.smartweather_SENSORNAME`. They all have a Unique ID, so you can rename them to whatever you like afterwards.
