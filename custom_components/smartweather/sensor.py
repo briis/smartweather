@@ -47,6 +47,12 @@ SENSOR_TYPES = {
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
     ],
+    "air_density": [
+        "Air Density",
+        "kg/m3",
+        "mdi:weight-kilogram",
+        None,
+    ],
     "feels_like": [
         "Feels Like",
         UNIT_TYPE_TEMP,
@@ -92,6 +98,12 @@ SENSOR_TYPES = {
     "relative_humidity": ["Humidity", "%", "mdi:water-percent", DEVICE_CLASS_HUMIDITY],
     "station_pressure": [
         "Pressure",
+        UNIT_TYPE_PRESSURE,
+        "mdi:gauge",
+        DEVICE_CLASS_PRESSURE,
+    ],
+    "sea_level_pressure": [
+        "Sea Level Pressure",
         UNIT_TYPE_PRESSURE,
         "mdi:gauge",
         DEVICE_CLASS_PRESSURE,

@@ -1,3 +1,10 @@
+### V2.2
+
+*Released January 7th, 2021*
+
+* `ADDED` New sensor called `sensor.smartweather_air_density` showing the recorded Air Density at the station.
+* `ADDED` New sensor called `sensor.smartweather_sea_level_pressure` showing the Sea Level Pressure as opposed to the Station Pressure.
+
 ### V2.1
 
 *Released December 19th, 2020*
