@@ -95,6 +95,7 @@ SENSOR_TYPES = {
         "mdi:weather-rainy",
         None,
     ],
+    "pressure_trend": ["Pressure Trend", None, "mdi:trending-up", None],
     "relative_humidity": ["Humidity", "%", "mdi:water-percent", DEVICE_CLASS_HUMIDITY],
     "station_pressure": [
         "Pressure",
@@ -127,6 +128,12 @@ SENSOR_TYPES = {
         "Lightning Time",
         "",
         "mdi:clock-outline",
+        None,
+    ],
+    "lightning_strike_count_last_1hr": [
+        "Lightning Last 1Hrs",
+        "",
+        "mdi:history",
         None,
     ],
     "lightning_strike_count_last_3hr": [

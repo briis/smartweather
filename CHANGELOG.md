@@ -4,6 +4,8 @@
 
 * `ADDED` New sensor called `sensor.smartweather_air_density` showing the recorded Air Density at the station.
 * `ADDED` New sensor called `sensor.smartweather_sea_level_pressure` showing the Sea Level Pressure as opposed to the Station Pressure.
+* `ADDED` New sensor called `sensor.smartweather_pressure_trend` showing the Pressure trend in text.
+* `ADDED` New sensor called `sensor.smartweather_lightning_last_1hrs` showing the number of Lightnings strikes for the last 1 hour
 
 ### V2.1
 
