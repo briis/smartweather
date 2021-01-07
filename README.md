@@ -85,16 +85,19 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *lightning_strike_last_time* - the date and time of last strike.
 * *lightning_strike_last_distance* - the distance away of last strike.
 * *lightning_strike_count* - the daily strike count.
-* *lightning_strike_count_last_3hr* - the strike count last 3hr.
+* *lightning_strike_count_last_1hr* - the strike count last 1 hour.
+* *lightning_strike_count_last_3hr* - the strike count last 3 hours.
 * *precip_accum_last_1hr* - Precipition for the Last Hour.
 * *precip_accum_local_day* - Precipition for the Day.
 * *precip_accum_local_yesterday* - Precipition for Yesterday.
 * *precip_rate* - current precipitaion rate.
 * *precip_minutes_local_day* - Precipition Minutes Today.
 * *precip_minutes_local_yesterday* - Precipition Minutes Yesterday.
+* *pressure_trend* - The pressure trend in text form. (Only english)
 * *relative_humidity* - relative Humidity.
 * *solar_radiation* - Solar Radiation.
 * *station_pressure* - Station Pressure.
+* *sea_level_pressure* - SEa Level Pressure.
 * *timestamp*  - Data Timestamp.
 * *station_name* - Station Name.
 * *uv* - UV Index.
