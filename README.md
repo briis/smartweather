@@ -97,9 +97,7 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *relative_humidity* - relative Humidity.
 * *solar_radiation* - Solar Radiation.
 * *station_pressure* - Station Pressure.
-* *sea_level_pressure* - SEa Level Pressure.
-* *timestamp*  - Data Timestamp.
-* *station_name* - Station Name.
+* *sea_level_pressure* - Sea Level Pressure.
 * *uv* - UV Index.
 * *wind_avg* - Wind Speed Average.
 * *wind_bearing* - Wind Bearing as Degree.
