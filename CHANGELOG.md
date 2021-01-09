@@ -1,8 +1,9 @@
 ### V2.2.1
 
-*Released January 7th, 2021*
+*Released January 9th, 2021*
 
 * `FIXED`: WeatherFlow has released a new version of their Forecast API, which removed some fields, causing the Integration to fail. This is corrected with this Hotfix.
+
 ### V2.2
 
 *Released January 7th, 2021*
