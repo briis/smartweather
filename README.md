@@ -65,6 +65,8 @@ During installation you will have the option of selecting if you want to:
 
 These settings can also be changed after you add the Integration, by using the *Options* link on the Integration widget.
 
+You can configure more than 1 instance of the Integration by either using a different Station ID, og by using the same Station ID, but then a different Forecast Type (Daily / Hourly). If you select the last option de-select the check-box `Install individual sensors` as this will only create the same sensors two times.
+
 ### Token for SmartWeather
 The WeatherFlow REST API requires a Token. If you own a WeatherFlow station you can [login with your account](https://tempestwx.com/settings/tokens) and create the token.
 
