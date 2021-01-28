@@ -184,13 +184,14 @@ async def _async_get_or_create_smartweather_device_in_registry(
     hass: HomeAssistantType, entry: ConfigEntry, svr
 ) -> None:
     device_registry = await dr.async_get_registry(hass)
-    device_key = f"{entry.data[CONF_STATION_ID]}"
+    device_key = f"{entry.data[CONF_STATION_ID]}_{entry.data[CONF_FORECAST_TYPE]}"
+    _LOGGER.debug("DEVICE KEY: %s", device_key)
     device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
         connections={(dr.CONNECTION_NETWORK_MAC, device_key)},
         identifiers={(DOMAIN, device_key)},
         manufacturer=DEFAULT_BRAND,
-        name=svr["station_name"],
+        name=f"{svr['station_name']} ({entry.data[CONF_FORECAST_TYPE].capitalize()})",
         model=svr["station_type"],
         sw_version=svr["firmware_revision"],
     )
