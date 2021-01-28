@@ -39,120 +39,203 @@ from .entity import SmartWeatherEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-# Sensor types are defined like: Name, Unit Type, icon, device class
+# Sensor types are defined like: Name, Unit Type, icon, device class, Ignore on 0 Value
 SENSOR_TYPES = {
     "air_temperature": [
         "Temperature",
         UNIT_TYPE_TEMP,
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
+        False,
     ],
     "air_density": [
         "Air Density",
         "kg/m3",
         "mdi:weight-kilogram",
         None,
+        False,
     ],
     "feels_like": [
         "Feels Like",
         UNIT_TYPE_TEMP,
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
+        False,
     ],
     "heat_index": [
         "Heat Index",
         UNIT_TYPE_TEMP,
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
+        False,
     ],
     "wind_chill": [
         "Wind Chill",
         UNIT_TYPE_TEMP,
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
+        False,
     ],
     "dew_point": [
         "Dewpoint",
         UNIT_TYPE_TEMP,
         "mdi:thermometer",
         DEVICE_CLASS_TEMPERATURE,
+        False,
     ],
-    "wind_avg": ["Wind Speed", UNIT_TYPE_WIND, "mdi:weather-windy", None],
-    "wind_bearing": ["Wind Bearing", "°", "mdi:compass-outline", None],
-    "wind_direction": ["Wind Direction", None, "mdi:compass-outline", None],
-    "wind_gust": ["Wind Gust", UNIT_TYPE_WIND, "mdi:weather-windy", None],
-    "precip_accum_local_day": ["Rain today", UNIT_TYPE_RAIN, "mdi:weather-rainy", None],
-    "precip_rate": ["Rain rate", UNIT_TYPE_RAIN, "mdi:weather-pouring", None],
+    "wind_avg": [
+        "Wind Speed",
+        UNIT_TYPE_WIND,
+        "mdi:weather-windy",
+        None,
+        False,
+    ],
+    "wind_bearing": [
+        "Wind Bearing",
+        "°",
+        "mdi:compass-outline",
+        None,
+        False,
+    ],
+    "wind_direction": [
+        "Wind Direction",
+        None,
+        "mdi:compass-outline",
+        None,
+        False,
+    ],
+    "wind_gust": [
+        "Wind Gust",
+        UNIT_TYPE_WIND,
+        "mdi:weather-windy",
+        None,
+        False,
+    ],
+    "precip_accum_local_day": [
+        "Rain today",
+        UNIT_TYPE_RAIN,
+        "mdi:weather-rainy",
+        None,
+        False,
+    ],
+    "precip_rate": [
+        "Rain rate",
+        UNIT_TYPE_RAIN,
+        "mdi:weather-pouring",
+        None,
+        False,
+    ],
     "precip_accum_last_1hr": [
         "Rain last hour",
         UNIT_TYPE_RAIN,
         "mdi:weather-rainy",
         None,
+        False,
     ],
     "precip_accum_local_yesterday": [
         "Rain yesterday",
         UNIT_TYPE_RAIN,
         "mdi:weather-rainy",
         None,
+        False,
     ],
-    "pressure_trend": ["Pressure Trend", None, "mdi:trending-up", None],
-    "relative_humidity": ["Humidity", "%", "mdi:water-percent", DEVICE_CLASS_HUMIDITY],
+    "pressure_trend": [
+        "Pressure Trend",
+        None,
+        "mdi:trending-up",
+        None,
+        False,
+    ],
+    "relative_humidity": [
+        "Humidity",
+        "%",
+        "mdi:water-percent",
+        DEVICE_CLASS_HUMIDITY,
+        True,
+    ],
     "station_pressure": [
         "Pressure",
         UNIT_TYPE_PRESSURE,
         "mdi:gauge",
         DEVICE_CLASS_PRESSURE,
+        True,
     ],
     "sea_level_pressure": [
         "Sea Level Pressure",
         UNIT_TYPE_PRESSURE,
         "mdi:gauge",
         DEVICE_CLASS_PRESSURE,
+        True,
     ],
-    "uv": ["UV", "UV", "mdi:weather-sunny", None],
-    "solar_radiation": ["Solar Radiation", "W/m2", "mdi:solar-power", None],
+    "uv": [
+        "UV",
+        "UV",
+        "mdi:weather-sunny",
+        None,
+        False,
+    ],
+    "solar_radiation": [
+        "Solar Radiation",
+        "W/m2",
+        "mdi:solar-power",
+        None,
+        False,
+    ],
     "brightness": [
         "Brightness",
         "Lx",
         "mdi:brightness-5",
         DEVICE_CLASS_ILLUMINANCE,
+        False,
     ],
-    "lightning_strike_count": ["Lightning Count", None, "mdi:weather-lightning", None],
+    "lightning_strike_count": [
+        "Lightning Count",
+        None,
+        "mdi:weather-lightning",
+        None,
+        False,
+    ],
     "lightning_strike_last_distance": [
         "Lightning Distance",
         UNIT_TYPE_DISTANCE,
         "mdi:weather-lightning",
         None,
+        False,
     ],
     "lightning_strike_last_time": [
         "Lightning Time",
         "",
         "mdi:clock-outline",
         None,
+        False,
     ],
     "lightning_strike_count_last_1hr": [
         "Lightning Last 1Hrs",
         "",
         "mdi:history",
         None,
+        False,
     ],
     "lightning_strike_count_last_3hr": [
         "Lightning Last 3Hrs",
         "",
         "mdi:history",
         None,
+        False,
     ],
     "precip_minutes_local_day": [
         "Rain minutes today",
         "min",
         "mdi:timer-outline",
         None,
+        False,
     ],
     "precip_minutes_local_yesterday": [
         "Rain minutes yesterday",
         "min",
         "mdi:timer-outline",
         None,
+        False,
     ],
 }
 
@@ -262,6 +345,8 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
         else:
             value = getattr(self.coordinator.data[0], self._sensor, None)
             if not isinstance(value, str) and value is not None:
+                if SENSOR_TYPES[self._sensor][4] and value == 0:
+                    return
                 return round(value, 1)
 
         return value
