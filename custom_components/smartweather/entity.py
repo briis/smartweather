@@ -6,6 +6,7 @@ from homeassistant.const import ATTR_ATTRIBUTION
 from .const import (
     DOMAIN,
     ATTR_SMARTWEATHER_STATION_ID,
+    CONF_FORECAST_TYPE,
     CONF_STATION_ID,
     DEFAULT_BRAND,
     DEFAULT_ATTRIBUTION,
@@ -30,7 +31,9 @@ class SmartWeatherEntity(Entity):
         self._entity = entity
         self._platform_serial = self.server["serial_number"]
         self._platform_id = server["station_type"]
-        self._device_key = f"{self.entries[CONF_STATION_ID]}"
+        self._device_key = (
+            f"{self.entries[CONF_STATION_ID]}_{self.entries[CONF_FORECAST_TYPE]}"
+        )
         if self._entity == DEVICE_TYPE_WEATHER:
             self._unique_id = self._device_key
         else:

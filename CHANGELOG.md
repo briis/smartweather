@@ -1,3 +1,10 @@
+### V2.2.2
+
+*Released January 29th, 2021*
+
+* `FIXED`: Issue #52, where 0 values were reported if there was a glitch in the retrival of data from WeatherFlow. Certain sensors, like the Pressure Sensors, will not update, until a valid numbers is received.
+* `ADDED`: Issue #51 and #53. There is now the possibility to add the same Station ID twice, with a different Forecast Type. So if you want to both have the Daily and Hourly Forecast data, then add the station again, but this time select the Forecast Type you did not have setup already. I recommend that on the second install, you de-select the check-box `Install individual sensors` so that you don't get the sensors double.
+
 ### V2.2.1
 
 *Released January 9th, 2021*
