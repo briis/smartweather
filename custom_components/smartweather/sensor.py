@@ -206,7 +206,7 @@ SENSOR_TYPES = {
         "Lightning Time",
         "",
         "mdi:clock-outline",
-        None,
+        "timestamp",
         False,
     ],
     "lightning_strike_count_last_1hr": [
