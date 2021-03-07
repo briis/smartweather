@@ -3,6 +3,7 @@
 *Released March 7th, 2021*
 
 * `FIXED`: Added version number to `manifest.json` as required by Home Assistant V2021.3.x
+* `FIXED`: Issue #60. Lightning Strike Time is now displayed as device class `timestamp` and will as such act differently in Lovelace Cards.
 
 ### V2.2.2
 
