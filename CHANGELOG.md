@@ -1,3 +1,9 @@
+### V2.2.3
+
+*Released March 7th, 2021*
+
+* `FIXED`: Added version number to `manifest.json` as required by Home Assistant V2021.3.x
+
 ### V2.2.2
 
 *Released February 1st, 2021*
