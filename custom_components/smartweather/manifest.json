@@ -4,12 +4,12 @@
     "documentation": "https://github.com/briis/smartweather",
     "issue_tracker": "https://github.com/briis/smartweather/issues",
     "config_flow": true,
-    "version": "2.2.3",
+    "version": "2.2.4",
     "dependencies": [],
     "codeowners": [
         "@briis"
     ],
     "requirements": [
-        "pysmartweatherio==2.1.7"
+        "pysmartweatherio==2.1.8"
     ]
 }

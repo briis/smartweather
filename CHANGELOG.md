@@ -1,3 +1,9 @@
+### V2.2.4
+
+*Released: NOT RELEASED YET*
+
+* `FIXED`: When using daily forecast, todays forecast was never delivered, due to a bug in the IO module. Fixing issue #67.
+
 ### V2.2.3
 
 *Released March 7th, 2021*
