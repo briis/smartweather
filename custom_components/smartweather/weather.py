@@ -245,7 +245,6 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
                         ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
-                        "icon": forecast.icon,  # REMOVE when we know all icons
                     }
                 )
             else:
@@ -262,7 +261,6 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
                         ATTR_FORECAST_CONDITION: condition,
                         ATTR_FORECAST_WIND_SPEED: forecast.wind_avg,
                         ATTR_FORECAST_WIND_BEARING: forecast.wind_bearing,
-                        "icon": forecast.icon,  # REMOVE when we know all icons
                     }
                 )
 
