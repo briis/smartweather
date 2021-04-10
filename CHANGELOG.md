@@ -3,6 +3,7 @@
 *Released: NOT RELEASED YET*
 
 * `FIXED`: When using daily forecast, todays forecast was never delivered, due to a bug in the IO module. Fixing issue #67.
+* `CHANGE`: Code has been cleaned up. Removing obsolete definitions and variables.
 
 ### V2.2.3
 
