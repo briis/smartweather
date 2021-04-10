@@ -22,7 +22,6 @@ from homeassistant.helpers import aiohttp_client
 from homeassistant import config_entries, core
 import homeassistant.helpers.config_validation as cv
 from homeassistant.core import callback
-from homeassistant.util import slugify
 
 from .const import (
     DOMAIN,
@@ -34,7 +33,6 @@ from .const import (
     CONF_FORECAST_TYPE,
     CONF_FORECAST_INTERVAL,
     FORECAST_TYPE_DAILY,
-    FORECAST_TYPE_HOURLY,
     FORECAST_TYPES,
     UNIT_WIND_MS,
     WIND_UNITS,

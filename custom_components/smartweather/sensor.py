@@ -22,17 +22,18 @@ from homeassistant.const import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import HomeAssistantType
 import homeassistant.helpers.device_registry as dr
-from homeassistant.util import slugify
-from .const import (
-    ATTR_DEVICE_TYPE,
-    ATTR_SMARTWEATHER_STATION_ID,
-    DEFAULT_ATTRIBUTION,
-    DOMAIN,
+from pysmartweatherio import (
     UNIT_TYPE_TEMP,
     UNIT_TYPE_WIND,
     UNIT_TYPE_RAIN,
     UNIT_TYPE_PRESSURE,
     UNIT_TYPE_DISTANCE,
+)
+from .const import (
+    ATTR_DEVICE_TYPE,
+    ATTR_SMARTWEATHER_STATION_ID,
+    DEFAULT_ATTRIBUTION,
+    DOMAIN,
     CONF_ADD_SENSORS,
 )
 from .entity import SmartWeatherEntity

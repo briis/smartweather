@@ -25,6 +25,7 @@ from homeassistant.const import (
 from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.util.dt import utc_from_timestamp
 import homeassistant.helpers.device_registry as dr
+from pysmartweatherio import FORECAST_TYPE_DAILY
 from .const import (
     DOMAIN,
     ATTR_CURRENT_ICON,
@@ -33,7 +34,6 @@ from .const import (
     ATTR_TEMP_LOW_TODAY,
     DEFAULT_ATTRIBUTION,
     DEVICE_TYPE_WEATHER,
-    FORECAST_TYPE_DAILY,
     CONDITION_CLASSES,
 )
 from .entity import SmartWeatherEntity

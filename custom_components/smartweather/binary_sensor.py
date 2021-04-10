@@ -20,17 +20,15 @@ except ImportError:
 
 from homeassistant.const import (
     ATTR_ATTRIBUTION,
-    CONF_ID,
 )
 from homeassistant.components.binary_sensor import ENTITY_ID_FORMAT
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.helpers.entity import Entity, generate_entity_id
 from .const import (
+    ATTR_SMARTWEATHER_STATION_ID,
     DOMAIN,
     DEFAULT_ATTRIBUTION,
-    ATTR_UPDATED,
-    CONF_STATION_ID,
     CONF_ADD_SENSORS,
 )
 
@@ -116,12 +114,10 @@ class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorDevice):
         """Return the device class of the sensor."""
         return SENSOR_TYPES[self._sensor][1]
 
-    # @property
-    # def device_state_attributes(self):
-    #     """Return the state attributes of the device."""
-    #     return {
-    #         ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-    #         # ATTR_STATION_NAME: getattr(self.coordinator.data[0], "station_name", None),
-    #         # ATTR_STATION_NAME: self._station,
-    #         # ATTR_UPDATED: getattr(self.coordinator.data[0], "timestamp", None),
-    #     }
+    @property
+    def device_state_attributes(self):
+        """Return the state attributes of the device."""
+        return {
+            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
+            ATTR_SMARTWEATHER_STATION_ID: self._device_key,
+        }

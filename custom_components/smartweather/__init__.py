@@ -6,14 +6,12 @@ import asyncio
 
 from pysmartweatherio import (
     SmartWeather,
-    SmartWeatherError,
     InvalidApiKey,
     RequestError,
     ResultError,
 )
 
 from homeassistant.const import (
-    CONF_ID,
     CONF_API_KEY,
     CONF_SCAN_INTERVAL,
 )
@@ -30,6 +28,10 @@ from homeassistant.helpers.dispatcher import (
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType, HomeAssistantType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+from pysmartweatherio import (
+    FORECAST_TYPE_DAILY,
+    UNIT_WIND_MS,
+)
 
 from .const import (
     DOMAIN,
@@ -43,8 +45,6 @@ from .const import (
     DEFAULT_FORECAST_INTERVAL,
     DEFAULT_BRAND,
     SMARTWEATHER_PLATFORMS,
-    FORECAST_TYPE_DAILY,
-    UNIT_WIND_MS,
 )
 
 _LOGGER = logging.getLogger(__name__)

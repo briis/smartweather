@@ -4,18 +4,10 @@ import logging
 from pysmartweatherio import (
     UNIT_WIND_MS,
     UNIT_WIND_KMH,
-    UNIT_TYPE_TEMP,
-    UNIT_TYPE_WIND,
-    UNIT_TYPE_RAIN,
-    UNIT_TYPE_PRESSURE,
-    UNIT_TYPE_DISTANCE,
-    FORECAST_TYPE_DAILY,
-    FORECAST_TYPE_HOURLY,
-    FORECAST_TYPES,
 )
 
-from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
-from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
+# from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
+# from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
 
 DOMAIN = "smartweather"
 
@@ -67,7 +59,6 @@ CONDITION_CLASSES = {
         "partly-cloudy-day",
         "partly-cloudy-night",
     ],
-    # "pouring": ["rainy"],
     "rainy": [
         "rainy",
         "possibly-rainy-day",
@@ -77,5 +68,4 @@ CONDITION_CLASSES = {
     "snowy-rainy": ["sleet", "possibly-sleet-day", "possibly-sleet-night"],
     "sunny": ["clear-day"],
     "windy": ["windy"],
-    # "windy-variant": ["windy"],
 }
