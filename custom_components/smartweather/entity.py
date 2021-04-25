@@ -1,8 +1,9 @@
 """Base Entity definition for SmartWeather Integration."""
+from typing import Dict
 from homeassistant.helpers.entity import Entity
 import homeassistant.helpers.device_registry as dr
-from typing import Dict, List
 from homeassistant.const import ATTR_ATTRIBUTION
+
 from .const import (
     DOMAIN,
     ATTR_SMARTWEATHER_STATION_ID,
@@ -54,8 +55,8 @@ class SmartWeatherEntity(Entity):
         """Return Forecast Data Array."""
         if self.fcst_coordinator is None:
             return None
-        else:
-            return self.fcst_coordinator.data[0]
+
+        return self.fcst_coordinator.data[0]
 
     @property
     def device_info(self):

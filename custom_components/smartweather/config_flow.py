@@ -1,39 +1,33 @@
 """ Config Flow to configure SmartWeather Integration. """
 import logging
+import voluptuous as vol
 
 from pysmartweatherio import (
+    FORECAST_TYPE_DAILY,
+    FORECAST_TYPES,
     SmartWeather,
-    SmartWeatherError,
     InvalidApiKey,
-    RequestError,
     ResultError,
 )
 
-import voluptuous as vol
-
-from homeassistant import config_entries
 from homeassistant.const import (
     CONF_ID,
     CONF_API_KEY,
     CONF_SCAN_INTERVAL,
 )
-
 from homeassistant.helpers import aiohttp_client
-from homeassistant import config_entries, core
-import homeassistant.helpers.config_validation as cv
+from homeassistant import config_entries
 from homeassistant.core import callback
 
 from .const import (
-    DOMAIN,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_FORECAST_INTERVAL,
+    DOMAIN,
     CONF_STATION_ID,
     CONF_WIND_UNIT,
     CONF_ADD_SENSORS,
     CONF_FORECAST_TYPE,
     CONF_FORECAST_INTERVAL,
-    FORECAST_TYPE_DAILY,
-    FORECAST_TYPES,
     UNIT_WIND_MS,
     WIND_UNITS,
 )

@@ -6,9 +6,6 @@ from pysmartweatherio import (
     UNIT_WIND_KMH,
 )
 
-# from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
-# from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
-
 DOMAIN = "smartweather"
 
 ATTR_SMARTWEATHER_STATION_NAME = "station_name"

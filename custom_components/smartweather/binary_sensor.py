@@ -8,23 +8,12 @@
     Author: Bjarne Riis
 """
 import logging
-from datetime import timedelta
 
-try:
-    from homeassistant.components.binary_sensor import (
-        BinarySensorEntity as BinarySensorDevice,
-    )
-except ImportError:
-    # Prior to HA v0.110
-    from homeassistant.components.binary_sensor import BinarySensorDevice
-
-from homeassistant.const import (
-    ATTR_ATTRIBUTION,
-)
-from homeassistant.components.binary_sensor import ENTITY_ID_FORMAT
+from homeassistant.components.binary_sensor import BinarySensorEntity
+from homeassistant.const import ATTR_ATTRIBUTION
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.typing import HomeAssistantType
-from homeassistant.helpers.entity import Entity, generate_entity_id
+from homeassistant.core import HomeAssistant
+
 from .const import (
     ATTR_SMARTWEATHER_STATION_ID,
     DOMAIN,
@@ -44,7 +33,7 @@ SENSOR_TYPES = {
 
 
 async def async_setup_entry(
-    hass: HomeAssistantType, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
     """Add binary sensors for SmartWeather"""
 
@@ -71,14 +60,14 @@ async def async_setup_entry(
                 coordinator, entry.data, sensor, station_info, fcst_coordinator
             )
         )
-        _LOGGER.debug(f"BINARY SENSOR ADDED: {sensor}")
+        _LOGGER.debug("BINARY SENSOR ADDED: %s", sensor)
 
     async_add_entities(sensors, True)
 
     return True
 
 
-class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorDevice):
+class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorEntity):
     """ Implementation of a SmartWeather Weatherflow Binary Sensor. """
 
     def __init__(self, coordinator, entries, sensor, station_info, fcst_coordinator):

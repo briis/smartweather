@@ -20,8 +20,8 @@ from homeassistant.const import (
     DEVICE_CLASS_VOLTAGE,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.typing import HomeAssistantType
-import homeassistant.helpers.device_registry as dr
+from homeassistant.core import HomeAssistant
+
 from pysmartweatherio import (
     UNIT_TYPE_TEMP,
     UNIT_TYPE_WIND,
@@ -242,34 +242,34 @@ SENSOR_TYPES = {
 
 
 async def async_setup_entry(
-    hass: HomeAssistantType, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
 
     # Exit if user did deselect sensors and alerts on config
     if not entry.data[CONF_ADD_SENSORS]:
-        return
+        return False
 
-    """Set up the Meteobridge sensor platform."""
+    # Set up the Meteobridge sensor platform.
     fcst_coordinator = hass.data[DOMAIN][entry.entry_id]["fcst_coordinator"]
     if not fcst_coordinator.data:
-        return
+        return False
 
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     if not coordinator.data:
-        return
+        return False
 
     device_coordinator = hass.data[DOMAIN][entry.entry_id]["device_coordinator"]
     if not device_coordinator.data:
-        return
+        return False
 
     smartweather = hass.data[DOMAIN][entry.entry_id]["smw"]
     if not smartweather:
-        return
+        return False
     units = await smartweather.get_units()
 
     station_info = hass.data[DOMAIN][entry.entry_id]["station"]
     if not station_info:
-        return
+        return False
 
     for sensor in device_coordinator.data:
         # Append Batteri Devices to SENSOR_TYPES
@@ -295,7 +295,7 @@ async def async_setup_entry(
                 device_coordinator,
             )
         )
-        _LOGGER.debug(f"SENSOR ADDED: {sensor}")
+        _LOGGER.debug("SENSOR ADDED: %s", sensor)
 
     async_add_entities(sensors, True)
     return True
@@ -347,7 +347,7 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
             value = getattr(self.coordinator.data[0], self._sensor, None)
             if not isinstance(value, str) and value is not None:
                 if SENSOR_TYPES[self._sensor][4] and value == 0:
-                    return
+                    return None
                 return round(value, 1)
 
         return value
