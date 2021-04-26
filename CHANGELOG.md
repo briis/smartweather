@@ -1,3 +1,9 @@
+### V2.2.5
+
+Released: April 26th, 2021
+
+* `FIXED`: Datetime comparison error occurred when using Hourly Forecast method - issue #68. Fixed with this release.
+
 ### V2.2.4
 
 Released: April 25th, 2021
