@@ -4,12 +4,13 @@
     "documentation": "https://github.com/briis/smartweather",
     "issue_tracker": "https://github.com/briis/smartweather/issues",
     "config_flow": true,
-    "version": "2.2.5",
+    "version": "2.2.6",
     "dependencies": [],
     "codeowners": [
         "@briis"
     ],
     "requirements": [
         "pysmartweatherio==2.1.9"
-    ]
+    ],
+    "iot_class": "cloud_polling"
 }
