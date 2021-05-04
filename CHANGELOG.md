@@ -1,6 +1,6 @@
 ### V2.2.6
 
-Released: NOT RELEASED YET
+Released: May 4th, 2021
 
 * `FIXED`: Added **iot_class** to `manifest.json` to comply with development requirements.
 
