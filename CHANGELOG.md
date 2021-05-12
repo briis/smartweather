@@ -1,3 +1,9 @@
+### V2.2.8
+
+Released: NOT RELEASED YET
+
+* `FIXED`: High and Low temperature values were not converted to Fahrenheit when using Imperial Units. Fixing Issue #70
+
 ### V2.2.7
 
 Released: May 12th, 2021

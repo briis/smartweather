@@ -24,6 +24,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.util.dt import utc_from_timestamp
+from homeassistant.util.temperature import celsius_to_fahrenheit
 
 from pysmartweatherio import FORECAST_TYPE_DAILY
 from .const import (
@@ -186,6 +187,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def temp_high_today(self) -> float:
         """Return Todays High Temp Forecast."""
         if self._forecast is not None:
+            if self._unit_system == "imperial":
+                return celsius_to_fahrenheit(self._forecast.temp_high_today)
             return self._forecast.temp_high_today
         return None
 
@@ -193,6 +196,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def temp_low_today(self) -> float:
         """Return Todays Low Temp Forecast."""
         if self._forecast is not None:
+            if self._unit_system == "imperial":
+                return celsius_to_fahrenheit(self._forecast.temp_low_today)
             return self._forecast.temp_low_today
         return None
 
