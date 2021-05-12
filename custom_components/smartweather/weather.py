@@ -157,7 +157,7 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def pressure(self) -> int:
         """Return the pressure."""
         if self._current is not None:
-            return round(self._current.station_pressure, 2)
+            return round(self._current.sea_level_pressure, 2)
         return None
 
     @property

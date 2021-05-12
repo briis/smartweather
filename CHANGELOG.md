@@ -1,3 +1,10 @@
+### V2.2.7
+
+Released: May 12th, 2021
+
+* `FIXED`: The Weather entity was using Station Pressure as the Pressure Value, but to align with the WeatherFlow App, this has now been changed to Sea Level Pressure. Fixing Issue #69
+
+
 ### V2.2.6
 
 Released: May 4th, 2021
