@@ -158,6 +158,8 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
     def pressure(self) -> int:
         """Return the pressure."""
         if self._current is not None:
+            if self._unit_system == "imperial":
+                return round(self._current.sea_level_pressure, 3)
             return round(self._current.sea_level_pressure, 2)
         return None
 
