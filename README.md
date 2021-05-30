@@ -11,7 +11,7 @@ There is currently support for the following device types within Home Assistant:
 * Sensor
 * Binary Sensor
 
-Forecast data can be delivered as *hourly* or *daily* data. The Forecast API is still under development from WeatherFlow, so it might change over time. As it is right now, it is very stable and uses the same AI driven model as you can see in there own APP. A BIG thank you to @max-rousseau for doing the initial implementation of this.
+Forecast data can be delivered as *hourly* or *daily* data. The Forecast API uses the same AI driven model as you can see in there own APP. A BIG thank you to @max-rousseau for doing the initial implementation of this.
 
 **Note**: If you are a version 1.x user, please read the Upgrade section below before you install this.
 
