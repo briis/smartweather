@@ -72,8 +72,8 @@ The WeatherFlow REST API requires a Token. Please [login with your account](http
 
 **Please Note**: The Token you create here will ONLY work with Stations that are registered under the same Login.
 
-#### Station ID
-If you have your own Smart Weather Station, then you know your Station ID. If you don't have one, there are a lot of public stations available, and you can find one near you on [this link](https://smartweather.weatherflow.com/map). If you click on one of the stations on the map, you will see that the URL changes, locate the number right after */map/* - this is the Station ID
+### Station ID
+Each WeatherFlow Station you setup, will get a unique Station ID, this id is needed during configuration. To get your Station ID, [login with your account](https://tempestwx.com/settings/stations/), select the station on the list, and then click *Status*. Here you will find your Station ID.
 
 ## Sensors
 For each Station ID you add, the following sensors are being added to Home Assistant:
