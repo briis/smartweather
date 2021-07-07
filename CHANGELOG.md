@@ -1,3 +1,9 @@
+### V2.2.9
+
+Released: NOT RELEASED YET
+
+* `NEW`: A new sensor called `sensor.smartweather_station_information` is now added. This sensor displays the Station Name in the state, but the Attributes contain more detailed information about the specific station, among these the Latitude and Longitude of the Station. Thank you to @jcgoette for implementing this.
+
 ### V2.2.8
 
 Released: May 14th, 2021
