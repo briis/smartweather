@@ -98,6 +98,7 @@ For each Station ID you add, the following sensors are being added to Home Assis
 * *pressure_trend* - The pressure trend in text form. (Only english)
 * *relative_humidity* - relative Humidity.
 * *solar_radiation* - Solar Radiation.
+* *station_information* - Detailed information about the Station
 * *station_pressure* - Station Pressure.
 * *sea_level_pressure* - Sea Level Pressure.
 * *uv* - UV Index.
