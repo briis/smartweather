@@ -238,6 +238,13 @@ SENSOR_TYPES = {
         None,
         False,
     ],
+    "station_information": [
+        "Station information",
+        "",
+        "mdi:windsock",
+        None,
+        False,
+    ],
 }
 
 
@@ -274,7 +281,7 @@ async def async_setup_entry(
     unit_system = "metric" if hass.config.units.is_metric else "imperial"
 
     for sensor in device_coordinator.data:
-        # Append Batteri Devices to SENSOR_TYPES
+        # Append Battery Devices to SENSOR_TYPES
         key = f"battery_{sensor.device_type_desc}_{sensor.device_id}"
         SENSOR_TYPES.setdefault(key, [])
         SENSOR_TYPES[key] = [
@@ -332,6 +339,8 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
         self._sensor = sensor
         self._state = None
         self._name = f"{DOMAIN.capitalize()} {SENSOR_TYPES[self._sensor][0]}"
+        self._station_info = station_info
+        
 
     @property
     def name(self):
@@ -354,6 +363,8 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
                 if self._unit_system == "imperial":
                     return round(value, 3)
                 return round(value, 2)
+        elif self._sensor == 'station_information':
+            value = self._station_info.get('station_name')
         else:
             value = getattr(self.coordinator.data[0], self._sensor, None)
             if not isinstance(value, str) and value is not None:
@@ -396,6 +407,8 @@ class SmartWeatherSensor(SmartWeatherEntity, Entity):
                 ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
                 ATTR_SMARTWEATHER_STATION_ID: self._device_key,
             }
+        elif self._sensor == 'station_information':
+            return self._station_info
         else:
             return {
                 ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
