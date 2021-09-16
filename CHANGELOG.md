@@ -1,8 +1,10 @@
 ### V2.2.9
 
-Released: NOT RELEASED YET
+Released: September 16th, 2021
 
 * `NEW`: A new sensor called `sensor.smartweather_station_information` is now added. This sensor displays the Station Name in the state, but the Attributes contain more detailed information about the specific station, among these the Latitude and Longitude of the Station. Thank you to @jcgoette for implementing this.
+* `NEW`: Added `state_class` attributes to selected sensors, so that they can be used with [Long Term Statistics](https://www.home-assistant.io/blog/2021/08/04/release-20218/#long-term-statistics).
+* `CHANGE`: Other minor changes to support future HA versions.
 
 ### V2.2.8
 
