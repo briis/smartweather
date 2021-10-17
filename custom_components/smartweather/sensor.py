@@ -115,7 +115,7 @@ SENSOR_TYPES = {
         "°",
         "mdi:compass-outline",
         None,
-        None,
+        STATE_CLASS_MEASUREMENT,
         False,
     ],
     "wind_direction": [
@@ -139,7 +139,7 @@ SENSOR_TYPES = {
         UNIT_TYPE_RAIN,
         "mdi:weather-rainy",
         None,
-        STATE_CLASS_TOTAL_INCREASING,
+        STATE_CLASS_MEASUREMENT,
         False,
     ],
     "precip_rate": [
@@ -235,7 +235,7 @@ SENSOR_TYPES = {
         UNIT_TYPE_DISTANCE,
         "mdi:weather-lightning",
         None,
-        None,
+        STATE_CLASS_MEASUREMENT,
         False,
     ],
     "lightning_strike_last_time": [
@@ -267,7 +267,7 @@ SENSOR_TYPES = {
         "min",
         "mdi:timer-outline",
         None,
-        STATE_CLASS_TOTAL_INCREASING,
+        STATE_CLASS_MEASUREMENT,
         False,
     ],
     "precip_minutes_local_yesterday": [
