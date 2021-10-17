@@ -4,6 +4,7 @@ Released: October 17th, 2021
 
 * `NEW`: Added `state_class` attributes to all sensors where applicable. A few more where added on top of what was in the last release.
 * `FIX`: The *Rain Today* and *Rain minutes today* sensors have their state class changed, to reflect the correct sensor type. It should now work for showing the statistics.
+* `FIX`: Issue #73 has been fixed. Rounding Fahrenheit units to 1 decimal.
 
 Released: September 16th, 2021
 

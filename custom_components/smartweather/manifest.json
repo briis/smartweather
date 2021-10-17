@@ -10,7 +10,7 @@
         "@briis"
     ],
     "requirements": [
-        "pysmartweatherio==2.1.10"
+        "pysmartweatherio==2.1.12"
     ],
     "iot_class": "cloud_polling"
 }
