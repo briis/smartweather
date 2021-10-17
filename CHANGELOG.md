@@ -4,7 +4,7 @@ Released: October 17th, 2021
 
 * `NEW`: Added `state_class` attributes to all sensors where applicable. A few more where added on top of what was in the last release.
 * `FIX`: The *Rain Today* and *Rain minutes today* sensors have their state class changed, to reflect the correct sensor type. It should now work for showing the statistics.
-* `FIX`: Issue #73 has been fixed. Rounding Fahrenheit units to 1 decimal.
+* `FIX`: Issue #79 has been fixed. Rounding Fahrenheit units to 1 decimal.
 
 Released: September 16th, 2021
 
@@ -17,7 +17,7 @@ Released: September 16th, 2021
 Released: May 14th, 2021
 
 * `FIXED`: High and Low temperature values were not converted to Fahrenheit when using Imperial Units. Fixing Issue #70
-* `Fixed`: If using Imperial Units, the Pressure values are now more accurate, as the conversion formula has been updated and the number of decimals has been expanded to 3, when displaying the values. Fixing Issue #79
+* `Fixed`: If using Imperial Units, the Pressure values are now more accurate, as the conversion formula has been updated and the number of decimals has been expanded to 3, when displaying the values. Fixing Issue #72
 
 ### V2.2.7
 
