@@ -17,7 +17,7 @@ Released: September 16th, 2021
 Released: May 14th, 2021
 
 * `FIXED`: High and Low temperature values were not converted to Fahrenheit when using Imperial Units. Fixing Issue #70
-* `Fixed`: If using Imperial Units, the Pressure values are now more accurate, as the conversion formula has been updated and the number of decimals has been expanded to 3, when displaying the values. Fixing Issue #72
+* `Fixed`: If using Imperial Units, the Pressure values are now more accurate, as the conversion formula has been updated and the number of decimals has been expanded to 3, when displaying the values. Fixing Issue #79
 
 ### V2.2.7
 
