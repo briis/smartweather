@@ -390,7 +390,7 @@ class SmartWeatherSensor(SmartWeatherEntity, SensorEntity):
         return self._name
 
     @property
-    def state(self):
+    def native_value(self):
         """Return the state of the sensor."""
 
         if "battery" in self._sensor:
