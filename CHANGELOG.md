@@ -3,6 +3,7 @@
 Released: NOT RELEASED YET
 
 * `CHANGE`: To ensure this Integration follows the latest design principles, `state` has now been moved to `native_value`. This will have no direct effect for you as users.
+* `NEW`: Added a Device Configuration Url, so that you can visit the Station Data directly from the Devices page. Requires Home Assistant 2021.11.
 
 ### V2.2.10
 

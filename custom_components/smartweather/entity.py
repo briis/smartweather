@@ -1,6 +1,6 @@
 """Base Entity definition for SmartWeather Integration."""
 from typing import Dict
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity import Entity, DeviceInfo
 import homeassistant.helpers.device_registry as dr
 from homeassistant.const import ATTR_ATTRIBUTION
 
@@ -59,13 +59,14 @@ class SmartWeatherEntity(Entity):
         return self.fcst_coordinator.data[0]
 
     @property
-    def device_info(self):
-        return {
-            "connections": {(dr.CONNECTION_NETWORK_MAC, self._device_key)},
-            "manufacturer": DEFAULT_BRAND,
-            "model": self._platform_id,
-            "via_device": (DOMAIN, self._device_key),
-        }
+    def device_info(self) -> DeviceInfo:
+        return DeviceInfo(
+            connections={(dr.CONNECTION_NETWORK_MAC, self._device_key)},
+            manufacturer=DEFAULT_BRAND,
+            model=self._platform_id,
+            via_device=(DOMAIN, self._device_key),
+            configuration_url=f"https://tempestwx.com/station/{self.entries[CONF_STATION_ID]}/grid",
+        )
 
     @property
     def available(self):
