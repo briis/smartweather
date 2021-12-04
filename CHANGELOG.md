@@ -1,7 +1,16 @@
-### V2.2.11
+### V2.2.12
 
-Released: NOT RELEASED YET
+Released: 2021-12-04
 
+**This Integration is now deprecated and will be replaced with a new Integration.**
+
+This will be the last release of this integration. At was written a long time ago, and keeping it updated was more complicated than re-writing it from Scratch - which also gave me the possibility to add new stuff and ensure the code base adheres much better to Home Assistant coding practices.
+Also the name *SmartWeather* was something used by WeatherFlow in the early days, today this name is gone more or less, so the new Integration is simply called [*WeatherFlow Weather*](https://github.com/briis/hass-weatherflow).
+The new Integration is available now, but as I am waiting for my PR to merge in to the Default HACS store, you will right now have to add it as a *Custom Repository* to HACS.
+
+**Changes**
+
+* `FIX`: Issue #87, `device_state_attributes` are deprecated from V2021.12. This version migrates this to `extra_state_attributes`, and fixes this issue.
 * `CHANGE`: To ensure this Integration follows the latest design principles, `state` has now been moved to `native_value`. This will have no direct effect for you as users.
 * `NEW`: Added a Device Configuration Url, so that you can visit the Station Data directly from the Devices page. Requires Home Assistant 2021.11.
 
