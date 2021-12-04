@@ -1,5 +1,4 @@
 """Base Entity definition for SmartWeather Integration."""
-from typing import Dict
 from homeassistant.helpers.entity import Entity, DeviceInfo
 import homeassistant.helpers.device_registry as dr
 from homeassistant.const import ATTR_ATTRIBUTION
@@ -74,8 +73,8 @@ class SmartWeatherEntity(Entity):
         return self.coordinator.last_update_success
 
     @property
-    def device_state_attributes(self) -> Dict:
-        """Return SmartWeather specific attributes."""
+    def extra_state_attributes(self):
+        """Return common attributes"""
         return {
             ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
             ATTR_SMARTWEATHER_STATION_ID: self._device_key,

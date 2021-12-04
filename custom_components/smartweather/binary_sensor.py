@@ -10,14 +10,11 @@
 import logging
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
-from homeassistant.const import ATTR_ATTRIBUTION
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .const import (
-    ATTR_SMARTWEATHER_STATION_ID,
     DOMAIN,
-    DEFAULT_ATTRIBUTION,
     CONF_ADD_SENSORS,
 )
 
@@ -102,11 +99,3 @@ class SmartWeatherBinarySensor(SmartWeatherEntity, BinarySensorEntity):
     def device_class(self):
         """Return the device class of the sensor."""
         return SENSOR_TYPES[self._sensor][1]
-
-    @property
-    def device_state_attributes(self):
-        """Return the state attributes of the device."""
-        return {
-            ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-            ATTR_SMARTWEATHER_STATION_ID: self._device_key,
-        }

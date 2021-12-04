@@ -8,12 +8,10 @@
     Author: Bjarne Riis
 """
 import logging
-from typing import Dict
 
 # from homeassistant.helpers.entity import Entity
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import (
-    ATTR_ATTRIBUTION,
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_ILLUMINANCE,
     DEVICE_CLASS_PRESSURE,
@@ -33,8 +31,6 @@ from pysmartweatherio import (
 )
 from .const import (
     ATTR_DEVICE_TYPE,
-    ATTR_SMARTWEATHER_STATION_ID,
-    DEFAULT_ATTRIBUTION,
     DOMAIN,
     CONF_ADD_SENSORS,
 )
@@ -440,8 +436,8 @@ class SmartWeatherSensor(SmartWeatherEntity, SensorEntity):
         return SENSOR_TYPES[self._sensor][SENSOR_STATE_CLASS]
 
     @property
-    def device_state_attributes(self) -> Dict:
-        """Return SmartWeather specific attributes."""
+    def extra_state_attributes(self):
+        """Return the sensor state attributes."""
         if "battery" in self._sensor:
             value_type = None
             for row in self.device_coordinator.data:
@@ -450,14 +446,9 @@ class SmartWeatherSensor(SmartWeatherEntity, SensorEntity):
                     break
 
             return {
+                **super().extra_state_attributes,
                 ATTR_DEVICE_TYPE: value_type,
-                ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-                ATTR_SMARTWEATHER_STATION_ID: self._device_key,
             }
         elif self._sensor == "station_information":
             return self._station_info
-        else:
-            return {
-                ATTR_ATTRIBUTION: DEFAULT_ATTRIBUTION,
-                ATTR_SMARTWEATHER_STATION_ID: self._device_key,
-            }
+        return super().extra_state_attributes

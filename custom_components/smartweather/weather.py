@@ -1,6 +1,6 @@
 """Support for the SmartWeather weather service."""
 import logging
-from typing import Dict, List
+from typing import List
 from homeassistant.components.weather import (
     ATTR_FORECAST_CONDITION,
     ATTR_FORECAST_PRECIPITATION,
@@ -209,9 +209,10 @@ class SmartWeatherWeather(SmartWeatherEntity, WeatherEntity):
         return DEFAULT_ATTRIBUTION
 
     @property
-    def device_state_attributes(self) -> Dict:
-        """Return SmartWeather specific attributes."""
+    def extra_state_attributes(self):
+        """Return the sensor state attributes."""
         return {
+            **super().extra_state_attributes,
             ATTR_CURRENT_ICON: self.current_condition,
             ATTR_FCST_UV: self.uv,
             ATTR_WEATHER_HUMIDITY: self.humidity,
