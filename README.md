@@ -1,4 +1,8 @@
 # //Smart Weather
+
+## This repository is now Archieved and will no longer be maintained. There is now a new Custom Integration replacing this called [WeatherFlow Weather](https://github.com/briis/hass-weatherflow). Please use this Integration instead.
+
+
 ![WeatherFlow Logo](https://github.com/briis/hass-SmartWeather/blob/master/images/weatherflow.png)<br>
 This is a *Custom Integration* for [Home Assistant](https://www.home-assistant.io/). It combines real-time weather readings from a Personal Weather station produced by *WeatherFlow* and Forecast data also from Weatherflow. It uses the public [REST API](https://weatherflow.github.io/SmartWeather/api/swagger/) to pull data from Weatherflow.
 
