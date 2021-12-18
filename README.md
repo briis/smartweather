@@ -1,6 +1,6 @@
 # //Smart Weather
 
-## This repository is now Archieved and will no longer be maintained. There is now a new Custom Integration replacing this called [WeatherFlow Weather](https://github.com/briis/hass-weatherflow). Please use this Integration instead.
+## This repository is now Archived and will no longer be maintained. There is now a new Custom Integration replacing this called [WeatherFlow Weather](https://github.com/briis/hass-weatherflow). Please use this Integration instead.
 
 
 ![WeatherFlow Logo](https://github.com/briis/hass-SmartWeather/blob/master/images/weatherflow.png)<br>
